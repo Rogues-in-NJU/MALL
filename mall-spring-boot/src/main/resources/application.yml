@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    session:
+      timeout: 120m
+
+spring:
+  profiles:
+    active: #spring.profiles.active#
