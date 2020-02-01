@@ -26,8 +26,14 @@
 | --------   | -----:  | :----:  |
 | Id     | id |   int     |
 | 商品Id     | productId |   int     |
-| 图片链接        |   name   |   String   |
-商品Id与图片链接一对多
+| 图片链接        |   pictureLink   |   String   |
+
+### productInfo（商品与详情图片关联）
+| 名称        | 字段名   |  数据类型  |
+| --------   | -----:  | :----:  |
+| Id     | id |   int     |
+| 商品Id     | productId |   int     |
+| 图片链接        |   detailLink   |   String   |
 
 ### classification（分类）
 | 名称        | 字段名   |  数据类型  |
@@ -69,12 +75,13 @@
 | --------   | -----:  | :----:  |
 | 订单Id     | id |   int     |
 | 购买人Id        |   userId   |   String   |
-| 购买时间     | shoppingTime |   String     |
+| 下单时间     | orderTime |   String     |
+| 退款时间     | refundTime |   String     |
 | 收货人(姓名)       |   consignee   |   String   |
 | 收货人手机       |   consigneePhone   |   String   |
 | 收货人地址       |   consigneeAddress   |   String   |
 | 总金额        |   price   |   double   |
-| 状态（待支付，待发货，已发货，申请退款中，退款成功）        |   status   |   int   |
+| 状态（待支付，待发货，已发货，已签收，申请退款中，退款成功）        |   status   |   int   |
 
 ### orderProduct（订单商品关联）
 | 名称        | 字段名   |  数据类型  |
