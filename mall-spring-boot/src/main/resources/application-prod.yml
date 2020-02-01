@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    include: prodConn
+
+logging:
+  file: logs/mall.log
+  level:
+    root: info

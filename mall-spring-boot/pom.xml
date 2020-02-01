@@ -24,11 +24,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
         <guava.version>28.2-jre</guava.version>
         <swagger.version>2.7.0</swagger.version>
         <commons-lang.version>3.8</commons-lang.version>
         <hutool.version>5.1.2</hutool.version>
         <jwt.version>3.9.0</jwt.version>
+        <fast-json.verion>1.2.4</fast-json.verion>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
@@ -55,6 +57,18 @@
         </profile>
     </profiles>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,6 +81,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -109,6 +127,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fast-json.verion}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -122,7 +145,6 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>*.yml</exclude>
-                    <exclude>*.yaml</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -164,8 +186,7 @@
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>application.yml</include>
-                                        <include>application-${spring.profiles.active}.yml</include>
-                                        <include>*.yaml</include>
+                                        <include>application-${spring.profiles.active}*.yml</include>
                                     </includes>
                                 </resource>
                             </resources>
