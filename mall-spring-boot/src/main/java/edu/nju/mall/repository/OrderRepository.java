@@ -1,0 +1,13 @@
+package edu.nju.mall.repository;
+
+import edu.nju.mall.entity.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+/**
+ * @Description: 作用描述
+ * @Author: qianen.yin
+ * @CreateDate: 2020-02-03 14:03
+ */
+public interface OrderRepository extends JpaRepository<Order, Integer>, JpaSpecificationExecutor<Order> {
+}
