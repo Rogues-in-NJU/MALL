@@ -20,6 +20,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WithdrawalCondition {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private int member;
 
