@@ -1,0 +1,36 @@
+<nz-page-header>
+  <nz-page-header-title>分类列表</nz-page-header-title>
+  <nz-page-header-extra>
+    <button nz-button nzType="primary">
+      <i nz-icon nzType="plus" nzTheme="outline"></i>
+      新增商品分类
+    </button>
+    <nz-modal nzTitle="新增商品分类">
+    </nz-modal>
+  </nz-page-header-extra>
+</nz-page-header>
+<div class="content">
+  <div class="table-wrapper">
+    <nz-table #classificationTable
+              nzShowSizeChanger
+              [nzFrontPagination]="false"
+              [nzScroll]="{ x: '100%'}">
+      <thead>
+      <tr>
+        <th nzLeft="0px" nzWidth="150px">ID</th>
+        <th nzWidth="150px">分类名称</th>
+        <th>添加时间</th>
+        <th>废弃时间</th>
+        <th>状态</th>
+        <th nzRight="0px" nzWidth="150px">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+<!--      <tr *ngFor="let data of classificationTable.data">-->
+
+<!--      </tr>-->
+      </tbody>
+    </nz-table>
+  </div>
+
+</div>
