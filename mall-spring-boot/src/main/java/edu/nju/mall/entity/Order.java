@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
-@Table(name = "order")
+@Table(name = "order_sheet")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
