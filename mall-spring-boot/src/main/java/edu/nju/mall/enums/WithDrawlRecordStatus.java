@@ -12,7 +12,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum WithDrawlRecordStatus {
     TODO(0, "待处理"),
-    DONE(1, "已处理");
+    DONE(1, "已处理"),
+    ABANDON(2, "已取消");
 
     private int code;
     private String message;

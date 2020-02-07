@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
  * @CreateDate: 2020-02-03 19:28
  */
 @Slf4j
+@Service
 public class WithDrawlServiceImpl implements WithDrawlService {
     @Autowired
     private WithdrawalConditionRepository withdrawalConditionRepository;
@@ -31,13 +33,17 @@ public class WithDrawlServiceImpl implements WithDrawlService {
 
 
     @Override
-    public void updateCondition(WithdrawalCondition withdrawalCondition) {
-        withdrawalConditionRepository.save(withdrawalCondition);
+    public Integer saveCondition(WithdrawalCondition withdrawalCondition) {
+        return withdrawalConditionRepository.save(withdrawalCondition).getId();
     }
 
     @Override
-    public void addRecord(WithdrawalRecord withdrawalRecord) {
-        withdrawalRecordRepository.save(withdrawalRecord);
+    public Integer saveRecord(WithdrawalRecord withdrawalRecord) {
+        if (withdrawalRecord.getId() == null) {
+            return withdrawalRecordRepository.saveAndFlush(withdrawalRecord).getId();
+        } else {
+            return withdrawalRecordRepository.save(withdrawalRecord).getId();
+        }
     }
 
     @Override
@@ -45,6 +51,27 @@ public class WithDrawlServiceImpl implements WithDrawlService {
         QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
         try {
             sp.add(ConditionFactory.equal("status", WithDrawlRecordStatus.DONE.getCode()));
+            setQueryContainer(sp, userId, startTime, endTime);
+        } catch (Exception e) {
+            log.error("Value is null", e);
+        }
+        return withdrawalRecordRepository.findAll(sp, pageable);
+    }
+
+    @Override
+    public Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, String userId, String startTime, String endTime) {
+        QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
+        try {
+            sp.add(ConditionFactory.equal("status", WithDrawlRecordStatus.TODO.getCode()));
+            setQueryContainer(sp, userId, startTime, endTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return withdrawalRecordRepository.findAll(sp, pageable);
+    }
+
+    private void setQueryContainer(QueryContainer<WithdrawalRecord> sp, String userId, String startTime, String endTime) {
+        try {
             if (userId != null) {
                 sp.add(ConditionFactory.like("userId", userId));
             }
@@ -55,19 +82,7 @@ public class WithDrawlServiceImpl implements WithDrawlService {
                 sp.add(ConditionFactory.lessThanEqualTo("withdrawalTime", endTime));
             }
         } catch (Exception e) {
-            log.error("Value is null", e);
-        }
-        return withdrawalRecordRepository.findAll(sp, pageable);
-    }
-
-    @Override
-    public Page<WithdrawalRecord> getTodoRecordList(Pageable pageable) {
-        QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
-        try {
-            sp.add(ConditionFactory.equal("status", WithDrawlRecordStatus.TODO.getCode()));
-        } catch (Exception e) {
             e.printStackTrace();
         }
-        return withdrawalRecordRepository.findAll(sp, pageable);
     }
 }

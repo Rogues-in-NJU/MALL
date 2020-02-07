@@ -11,11 +11,11 @@ import org.springframework.data.domain.Pageable;
  * @CreateDate: 2020-02-03 19:28
  */
 public interface WithDrawlService {
-    void updateCondition(WithdrawalCondition withdrawalCondition);
+    Integer saveCondition(WithdrawalCondition withdrawalCondition);
 
-    void addRecord(WithdrawalRecord withdrawalRecord);
+    Integer saveRecord(WithdrawalRecord withdrawalRecord);
 
-    Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, String name, String startTime, String endTime);
+    Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, String userId, String startTime, String endTime);
 
-    Page<WithdrawalRecord> getTodoRecordList(Pageable pageable);
+    Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, String userId, String startTime, String endTime);
 }
