@@ -1,16 +1,16 @@
 {
-  "name": "miniprogram-ts-quickstart",
+  "name": "vant-weapp-demo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Collection of vant-weapp demos.",
+  "main": "app.js",
   "scripts": {
-    "compile": "./node_modules/typescript/bin/tsc",
-    "tsc": "node ./node_modules/typescript/lib/tsc.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
-  "license": "",
+  "license": "ISC",
   "dependencies": {
-    "miniprogram-api-typings": "^2.8.3-1",
-    "typescript": "^3.3.3333"
-  }
+    "@vant/weapp": "^1.0.0",
+    "miniprogram-sm-crypto": "^0.1.0"
+  },
+  "devDependencies": {}
 }
