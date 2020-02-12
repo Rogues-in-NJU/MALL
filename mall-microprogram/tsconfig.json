@@ -1,4 +1,10 @@
 {
+  "baseUrl": ".",
+  "paths": {
+    "@vant/weapp/*": [
+      "./node_modules/@vant/weapp/dist/*"
+    ]
+  },
   "compilerOptions": {
     "strictNullChecks": true,
     "noImplicitAny": true,
