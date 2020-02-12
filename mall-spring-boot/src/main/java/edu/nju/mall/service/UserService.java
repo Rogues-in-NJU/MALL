@@ -57,6 +57,14 @@ public class UserService {
         return userDTO;
     }
 
+    public UserDTO saveUser(final UserDTO userDTO) {
+        Preconditions.checkNotNull(userDTO);
+        User userEntity = User.builder().build();
+        BeanUtils.copyProperties(userDTO, userEntity);
+        userEntity = userRepository.save(userEntity);
+        return this.findUser(userEntity.getId());
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public UserDTO register(UserDTO userDTO) {
         User userEntity = User.builder().build();
