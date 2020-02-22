@@ -23,7 +23,7 @@ export class ClassificationService {
     });
   };
 
-  public updateOrAddClassification(queryParams: ClassificationVO): Observable<ResultVO<any>> {
+  public save(queryParams: ClassificationVO): Observable<ResultVO<any>> {
     console.log(queryParams);
     return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/classification`, queryParams, {
       withCredentials: true
