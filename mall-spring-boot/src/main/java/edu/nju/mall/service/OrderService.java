@@ -9,4 +9,5 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @CreateDate: 2020-02-03 19:27
  */
 public interface OrderService {
+    int refund(int orderId);
 }
