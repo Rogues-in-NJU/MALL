@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'product',
     loadChildren: './product/product.module#ProductModule'
+  },
+  {
+    path: 'classification',
+    loadChildren: './classification/classification.module#ClassificationModule'
   }
 ];
 
