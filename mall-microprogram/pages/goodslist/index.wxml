@@ -1,0 +1,39 @@
+<view>
+  <view>
+    <van-image
+      height="180"
+      width="100%"
+      src=""
+    />
+  </view>
+  <view>
+    <van-grid>
+      <van-grid-item icon="photo-o" text="分类1" />
+      <van-grid-item icon="photo-o" text="分类2" />
+      <van-grid-item icon="photo-o" text="分类3" />
+      <van-grid-item icon="photo-o" text="分类4" />
+    </van-grid>
+  </view>
+  <van-card
+    price="2.00"
+    desc="描述信息"
+    title="商品标题"
+    thumb="{{ imageURL }}"
+  />
+  <van-card
+    price="2.00"
+    desc="描述信息"
+    title="商品标题"
+    thumb="{{ imageURL }}"
+  />
+  <van-card
+    price="2.00"
+    desc="描述信息"
+    title="商品标题"
+    thumb="{{ imageURL }}"
+  />
+  <van-tabbar active="{{ 0 }}" bind:change="onChange">
+    <van-tabbar-item icon="search">商品列表</van-tabbar-item>
+    <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>
+  </van-tabbar>
+</view>

@@ -15,14 +15,14 @@ public class ExceptionVO {
         return ExceptionVO.builder()
                 .exceptionEnum(ExceptionEnum.SERVER_ERROR)
                 .errorMessage(
-                        String.format("[%s]%s", ExceptionEnum.SERVER_ERROR.getMessage(),
+                        String.format("[%s] %s", ExceptionEnum.SERVER_ERROR.getMessage(),
                                 t.getMessage()))
                 .build();
     }
 
     public static ExceptionVO customExceptionWrapper(ExceptionEnum exceptionEnum, String errorMessage) {
         return ExceptionVO.builder()
-                .errorMessage(String.format("[%s]%s", ExceptionEnum.SERVER_ERROR.getMessage(),
+                .errorMessage(String.format("[%s] %s", exceptionEnum.getMessage(),
                         errorMessage))
                 .exceptionEnum(exceptionEnum)
                 .build();

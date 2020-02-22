@@ -182,3 +182,4 @@ buildNumber.properties
 application-devConn.yml
 application-prodConn.yml
 
+miniprogram_npm/

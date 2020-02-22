@@ -3,22 +3,15 @@
 	"packOptions": {
 		"ignore": []
 	},
-	"miniprogramRoot": "miniprogram/",
-	"compileType": "miniprogram",
-	"libVersion": "2.8.2",
-	"projectname": "mall-microprogram",
-	"scripts": {
-		"beforeCompile": "npm run tsc",
-		"beforePreview": "npm run tsc",
-		"beforeUpload": "npm run tsc"
-	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
+		"enhance": false,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": true,
@@ -29,10 +22,35 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"bundle": false
 	},
+	"compileType": "miniprogram",
+	"libVersion": "2.9.4",
+	"appid": "wx914c89b261bb6d56",
+	"projectname": "vant-demo",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"isGameTourist": false,
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"appid": "wx5b316b0c7c852b76",
-	"condition": {}
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": []
+		}
+	}
 }
