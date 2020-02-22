@@ -1,0 +1,68 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a>
+<!--        <img src="assets/logo.jpg" alt="logo" style="width: 48px; height: 36px;"/>-->
+        <h1 style="font-size: 17px">电商管理系统</h1>
+      </a>
+    </div>
+    <div class="menu-header">
+      主菜单
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item routerLink="customer/list" nzMatchRouter>
+        <i nz-icon nzType="contacts" nzTheme="outline"></i>
+        <span>商品列表</span>
+      </li>
+      <li nz-menu-item routerLink="supplier/list" nzMatchRouter>
+        <i nz-icon nzType="shop" nzTheme="outline"></i>
+        <span>订单列表</span>
+      </li>
+      <li nz-menu-item routerLink="purchase-order/list" nzMatchRouter>
+        <i nz-icon nzType="shopping-cart"></i>
+        <span>提现申请列表</span>
+      </li>
+      <li nz-menu-item routerLink="processing-order/list" nzMatchRouter>
+        <i nz-icon nzType="rocket"></i>
+        <span>商品分类</span>
+      </li>
+      <li nz-menu-item routerLink="shipping-order/list" nzMatchRouter>
+        <i nz-icon nzType="upload"></i>
+        <span>提现条件设置</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+        </span>
+        <div class="header-nav">
+          <ul nz-menu nzMode="horizontal">
+            <li nz-submenu nzTitle="用户中心" nzIcon="user" [nzOpen]="isOpen">
+              <ul>
+                <li nz-menu-item (click)="logout()">登出</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <app-tab #tabComponent>
+          <router-outlet></router-outlet>
+        </app-tab>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
