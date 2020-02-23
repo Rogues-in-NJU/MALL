@@ -4,11 +4,13 @@ import com.google.common.base.Preconditions;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.dto.UserDTO;
+import edu.nju.mall.dto.UserInfoDTO;
 import edu.nju.mall.entity.User;
 import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.repository.UserInfoRepository;
 import edu.nju.mall.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,26 +28,24 @@ public class UserInfoService {
     private UserInfoRepository userInfoRepository;
 
     @Nonnull
-    public UserInfo findUserInfo(@Nonnull final Long userId) {
+    public UserInfoDTO findUserInfo(@Nonnull final Long userId) {
         Preconditions.checkNotNull(userId);
-        UserInfo userInfo = userInfoRepository.findByUserId(userId).orElse(null);
-        if (Objects.isNull(userInfo)) {
+        UserInfo userInfoEntity = userInfoRepository.findByUserId(userId).orElse(null);
+        if (Objects.isNull(userInfoEntity)) {
             log.error("用户信息不存在 id为[{}]", userId);
             throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户信息不存在 id为[%d]", userId));
         }
-        return userInfo;
+        UserInfoDTO userInfoDTO = UserInfoDTO.builder().build();
+        BeanUtils.copyProperties(userInfoEntity, userInfoDTO);
+        // TODO: 订单搜索
+        return userInfoDTO;
     }
 
     @Nonnull
-    public UserInfo findUserInfo(@Nonnull final String openId) {
+    public UserInfoDTO findUserInfo(@Nonnull final String openId) {
         Preconditions.checkNotNull(openId);
         UserDTO userDTO = userService.findUser(openId);
-        UserInfo userInfo = userInfoRepository.findByUserId(userDTO.getId()).orElse(null);
-        if (Objects.isNull(userInfo)) {
-            log.error("用户信息不存在 id为[{}]", userDTO.getId());
-            throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户信息不存在 id为[%d]", userDTO.getId()));
-        }
-        return userInfo;
+        return this.findUserInfo(userDTO.getId());
     }
 
     @Nonnull
@@ -59,7 +59,7 @@ public class UserInfoService {
         Preconditions.checkNotNull(userId);
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)
-                .withdrawal(0L)
+                .withdrawal(0.)
                 .subordinateNum(0L)
                 .build();
         return userInfoRepository.save(userInfo);

@@ -4,10 +4,13 @@ var app = getApp();
 
 Page({
   data: {
-    nickName: '加载中...',
+    nickName: '用户加载中...',
     avatarUrl: null,
     withdrawal: 0,
     subordinateNum: 0,
+    unpaidNum: null,
+    undoneNum: null,
+    doneNum: null
   },
   onLoad: function() {
     var that = this;

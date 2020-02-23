@@ -74,28 +74,35 @@ App({
                     }
                   })
                   .catch(err => {
-                    that.loginFailed('网络连接失败!');
+                    wx.hideLoading();
+                    wx.showToast({
+                      title: '网络连接失败!',
+                      icon: 'none',
+                      duration: 1500
+                    });
                   });
               }
             },
             fail: function() {
-              that.loginFailed('没有给予权限!');
+              wx.hideLoading();
+              wx.showToast({
+                title: '没有给予权限!',
+                icon: 'none',
+                duration: 1500
+              });
             }
           });
         }
       },
       fail: function() {
-        that.loginFailed('网络连接失败!');
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络连接失败!',
+          icon: 'none',
+          duration: 1500
+        });
       }
     });
   },
-  userInfoReadyCallback: null,
-  loginFailed: function(msg) {
-    wx.hideLoading();
-    wx.showToast({
-      title: msg | '登录失败!',
-      icon: 'cancel',
-      duration: 1500
-    });
-  }
+  userInfoReadyCallback: null
 });

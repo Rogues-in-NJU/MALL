@@ -2,7 +2,7 @@ package edu.nju.mall.controller.wechat;
 
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
-import edu.nju.mall.entity.UserInfo;
+import edu.nju.mall.dto.UserInfoDTO;
 import edu.nju.mall.service.UserInfoService;
 import edu.nju.mall.util.HttpSecurity;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,9 @@ public class WechatUserInfoController {
 
     @InvokeControl
     @GetMapping("/userInfo")
-    public ResultVO<UserInfo> getUserInfo() {
+    public ResultVO<UserInfoDTO> getUserInfo() {
         String openId = security.getUserOpenId();
-        UserInfo userInfo = userInfoService.findUserInfo(openId);
+        UserInfoDTO userInfo = userInfoService.findUserInfo(openId);
         return ResultVO.ok(userInfo);
     }
 
