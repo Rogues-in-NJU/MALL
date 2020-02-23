@@ -1,21 +1,36 @@
 <view>
-  <image class="user-poster" src="{{ 'https://img.yzcdn.cn/public_files/2017/10/23/8690bb321356070e0b8c4404d087f8fd.png' }}"></image>
+  <view class="user-poster">
+    <view class="user-name">
+      <text>{{ nickName }}</text>
+    </view>
+    <view class="user-info">
+      <view class="user-info-item">
+        <text>{{ withdrawal }}</text>
+        <text>可提现金额</text>
+      </view>
+      <view class="user-info-item">
+        <text>{{ subordinateNum }}</text>
+        <text>下级客户数</text>
+      </view>
+      <van-image
+        round
+        width="6rem"
+        height="6rem"
+        src="{{ avatarUrl }}"/>
+    </view>
+  </view>
   <van-row class="user-links">
-    <van-col span="6">
-      <van-icon name="pending-payment" />
+    <van-col span="8">
+      <van-icon name="pending-payment" info="{{ unpaidNum }}"/>
       待付款
     </van-col>
-    <van-col span="6">
-      <van-icon name="records" />
-      待接单
+    <van-col span="8">
+      <van-icon name="records" info="{{ undoneNum }}"/>
+      待完成
     </van-col>
-    <van-col span="6">
-      <van-icon name="tosend" />
-      待发货
-    </van-col>
-    <van-col span="6">
-      <van-icon name="logistics" />
-      已发货
+    <van-col span="8">
+      <van-icon name="passed" info="{{ doneNum }}"/>
+      已结束
     </van-col>
   </van-row>
 
@@ -24,12 +39,12 @@
   </van-cell-group>
 
   <van-cell-group>
-    <van-cell icon="points" title="我的积分" is-link />
-    <van-cell icon="gold-coin-o" title="我的优惠券" is-link />
-    <van-cell icon="gift-o" title="我收到的礼物" is-link />
+    <van-cell icon="points" title="我的下级客户" is-link />
+    <van-cell icon="gold-coin-o" title="我的提现金额" is-link />
+    <!-- <van-cell icon="gift-o" title="我收到的礼物" is-link /> -->
   </van-cell-group>
 
-  <van-tabbar active="{{ 1 }}" bind:change="onChange">
+  <van-tabbar active="{{ 1 }}" bind:change="onChange" active-color="rgb(255, 216, 66)">
     <van-tabbar-item icon="search">商品列表</van-tabbar-item>
     <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>
   </van-tabbar>

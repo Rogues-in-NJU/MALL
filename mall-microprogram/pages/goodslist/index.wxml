@@ -32,7 +32,7 @@
     title="商品标题"
     thumb="{{ imageURL }}"
   />
-  <van-tabbar active="{{ 0 }}" bind:change="onChange">
+  <van-tabbar active="{{ 0 }}" bind:change="onChange" active-color="rgb(255, 216, 66)">
     <van-tabbar-item icon="search">商品列表</van-tabbar-item>
     <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>
   </van-tabbar>

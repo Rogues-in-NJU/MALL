@@ -10,7 +10,11 @@ App({
         url: '/pages/user/index',
         name: '用户中心'
       }
-    ]
+    ],
+    userInfo: null
+  },
+  onLaunch: function() {
+    this.login();
   },
   onRouteChange: function(event) {
     wx.navigateTo({
@@ -25,21 +29,80 @@ App({
     });
   },
   login: function() {
+    var that = this;
+    wx.showLoading({
+      title: '登录中',
+      mask: true
+    });
     wx.login({
       success: function(res) {
         if (res.code) {
-          http.get('/wechat/api/login')
-            .then(res => {
-              console.log(res);
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          var code = res.code;
+          wx.getUserInfo({
+            success: function(res) {
+              if (res) {
+                var data = {
+                  code: code,
+                  rawData: res.rawData,
+                  signature: res.signature
+                };
+                that.userInfo = null;
+                wx.clearStorageSync('UserToken');
+                http.post('/wechat/api/login', data)
+                  .then(res => {
+                    if (!res) {
+                      that.loginFailed();
+                      return;
+                    }
+                    if (!res.code || res.code !== 10000) {
+                      that.loginFailed(res.message);
+                      return;
+                    }
+                    wx.hideLoading();
+                    wx.setStorageSync('UserToken', res.data);
+                    wx.showToast({
+                      title: '登录成功!',
+                      icon: 'success',
+                      duration: 1500
+                    });
+                    that.userInfo = JSON.parse(data.rawData);
+                    // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                    // 所以此处加入 callback 以防止这种情况
+                    if (that.userInfoReadyCallback) {
+                      that.userInfoReadyCallback();
+                      that.userInfoReadyCallback = null;
+                    }
+                  })
+                  .catch(err => {
+                    wx.hideLoading();
+                    wx.showToast({
+                      title: '网络连接失败!',
+                      icon: 'none',
+                      duration: 1500
+                    });
+                  });
+              }
+            },
+            fail: function() {
+              wx.hideLoading();
+              wx.showToast({
+                title: '没有给予权限!',
+                icon: 'none',
+                duration: 1500
+              });
+            }
+          });
         }
+      },
+      fail: function() {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络连接失败!',
+          icon: 'none',
+          duration: 1500
+        });
       }
     });
-  }
-})
-
-var app = getApp();
-app.login();
+  },
+  userInfoReadyCallback: null
+});
