@@ -1,10 +1,10 @@
 const baseUrl = 'http://localhost:8080';
-const tokenHead = 'Bearer ';
+const tokenHead = '';
 
 function request(url, method, data, header) {
   data = data || {};
   header = header || {}
-  let token = wx.getStorageSync('UserToken');
+  let token = wx.getStorageSync("UserToken");
   if (token) {
     header['Authorization'] = tokenHead + token;
   }
@@ -18,7 +18,7 @@ function request(url, method, data, header) {
       fail: reject
     });
   });
-  return promise;
+  return promise.then(res => res.data);
 }
 
 module.exports = {

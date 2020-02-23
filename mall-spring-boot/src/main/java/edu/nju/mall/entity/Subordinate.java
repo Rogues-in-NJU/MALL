@@ -11,10 +11,10 @@ import java.io.Serializable;
 @Data
 @Builder
 @Entity
-@Table(name = "user_role")
+@Table(name = "subordinate")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRole implements Serializable {
+public class Subordinate implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,10 @@ public class UserRole implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "role_id")
-    private Long roleId;
+    /**
+     * 下级用户id
+     * */
+    @Column(name = "subordinate_id")
+    private Long subordinateId;
 
 }

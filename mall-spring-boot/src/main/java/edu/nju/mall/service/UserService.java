@@ -2,6 +2,7 @@ package edu.nju.mall.service;
 
 import com.google.common.base.Preconditions;
 import edu.nju.mall.common.ExceptionEnum;
+import edu.nju.mall.common.NJUException;
 import edu.nju.mall.common.RoleEnum;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Role;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,10 +37,12 @@ public class UserService {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
-    public UserDTO findUser(final Long id) {
+    @Nonnull
+    public UserDTO findUser(@Nonnull final Long id) {
         User userEntity = userRepository.findById(id).orElse(null);
         if (Objects.isNull(userEntity)) {
-            return null;
+            log.error("用户不存在 id为[{}]", id);
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户不存在 id为[%s]", id));
         }
         UserDTO userDTO = UserDTO.builder().build();
         BeanUtils.copyProperties(userEntity, userDTO);
@@ -46,10 +50,12 @@ public class UserService {
         return userDTO;
     }
 
-    public UserDTO findUser(final String openid) {
+    @Nonnull
+    public UserDTO findUser(@Nonnull final String openid) {
         User userEntity = userRepository.findByOpenid(openid).orElse(null);
         if (Objects.isNull(userEntity)) {
-            return null;
+            log.error("用户不存在 openid为[{}]", openid);
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户不存在 openid为[%s]", openid));
         }
         UserDTO userDTO = UserDTO.builder().build();
         BeanUtils.copyProperties(userEntity, userDTO);
@@ -57,7 +63,13 @@ public class UserService {
         return userDTO;
     }
 
-    public UserDTO saveUser(final UserDTO userDTO) {
+    public boolean isUserExisted(@Nonnull final String openid) {
+        User userEntity = userRepository.findByOpenid(openid).orElse(null);
+        return Objects.nonNull(userEntity);
+    }
+
+    @Nonnull
+    public UserDTO saveUser(@Nonnull final UserDTO userDTO) {
         Preconditions.checkNotNull(userDTO);
         User userEntity = User.builder().build();
         BeanUtils.copyProperties(userDTO, userEntity);
@@ -65,8 +77,9 @@ public class UserService {
         return this.findUser(userEntity.getId());
     }
 
+    @Nonnull
     @Transactional(rollbackFor = Exception.class)
-    public UserDTO register(UserDTO userDTO) {
+    public UserDTO register(@Nonnull UserDTO userDTO) {
         User userEntity = User.builder().build();
         BeanUtils.copyProperties(userDTO, userEntity);
         userEntity = userRepository.save(userEntity);
@@ -74,15 +87,17 @@ public class UserService {
         return this.findUser(userEntity.getId());
     }
 
-    public List<Role> findUserRoles(final Long userId) {
+    @Nonnull
+    public List<Role> findUserRoles(@Nonnull final Long userId) {
         List<UserRole> userRoles = userRoleRepository.findAllByUserId(userId);
         return userRoles.stream()
                 .map(userRole -> roleRepository.findById(userRole.getRoleId()).orElse(null))
                 .collect(Collectors.toList());
     }
 
+    @Nonnull
     @Transactional(rollbackFor = Exception.class)
-    public UserDTO grantDefaultRole(Long userId) {
+    public UserDTO grantDefaultRole(@Nonnull Long userId) {
         Role exampleRoleUser = Role.builder()
                 .id(RoleEnum.USER.getId())
                 .name(RoleEnum.USER.getName())
@@ -96,7 +111,7 @@ public class UserService {
         return this.findUser(userId);
     }
 
-    public void addRole(Long userId, Long roleId) {
+    public void addRole(@Nonnull Long userId, @Nonnull Long roleId) {
         Preconditions.checkNotNull(userId, "用户ID为空!");
         Preconditions.checkNotNull(roleId, "权限ID为空!");
         if (Objects.nonNull(userRoleRepository.findByUserIdAndRoleId(userId, roleId))) {
