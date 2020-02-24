@@ -55,16 +55,20 @@
 
 .user-links .van-icon {
   font-size: 24px;
-  display: inline-block;
+  display: block;
   margin-right: 4px;
+}
+
+.user-links text {
+  display: block;
 }
 
 .user-links .van-row {
   padding: 15px 0;
 }
 
-.user-links .van-row .van-col {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* .user-links .van-row .van-col { */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+/* } */

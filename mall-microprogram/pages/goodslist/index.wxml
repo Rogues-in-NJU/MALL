@@ -3,35 +3,29 @@
     <van-image
       height="180"
       width="100%"
-      src=""
+      src="/images/wechartMall.png"
     />
   </view>
   <view>
     <van-grid>
-      <van-grid-item icon="photo-o" text="分类1" />
-      <van-grid-item icon="photo-o" text="分类2" />
-      <van-grid-item icon="photo-o" text="分类3" />
-      <van-grid-item icon="photo-o" text="分类4" />
+      <van-grid-item icon="/icons/cart.png" text="{{ category[0].name }}" />
+      <van-grid-item icon="/icons/home.png" text="{{ category[1].name }}" />
+      <van-grid-item icon="/icons/usercenter.png" text="{{ category[2].name }}" />
+      <van-grid-item icon="/icons/home-selected.png" text="{{ category[3].name }}" />
     </van-grid>
   </view>
+  <view 
+  wx:for="{{ goods }}"
+  wx:key="{{ item.id }}"
+  >
   <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
-  <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
-  <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
+        title="{{ item.title }}"
+        desc="{{ item.desc }}"
+        price="{{ item.price }}"
+        thumb="{{ item.thumb }}"
+        bind:click="onClickGoods"
+      />
+  </view>
   <van-tabbar active="{{ 0 }}" bind:change="onChange" active-color="rgb(255, 216, 66)">
     <van-tabbar-item icon="search">商品列表</van-tabbar-item>
     <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>

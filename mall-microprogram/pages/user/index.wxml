@@ -20,22 +20,26 @@
     </view>
   </view>
   <van-row class="user-links">
-    <van-col span="8">
+    <van-col span="6">
       <van-icon name="pending-payment" info="{{ unpaidNum }}"/>
-      待付款
+      <text>待付款</text>
     </van-col>
-    <van-col span="8">
+    <van-col span="6">
       <van-icon name="records" info="{{ undoneNum }}"/>
-      待完成
+      <text>待完成</text>
     </van-col>
-    <van-col span="8">
+    <van-col span="6">
       <van-icon name="passed" info="{{ doneNum }}"/>
-      已结束
+      <text>已完成</text>
+    </van-col>
+    <van-col span="6">
+      <van-icon name="balance-list-o"/>
+      <text>退款/售后</text>
     </van-col>
   </van-row>
 
   <van-cell-group class="user-group">
-    <van-cell icon="records" title="全部订单" is-link />
+    <van-cell icon="records" title="全部订单" is-link bind:click="goToAllOrders" />
   </van-cell-group>
 
   <van-cell-group>
