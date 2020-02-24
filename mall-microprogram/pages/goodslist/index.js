@@ -50,15 +50,26 @@ Page({
 
   onChange: app.onRouteChange,
   goToGoods: function (event) {
-    wx.navigateTo({
-      url: '/pages/goods/index',
-      success: () => { },
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: '查看商品失败!',
-        });
-      },
-    })
+    // console.log(event);
+    var dataset = event.currentTarget.dataset || event.target.dataset;
+    var id;
+    if (dataset.i) {
+      id = dataset.i;
+      wx.navigateTo({
+        url: '/pages/goods/index?id=' + id,
+        success: () => { },
+        error: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '查看商品失败!',
+          });
+        },
+      });
+    } else {
+      wx.showToast({
+        title: '商品下架或不存在!',
+        icon: 'none'
+      });
+    }
   }
 });

@@ -23,6 +23,7 @@
         desc="{{ item.desc }}"
         price="{{ item.price }}"
         thumb="{{ item.thumb }}"
+        data-i="{{ item.id }}"
         bindtap="goToGoods"
       />
   </view>
