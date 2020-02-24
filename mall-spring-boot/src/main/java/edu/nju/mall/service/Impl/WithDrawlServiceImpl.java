@@ -75,10 +75,10 @@ public class WithDrawlServiceImpl implements WithDrawlService {
             if (userId != null) {
                 sp.add(ConditionFactory.like("userId", userId));
             }
-            if (!"".equals(startTime)) {
+            if (startTime != null) {
                 sp.add(ConditionFactory.greatThanEqualTo("withdrawalTime", startTime));
             }
-            if (!"".equals(endTime)) {
+            if (endTime != null) {
                 sp.add(ConditionFactory.lessThanEqualTo("withdrawalTime", endTime));
             }
         } catch (Exception e) {

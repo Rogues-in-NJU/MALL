@@ -1,6 +1,6 @@
 import {BaseInfo} from "./base-info";
 
-export interface WithdrawlRecord extends BaseInfo {
+export interface WithdrawalRecord extends BaseInfo {
 
 
   id?: number;

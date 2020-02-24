@@ -20,12 +20,11 @@ public enum OrderStatus {
      * REFUNDING -> REFUNDED
      */
     PAYING(0, "待支付"),
-    SHIPPING(1, "待发货"),
-    SHIPPED(2, "已发货"),
-    SIGNED(3, "已签收"),
-    REFUNDING(4, "申请退款中"),
-    REFUNDED(5, "退款成功"),
-    ABANDON(6, "已废弃");
+    TODO(1, "未完成"),
+    FINISHED(2, "已完成"),
+    REFUNDING(3, "申请退款中"),
+    REFUNDED(4, "退款成功"),
+    ABANDON(5, "已废弃");
 
 
 

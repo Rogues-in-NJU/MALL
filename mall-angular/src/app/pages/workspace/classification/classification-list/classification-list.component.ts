@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {RefreshableTab} from "../../tab/tab.component";
 import {ClassificationService} from "../../../../core/services/classification.service";
 import {NzMessageService} from "ng-zorro-antd";
-import {BehaviorSubject, Observable} from "rxjs";
 import {Objects} from "../../../../core/services/util.service";
 import {FormGroup} from "@angular/forms";
 import {ClassificationVO} from "../../../../core/model/classification";
@@ -17,6 +16,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class ClassificationListComponent implements RefreshableTab, OnInit {
   classificationAddVisible: boolean = false;
   classificationAddForm: FormGroup;
+  classificationList: ClassificationVO[] = [];
 
   constructor(
     private classification: ClassificationService,
@@ -27,9 +27,24 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   }
 
   refresh(): void {
+
   }
 
   ngOnInit(): void {
+    this.classification.findAll()
+      .subscribe((res: ResultVO<Array<ClassificationVO>>) => {
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.classificationList = res.data;
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      });
   }
 
 

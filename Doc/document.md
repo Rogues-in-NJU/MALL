@@ -6,7 +6,7 @@
 | 商品Id     | id |   int     |
 | 名称        |   name   |   String   |
 | 所属分类        |    classificationId    |  int  |
-| 所属分类名称        |    classificationName    |  String  |
+|                                  |                  |          |
 | 进货价        |   buyingPrice   |   double   |
 | 售价        |    price    |  double  |
 | 分销抽成比率        |    percent    |  double  |

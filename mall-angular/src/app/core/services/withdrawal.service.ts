@@ -2,15 +2,14 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ResultVO, TableQueryParams, TableResultVO } from "../model/result-vm";
 import { Observable } from "rxjs";
-import { WithdrawlCondition } from "../model/withdrawlCondition";
-import { WithdrawlRecord } from "../model/withdrawlRecord";
+import { WithdrawalRecord } from "../model/withdrawalRecord";
 import { AppConfig } from "../../../environments/environment";
 import {ClassificationVO} from "../model/classification";
 
 @Injectable({
   providedIn: 'root'
 })
-export class WithdrawlService {
+export class WithdrawalService {
 
   constructor(
     private http: HttpClient
@@ -18,14 +17,14 @@ export class WithdrawlService {
 
   }
 
-  public findTodoRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawlRecord>>> {
+  public findTodoRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
     return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withDrawl/todoRecordList`, {
       params: queryParams,
       withCredentials: true
     });
   };
 
-  public findDoneRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawlRecord>>> {
+  public findDoneRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
     return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withDrawl/doneRecordList`, {
       params: queryParams,
       withCredentials: true

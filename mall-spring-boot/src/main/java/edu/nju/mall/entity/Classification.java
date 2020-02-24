@@ -32,23 +32,13 @@ public class Classification {
     /**
      * 添加时间
      */
-    @Column(name = "created_time")
-    private String createdTime;
+    @Column(name = "created_at")
+    private String createdAt;
 
     /**
      * 更新时间
      */
-    @Column(name = "updated_time")
-    private String updatedTime;
+    @Column(name = "updated_at")
+    private String updatedAt;
 
-    /**
-     * 删除时间
-     */
-    @Column(name = "deleted_time")
-    private String deletedTime;
-
-    /**
-     * 分类状态（0：使用中，1：废弃）
-     */
-    private Integer status;
 }

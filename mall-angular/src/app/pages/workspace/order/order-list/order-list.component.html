@@ -1,0 +1,39 @@
+<nz-page-header>
+  <nz-page-header-title>申请退款订单列表</nz-page-header-title>
+</nz-page-header>
+<div class="content">
+  <div class="table-wrapper">
+    <nz-table #todoRecordTable
+              [nzData]="refundOrderList"
+              [(nzPageIndex)]="pageIndex"
+              [(nzPageSize)]="pageSize"
+              [nzTotal]="totalPages * pageSize"
+              [nzFrontPagination]="false"
+              [nzScroll]="{ x: '100%'}">
+      <thead>
+      <tr>
+        <th nzLeft="0px" nzWidth="150px">ID</th>
+        <th>用户微信号</th>
+        <th>用户名</th>
+        <th>用户地址</th>
+        <th>用户联系方式</th>
+        <th>下单时间</th>
+        <th>申请退款时间</th>
+        <th nzRight="0px" nzWidth="150px">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of todoRecordTable.data">
+        <td>{{ data.id }}</td>
+        <td>{{ data.userId }}</td>
+        <td>{{ data.consignee }}</td>
+        <td>{{ data.consigneeAddress }}</td>
+        <td>{{ data.consigneePhone }}</td>
+        <td>{{ data.orderTime }}</td>
+        <td>{{ data.refundTime }}</td>
+        <td><a>退款</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
