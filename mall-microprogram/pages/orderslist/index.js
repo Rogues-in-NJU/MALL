@@ -6,64 +6,41 @@ Page({
    */
   data: {
     searchValue: '',
+    tabActive: 0,
+    orders: [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
   },
-
+  // [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+    if (options && options.i) {
+      this.setData({
+        tabActive: parseInt(options.i)
+      });
+    }
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log('refresh');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log('search more');
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  onTabChange: function(event) {
+    this.setData({
+      tabActive: event.detail.index
+    });
   },
-  onChange: function(e) {
+  onSearchInputChange: function(e) {
     this.setData({
       searchValue: e.detail
     });
@@ -71,9 +48,41 @@ Page({
   onSearch: function() {
     console.log(this.data.searchValue);
   },
-  onCancel: function() {
+  onSearchCancel: function() {
     this.setData({
       searchValue: ''
     });
+  },
+
+  searchOrders: function() {
+
+  },
+
+  onOrderItemButtonClick: function(event) {
+    console.log(event);
+  },
+
+  goToOrderDetail: function(event) {
+    console.log(event);
+    var dataset = event.currentTarget.dataset || event.target.dataset;
+    var id;
+    if (dataset.id) {
+      id = dataset.id;
+      wx.navigateTo({
+        url: '/pages/order/index?id=' + id,
+        success: () => { },
+        error: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '打开订单失败!',
+          });
+        },
+      });
+    } else {
+      wx.showToast({
+        title: '订单不存在!',
+        icon: 'none'
+      });
+    }
   }
 })

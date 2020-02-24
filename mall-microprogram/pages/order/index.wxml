@@ -1,0 +1,30 @@
+<!--pages/order/index.wxml-->
+<view>
+  <view>
+    <van-panel title="订单信息" status="已完成" use-footer-slot>
+      <van-card
+        desc="描述"
+        title="商品标题"
+        thumb="https://img.yzcdn.cn/vant/ipad.jpeg" 
+        bindtap="goToProductDetail">
+      </van-card>
+      <van-cell-group>
+        <van-cell title="联系人手机号" value="{{ 1234565679801 }}" border="{{ false }}"/>
+      </van-cell-group>
+      <van-cell-group>
+        <van-cell title="订单编号" value="1" border="{{ false }}"/>
+        <van-cell title="微信交易号" value="1238492304" border="{{ false }}"/>
+        <van-cell title="订单总价" value="¥10" border="{{ false }}"/>
+        <van-cell title="创建时间" value="2020-02-20 14:00:00" border="{{ false }}"/>
+        <van-cell title="付款时间" value="2020-02-20 14:00:00" border="{{ false }}"/>
+        <van-cell title="退款时间" value="" border="{{ false }}"/>
+      </van-cell-group>
+      <view slot="footer" class="order-footer">
+        <view class="buttons">
+          <van-button size="small" round>申请退款</van-button>
+          <!-- <van-button size="small" type="danger">退款</van-button> -->
+        </view>
+      </view>
+    </van-panel>
+  </view>
+</view>
