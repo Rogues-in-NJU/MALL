@@ -8,6 +8,7 @@ import {FormGroup} from "@angular/forms";
 import {ClassificationVO} from "../../../../core/model/classification";
 import {ResultCode, ResultVO} from "../../../../core/model/result-vm";
 import {HttpErrorResponse} from "@angular/common/http";
+import {RefreshTabEvent} from "../../../../core/services/tab.service";
 
 @Component({
   selector: 'app-classification-list',
@@ -30,6 +31,12 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   }
 
   ngOnInit(): void {
+    this.tab.refreshEvent.subscribe((event: RefreshTabEvent) => {
+      if (Objects.valid(event) && event.url === '/workspace/user-management/list') {
+        this.refresh();
+      }
+    });
+    this.refresh();
   }
 
 

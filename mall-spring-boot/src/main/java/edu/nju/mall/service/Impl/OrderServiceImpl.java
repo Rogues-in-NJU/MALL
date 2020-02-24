@@ -30,9 +30,8 @@ public class OrderServiceImpl implements OrderService {
 
     private Set<Integer> refundSet = new HashSet<Integer>() {
         {
-            add(OrderStatus.SHIPPING.getCode());
-            add(OrderStatus.SHIPPED.getCode());
-            add(OrderStatus.SIGNED.getCode());
+            add(OrderStatus.TODO.getCode());
+            add(OrderStatus.FINISHED.getCode());
         }
     };
 
