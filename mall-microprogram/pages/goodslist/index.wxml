@@ -14,24 +14,18 @@
       <van-grid-item icon="photo-o" text="分类4" />
     </van-grid>
   </view>
+  <view 
+  wx:for="{{ goods }}"
+  wx:key="{{ item.id }}"
+  >
   <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
-  <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
-  <van-card
-    price="2.00"
-    desc="描述信息"
-    title="商品标题"
-    thumb="{{ imageURL }}"
-  />
+        title="{{ item.title }}"
+        desc="{{ item.desc }}"
+        price="{{ item.price }}"
+        thumb="{{ item.thumb }}"
+        bind:click="onClickGoods"
+      />
+  </view>
   <van-tabbar active="{{ 0 }}" bind:change="onChange" active-color="rgb(255, 216, 66)">
     <van-tabbar-item icon="search">商品列表</van-tabbar-item>
     <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>
