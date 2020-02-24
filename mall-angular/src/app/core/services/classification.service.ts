@@ -16,9 +16,8 @@ export class ClassificationService {
 
   }
 
-  public findAll(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<ClassificationVO>>> {
-    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/classification/list`, {
-      params: queryParams,
+  public findAll(): Observable<ResultVO<Array<ClassificationVO>>> {
+    return this.http.get<ResultVO<Array<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/classification/list`, {
       withCredentials: true
     });
   };
@@ -30,9 +29,6 @@ export class ClassificationService {
     });
   }
 
-  public deleteClassification(classificationId: number): Observable<ResultVO<any>> {
-    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/api/classification/delete/${classificationId}`);
-  }
 
 }
 

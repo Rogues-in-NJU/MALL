@@ -16,6 +16,14 @@ const routes: Routes = [
   {
     path: 'classification',
     loadChildren: './classification/classification.module#ClassificationModule'
+  },
+  {
+    path: 'withdrawal',
+    loadChildren: './withdrawal/withdrawal.module#WithdrawalModule'
+  },
+  {
+    path: 'order',
+    loadChildren: './order/order.module#OrderModule'
   }
 ];
 

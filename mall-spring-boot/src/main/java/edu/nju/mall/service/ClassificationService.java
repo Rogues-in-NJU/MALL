@@ -14,7 +14,4 @@ public interface ClassificationService {
 
     List<Classification> getClassificationList();
 
-    List<Classification> getAbandonedClassificationList();
-
-    Integer delete(Classification classification);
 }

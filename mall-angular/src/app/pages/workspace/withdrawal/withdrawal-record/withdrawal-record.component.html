@@ -1,0 +1,34 @@
+<nz-page-header>
+  <nz-page-header-title>待提现列表</nz-page-header-title>
+</nz-page-header>
+<div class="content">
+  <div class="table-wrapper">
+    <nz-table #todoRecordTable
+              nzShowSizeChanger
+              [nzData]="todoRecordList"
+              [(nzPageIndex)]="pageIndex"
+              [(nzPageSize)]="pageSize"
+              [nzTotal]="totalPages * pageSize"
+              [nzFrontPagination]="false"
+              [nzScroll]="{ x: '100%'}">
+      <thead>
+      <tr>
+        <th nzLeft="0px" nzWidth="150px">ID</th>
+        <th>用户微信号</th>
+        <th>提现时间</th>
+        <th>提现金额</th>
+        <th nzRight="0px" nzWidth="150px">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of todoRecordTable.data">
+        <td>{{ data.id }}</td>
+        <td>{{ data.userId }}</td>
+        <td>{{ data.withdrawalTime }}</td>
+        <td>{{ data.cash }}</td>
+        <td><a>更新</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

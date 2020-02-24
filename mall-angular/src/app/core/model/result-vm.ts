@@ -11,7 +11,7 @@ export class TableResultVO<T> {
   readonly totalPages: number;
   readonly pageIndex: number;
   readonly pageSize: number;
-  readonly result?: T[] | null;
+  readonly content?: T[] | null;
 
 }
 

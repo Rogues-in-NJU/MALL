@@ -12,5 +12,4 @@ import java.util.List;
  * @CreateDate: 2020-02-03 14:19
  */
 public interface ClassificationRepository extends JpaRepository<Classification, Integer>, JpaSpecificationExecutor<Classification> {
-    List<Classification> findAllByStatus(Integer status);
 }

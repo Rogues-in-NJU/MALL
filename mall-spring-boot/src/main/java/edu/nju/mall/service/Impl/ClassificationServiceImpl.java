@@ -22,13 +22,16 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Autowired
     private ClassificationRepository classificationRepository;
 
+    /**
+     * 目前分类的保存 固定是4个，只能更新，无法新增。
+     * @param classification
+     * @return
+     */
     @Override
     public Integer save(Classification classification) {
-        classification.setUpdatedTime(DateUtils.getTime());
+        classification.setUpdatedAt(DateUtils.getTime());
         if (classification.getId() == null) {
-            classification.setStatus(ClassificationStatus.USING.getCode());
-            classification.setCreatedTime(DateUtils.getTime());
-            return classificationRepository.saveAndFlush(classification).getId();
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"分类未找到！");
         } else {
             return classificationRepository.save(classification).getId();
         }
@@ -36,21 +39,8 @@ public class ClassificationServiceImpl implements ClassificationService {
 
     @Override
     public List<Classification> getClassificationList() {
-        return classificationRepository.findAllByStatus(ClassificationStatus.USING.getCode());
+        return classificationRepository.findAll();
     }
 
-    @Override
-    public List<Classification> getAbandonedClassificationList() {
-        return classificationRepository.findAllByStatus(ClassificationStatus.ABANDON.getCode());
-    }
 
-    @Override
-    public Integer delete(Classification classification) {
-        if (classification.getId() == null) {
-            throw new NJUException(ExceptionEnum.ILLEGAL_PARAM, "分类Id为空!");
-        }
-        classification.setDeletedTime(DateUtils.getTime());
-        classification.setStatus(ClassificationStatus.ABANDON.getCode());
-        return classificationRepository.save(classification).getId();
-    }
 }

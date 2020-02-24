@@ -2,13 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {RefreshableTab} from "../../tab/tab.component";
 import {ClassificationService} from "../../../../core/services/classification.service";
 import {NzMessageService} from "ng-zorro-antd";
-import {BehaviorSubject, Observable} from "rxjs";
 import {Objects} from "../../../../core/services/util.service";
 import {FormGroup} from "@angular/forms";
 import {ClassificationVO} from "../../../../core/model/classification";
 import {ResultCode, ResultVO} from "../../../../core/model/result-vm";
 import {HttpErrorResponse} from "@angular/common/http";
-import {RefreshTabEvent} from "../../../../core/services/tab.service";
 
 @Component({
   selector: 'app-classification-list',
@@ -18,6 +16,7 @@ import {RefreshTabEvent} from "../../../../core/services/tab.service";
 export class ClassificationListComponent implements RefreshableTab, OnInit {
   classificationAddVisible: boolean = false;
   classificationAddForm: FormGroup;
+  classificationList: ClassificationVO[] = [];
 
   constructor(
     private classification: ClassificationService,
@@ -28,15 +27,24 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   }
 
   refresh(): void {
+
   }
 
   ngOnInit(): void {
-    this.tab.refreshEvent.subscribe((event: RefreshTabEvent) => {
-      if (Objects.valid(event) && event.url === '/workspace/user-management/list') {
-        this.refresh();
-      }
-    });
-    this.refresh();
+    this.classification.findAll()
+      .subscribe((res: ResultVO<Array<ClassificationVO>>) => {
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.classificationList = res.data;
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      });
   }
 
 
