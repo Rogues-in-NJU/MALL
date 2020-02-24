@@ -48,19 +48,17 @@ Page({
     ]
   },
 
-  onClickGoods: function () {
-    console.log("here");
+  onChange: app.onRouteChange,
+  goToGoods: function (event) {
     wx.navigateTo({
       url: '/pages/goods/index',
       success: () => { },
       error: () => {
         wx.showToast({
           icon: 'none',
-          title: '查看商品失败',
+          title: '查看商品失败!',
         });
       },
-    });
-  },
-
-  onChange: app.onRouteChange
+    })
+  }
 });
