@@ -5,35 +5,51 @@ Page({
     goods: [
       {
         id: '1',
-        title: '进口香蕉',
-        desc: '约250g，2根',
-        price: 200,
+        title: '仙境',
+        desc: '仙境，指中国传统的远古神话中仙人生活的地方；亦指风景绝美的地方，如“蓬莱仙界”、“人间仙界”。',
+        price: 2000,
         num: 1,
         thumb:
-          'https://img.yzcdn.cn/public_files/2017/10/24/2f9a36046449dafb8608e99990b3c205.jpeg',
+          '/images/1.png',
       },
       {
         id: '2',
-        title: '陕西蜜梨',
-        desc: '约600g',
-        price: 690,
+        title: '苏州园林',
+        desc: '苏州古典园林，亦称“苏州园林”，是位于江苏省苏州市境内的中国古典园林的总称。',
+        price: 2399,
         num: 1,
         thumb:
-          'https://img.yzcdn.cn/public_files/2017/10/24/f6aabd6ac5521195e01e8e89ee9fc63f.jpeg',
+          '/images/2.png',
       },
       {
         id: '3',
-        title: '美国伽力果',
-        desc: '约680g/3个',
-        price: 2680,
+        title: '北京天坛',
+        desc: '天坛，世界文化遗产，全国重点文物保护单位，国家AAAAA级旅游景区，全国文明风景旅游区示范点。',
+        price: 6900,
         num: 1,
         thumb:
-          'https://img.yzcdn.cn/public_files/2017/10/24/320454216bbe9e25c7651e1fa51b31fd.jpeg',
+          '/images/3.png',
       },
     ],
+
+    category:[
+      {
+        name: '自驾游',
+      },
+      {
+        name: '老年游',
+      },
+      {
+        name: '周末游',
+      },
+      {
+        name: '出国游',
+      }
+    ]
   },
-  
-  onClickGoods() {
+
+  onClickGoods: function () {
+    console.log("here");
     wx.navigateTo({
       url: '/pages/goods/index',
       success: () => { },
