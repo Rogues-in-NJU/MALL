@@ -49,5 +49,20 @@ Page({
         console.log(err);
       });
   },
-  onChange: app.onRouteChange
+  onChange: app.onRouteChange,
+  goToAllOrders: function(event) {
+    this.goToOrders(-1);
+  },
+  goToOrders: function (i) {
+    wx.navigateTo({
+      url: '/pages/orderslist/index?i=' + i,
+      success: () => { },
+      error: () => {
+        wx.showToast({
+          icon: 'none',
+          title: '打开订单列表失败!',
+        });
+      },
+    })
+  }
 });
