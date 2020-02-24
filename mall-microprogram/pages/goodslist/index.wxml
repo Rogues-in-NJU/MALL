@@ -23,7 +23,7 @@
         desc="{{ item.desc }}"
         price="{{ item.price }}"
         thumb="{{ item.thumb }}"
-        bind:click="onClickGoods"
+        bindtap="goToGoods"
       />
   </view>
   <van-tabbar active="{{ 0 }}" bind:change="onChange" active-color="rgb(255, 216, 66)">
