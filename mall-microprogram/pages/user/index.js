@@ -12,10 +12,8 @@ Page({
     undoneNum: null,
     doneNum: null
   },
-  onLoad: function() {
+  onLoad: function(options) {
     var that = this;
-    console.log('here');
-    console.log(app.userInfo);
     if (app.userInfo) {
       this.getUserInfo();
     } else {
@@ -50,10 +48,16 @@ Page({
       });
   },
   onChange: app.onRouteChange,
-  goToAllOrders: function(event) {
-    this.goToOrders(-1);
-  },
-  goToOrders: function (i) {
+  goToOrders: function (event) {
+    console.log(event);
+    var dataset = event.currentTarget.dataset || event.target.dataset;
+    console.log(dataset);
+    var i;
+    if (dataset.i) {
+      i = dataset.i;
+    } else {
+      i = 0;
+    }
     wx.navigateTo({
       url: '/pages/orderslist/index?i=' + i,
       success: () => { },

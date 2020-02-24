@@ -1,0 +1,10 @@
+/* pages/order/index.wxss */
+.order-footer {
+  height: 30px;
+}
+.order-footer .buttons {
+  float: right;
+}
+.buttons van-button {
+  margin-left: 10px;
+}
