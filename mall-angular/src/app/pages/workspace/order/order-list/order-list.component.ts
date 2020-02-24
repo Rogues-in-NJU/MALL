@@ -33,9 +33,14 @@ export class OrderListComponent implements RefreshableTab, OnInit {
   }
 
   refresh(): void {
+    this.loadData();
   }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData():void{
     if (this.needResetPageIndex) {
       this.needResetPageIndex = false;
       this.pageIndex = 1;
@@ -58,11 +63,29 @@ export class OrderListComponent implements RefreshableTab, OnInit {
         this.totalPages = tableResult.totalPages;
         this.pageIndex = tableResult.pageIndex;
         this.pageSize = tableResult.pageSize;
-        this.refundOrderList = tableResult.content;
+        this.refundOrderList = tableResult.result;
         console.log(tableResult);
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       });
+  }
+
+  confirmRefund(id: number): void {
+    this.orderService.refund(id)
+      .subscribe((res: ResultVO<any>) => {
+          if (!Objects.valid(res)) {
+            return;
+          }
+          if (res.code !== ResultCode.SUCCESS.code) {
+            this.message.error(res.message);
+          }
+        }, (error: HttpErrorResponse) => {
+          this.message.error('网络异常，请检查网络或者尝试重新登录!');
+        }, () => {
+          this.refresh();
+        }
+      );
+
   }
 
 }

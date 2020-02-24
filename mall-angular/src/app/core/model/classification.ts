@@ -4,5 +4,4 @@ export interface ClassificationVO extends BaseInfo {
 
   id?: number;
   name?: string;
-  status?: number;
 }

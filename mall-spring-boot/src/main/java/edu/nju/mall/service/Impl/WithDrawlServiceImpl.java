@@ -47,6 +47,11 @@ public class WithDrawlServiceImpl implements WithDrawlService {
     }
 
     @Override
+    public WithdrawalRecord getRecordById(Integer id) {
+        return withdrawalRecordRepository.getOne(id);
+    }
+
+    @Override
     public Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, String userId, String startTime, String endTime) {
         QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
         try {

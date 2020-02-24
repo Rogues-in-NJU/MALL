@@ -1,14 +1,16 @@
 package edu.nju.mall.controller;
 
+import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.service.OrderService;
-import edu.nju.mall.vo.OrderVO;
+import edu.nju.mall.util.ListResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Description: 作用描述
@@ -22,11 +24,20 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping(value = "refundOrderList")
-    public ResultVO<Page<OrderVO>> refundOrderList(@RequestParam(value = "pageIndex") int pageIndex,
+    public ResultVO<ListResponse> refundOrderList(@RequestParam(value = "pageIndex") int pageIndex,
                                                   @RequestParam(value = "pageSize") int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "refundTime"));
+        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getRefundingOrderList(pageable), pageIndex, pageSize));
+    }
 
-        return ResultVO.ok(orderService.getRefundingOrderList(pageable));
+    @GetMapping(value = "refund/{id}")
+    public ResultVO<Integer> refund(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
+        return ResultVO.ok(orderService.refund(id));
+    }
+
+    @GetMapping(value = "finishRefund/{id}")
+    public ResultVO<Integer> finishRefund(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
+        return ResultVO.ok(orderService.finishRefund(id));
     }
 
 }

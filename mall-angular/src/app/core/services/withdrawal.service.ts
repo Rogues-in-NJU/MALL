@@ -18,18 +18,23 @@ export class WithdrawalService {
   }
 
   public findTodoRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
-    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withDrawl/todoRecordList`, {
+    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withdrawal/todoRecordList`, {
       params: queryParams,
       withCredentials: true
     });
   };
 
   public findDoneRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
-    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withDrawl/doneRecordList`, {
+    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withdrawal/doneRecordList`, {
       params: queryParams,
       withCredentials: true
     });
   };
 
+  public withdrawal(id: number): Observable<ResultVO<any>> {
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/api/withdrawal/withdrawal/${id}`, {
+      withCredentials: true
+    });
+  }
 
 }

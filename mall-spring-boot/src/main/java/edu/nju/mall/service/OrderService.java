@@ -16,5 +16,7 @@ import java.util.List;
 public interface OrderService {
     int refund(int orderId);
 
+    int finishRefund(int orderId);
+
     Page<OrderVO> getRefundingOrderList(Pageable pageable);
 }

@@ -31,7 +31,15 @@
         <td>{{ data.consigneePhone }}</td>
         <td>{{ data.orderTime }}</td>
         <td>{{ data.refundTime }}</td>
-        <td><a>退款</a></td>
+        <td>
+          <a [class.disabled]="false"
+             nz-popconfirm
+             nzPopconfirmTitle="确认退款?"
+             nzPopconfirmPlacement="top"
+             (nzOnConfirm)="confirmRefund(data.id)">
+            退款
+          </a>
+        </td>
       </tr>
       </tbody>
     </nz-table>

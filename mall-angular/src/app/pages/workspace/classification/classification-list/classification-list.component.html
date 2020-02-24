@@ -23,10 +23,31 @@
         <td>{{ data.name }}</td>
         <td>{{ data.createdAt }}</td>
         <td>{{ data.updatedAt }}</td>
-        <td> <a>修改</a></td>
+        <td>
+          <a (click)="showEditModal(data.id)">
+            修改
+          </a>
+        </td>
       </tr>
       </tbody>
     </nz-table>
+    <nz-modal [(nzVisible)]="classificationEditVisible"
+              nzTitle="商品分类信息修改"
+              (nzOnCancel)="cancelEdit()"
+              (nzOnOk)="confirmEdit()">
+      <form nz-form nzLayout="inline" [formGroup]="classificationEditForm">
+        <div nz-row nzGutter="24">
+          <div nz-col nzSpan="24">
+            <nz-form-item nzFlex>
+              <nz-form-label nzRequired nzSpan="6">分类名称</nz-form-label>
+              <nz-form-control nzHasFeedback nzSpan="14">
+                <input nz-input formControlName="name" class="add-input"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+    </nz-modal>
   </div>
 
 </div>

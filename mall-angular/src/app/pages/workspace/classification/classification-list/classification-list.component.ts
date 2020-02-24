@@ -3,7 +3,7 @@ import {RefreshableTab} from "../../tab/tab.component";
 import {ClassificationService} from "../../../../core/services/classification.service";
 import {NzMessageService} from "ng-zorro-antd";
 import {Objects} from "../../../../core/services/util.service";
-import {FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ClassificationVO} from "../../../../core/model/classification";
 import {ResultCode, ResultVO} from "../../../../core/model/result-vm";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -14,12 +14,13 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./classification-list.component.less']
 })
 export class ClassificationListComponent implements RefreshableTab, OnInit {
-  classificationAddVisible: boolean = false;
-  classificationAddForm: FormGroup;
+  classificationEditVisible: boolean = false;
+  classificationEditForm: FormGroup;
   classificationList: ClassificationVO[] = [];
 
   constructor(
-    private classification: ClassificationService,
+    private classificationService: ClassificationService,
+    private fb: FormBuilder,
     private message: NzMessageService,
     // private fb: FormBuilder,
   ) {
@@ -27,11 +28,24 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   }
 
   refresh(): void {
-
+    this.classificationEditForm.reset({
+      id: null,
+      name: null
+    });
+    this.classificationEditVisible = false;
+    this.loadData();
   }
 
   ngOnInit(): void {
-    this.classification.findAll()
+    this.classificationEditForm = this.fb.group({
+      id: [null, Validators.required],
+      name: [null, Validators.required]
+    });
+    this.loadData();
+  }
+
+  loadData():void{
+    this.classificationService.findAll()
       .subscribe((res: ResultVO<Array<ClassificationVO>>) => {
         if (!Objects.valid(res)) {
           this.message.error("请求失败！");
@@ -46,52 +60,42 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       });
   }
-
-
-  confirmAdd(): void {
-    if (!this.classificationAddForm.valid) {
-      // 主动触发验证
-      Object.values(this.classificationAddForm.controls).forEach(item => {
-        item.markAsDirty();
-        item.updateValueAndValidity();
-      });
+  showEditModal(id: number): void {
+    const index: number = this.classificationList.findIndex(item => item.id === id);
+    if (index === -1) {
       return;
     }
-    const classificaitonAddData: ClassificationVO = this.classificationAddForm.getRawValue();
+    this.classificationEditVisible = true;
+    this.classificationEditForm.reset(this.classificationList[index]);
+  }
 
-    this.classification.save(classificaitonAddData)
+  confirmEdit(): void {
+    const classificationEditData: ClassificationVO = this.classificationEditForm.getRawValue();
+    this.classificationService.save(classificationEditData)
       .subscribe((res: ResultVO<any>) => {
         if (!Objects.valid(res)) {
+          this.message.error('修改失败!');
           return;
         }
         if (res.code !== ResultCode.SUCCESS.code) {
           this.message.error(res.message);
           return;
         }
-        this.message.success('添加成功!');
+        this.message.success('修改成功!');
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
         this.refresh();
       }, () => {
         this.refresh();
       });
-    this.classificationAddVisible = false;
-    this.refresh();
-  }
-
-  cancelAdd():void{
-    this.classificationAddVisible = false;
-    this.refresh();
-  }
-
-  showAddModal(): void {
-    this.classificationAddVisible = true;
-    console.log(this.classificationAddVisible);
-    // this.classificationAddForm.reset({
-    //   name: null
-    // });
   }
 
 
-
+  cancelEdit(): void {
+    this.classificationEditForm.reset({
+      id: null,
+      name: null
+    });
+    this.classificationEditVisible = false;
+  }
 }

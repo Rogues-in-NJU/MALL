@@ -43,13 +43,18 @@ public class OrderServiceImpl implements OrderService {
         }
     };
 
+    /**
+     * 用户申请退款接口
+     * @param orderId
+     * @return
+     */
     @Override
     @Transactional
     public int refund(int orderId) {
         Order order = orderRepository.getOne(orderId);
-        if (order == null) {
-            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "没有找到该订单!");
-        }
+//        if (order == null) {
+//            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "没有找到该订单!");
+//        }
         if (!refundSet.contains(order.getStatus())) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法申请退款!");
         }
@@ -58,8 +63,20 @@ public class OrderServiceImpl implements OrderService {
         orderProductList.forEach(orderProduct -> {
             //todo 修改商品库存
         });
-        return 0;
+        return orderId;
     }
+
+    @Override
+    public int finishRefund(int orderId) {
+        Order order = orderRepository.getOne(orderId);
+        if(order.getStatus() != OrderStatus.REFUNDING.getCode()){
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法退款!");
+        }
+        order.setStatus(OrderStatus.REFUNDED.getCode());
+        orderRepository.save(order);
+        return orderId;
+    }
+
 
     @Override
     public Page<OrderVO> getRefundingOrderList(Pageable pageable) {

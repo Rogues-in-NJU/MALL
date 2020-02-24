@@ -10,6 +10,7 @@
               [(nzPageSize)]="pageSize"
               [nzTotal]="totalPages * pageSize"
               [nzFrontPagination]="false"
+              [nzLoading]="isLoading"
               [nzScroll]="{ x: '100%'}">
       <thead>
       <tr>
@@ -26,7 +27,15 @@
         <td>{{ data.userId }}</td>
         <td>{{ data.withdrawalTime }}</td>
         <td>{{ data.cash }}</td>
-        <td><a>更新</a></td>
+        <td>
+          <a [class.disabled]="false"
+             nz-popconfirm
+             nzPopconfirmTitle="确认更新?"
+             nzPopconfirmPlacement="top"
+             (nzOnConfirm)="confirmWithdrawal(data.id)">
+            更新状态
+          </a>
+        </td>
       </tr>
       </tbody>
     </nz-table>
