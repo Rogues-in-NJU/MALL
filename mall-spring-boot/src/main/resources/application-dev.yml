@@ -1,7 +1,28 @@
 spring:
-  profiles:
-    include: devConn
+  datasource:
+    url: jdbc:mysql://47.97.90.30:3306/wechatMall?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    username: wechatMall
+    password: wechatMall
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      validation-timeout: 6000
+      max-lifetime: 300000
+      minimum-idle: 3
+      maximum-pool-size: 10
+      idle-timeout: 0
 
-logging:
-  level:
-    root: info
+wechat:
+  micro-program:
+    app-id: wx5b316b0c7c852b76
+    app-secret: xxxxxx
+  pay:
+    mch-id: 10000
+    secret-key: 10000
+    notify-url: bbbbb
+
+picture:
+  info:
+    address: D:\code\picture\productInfo
+  product:
+    address: D:\code\picture\product
