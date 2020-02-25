@@ -1,3 +1,30 @@
 <div>
-  条件设置
+  <form nz-form nzLayout="inline" [formGroup]="conditionEditForm">
+    <div nz-row nzGutter="24">
+      <div nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label nzRequired nzSpan="6">人员设置</nz-form-label>
+          <nz-form-control nzHasFeedback nzSpan="14">
+            <input nz-input formControlName="member" class="add-input"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label nzRequired nzSpan="6">金额设置</nz-form-label>
+          <nz-form-control nzHasFeedback nzSpan="14">
+            <input nz-input formControlName="cash" class="add-input"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-control nzSpan="14" nzOffset="6">
+            <button nz-button nzType="primary" (click)="saveCondition()">修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
 </div>
+

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -45,6 +46,12 @@ public class WithdrawalController {
         withdrawalRecord.setStatus(WithDrawlRecordStatus.DONE.getCode());
         withDrawlService.saveRecord(withdrawalRecord);
         return ResultVO.ok(id);
+    }
+
+    @GetMapping(value = "withdrawalCondition")
+    public ResultVO<WithdrawalCondition> withdrawalCondition() {
+        WithdrawalCondition withdrawalCondition = withDrawlService.getWithdrawalCondition();
+        return ResultVO.ok(withdrawalCondition);
     }
 
     @GetMapping(value = "todoRecordList")

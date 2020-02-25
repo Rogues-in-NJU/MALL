@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { WithdrawalRecord } from "../model/withdrawalRecord";
 import { AppConfig } from "../../../environments/environment";
 import {ClassificationVO} from "../model/classification";
+import {WithdrawalCondition} from "../model/withdrawalCondition";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,18 @@ export class WithdrawalService {
 
   public withdrawal(id: number): Observable<ResultVO<any>> {
     return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/api/withdrawal/withdrawal/${id}`, {
+      withCredentials: true
+    });
+  }
+
+  public getCondition(): Observable<ResultVO<WithdrawalCondition>> {
+    return this.http.get<ResultVO<WithdrawalCondition>>(`${AppConfig.BASE_URL}/api/withdrawal/withdrawalCondition`, {
+      withCredentials: true
+    });
+  }
+
+  public saveCondition(queryParams: WithdrawalCondition): Observable<ResultVO<any>> {
+    return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/withdrawal/saveCondition`, queryParams, {
       withCredentials: true
     });
   }

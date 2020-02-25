@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ import javax.persistence.*;
 @Table(name = "withdrawal_condition")
 @NoArgsConstructor
 @AllArgsConstructor
+@Proxy(lazy = false)
 public class WithdrawalCondition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
