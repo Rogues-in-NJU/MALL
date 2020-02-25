@@ -1,6 +1,7 @@
 Page({
   data: {
     goods: {
+      id:'1',
       title: '美国伽力果（约680g/3个）',
       price: 2680,
       formatPrice: '',
@@ -10,7 +11,10 @@ Page({
         'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
     },
   },
-  onLoad() {
+  onLoad(options) {
+    // console.log(options);
+    console.log(options.id);
+    //TODO 根据options.id获取对应的商品
     const { goods } = this.data;
     const formatPrice = `¥${(goods.price / 100).toFixed(2)}`;
     this.setData({
