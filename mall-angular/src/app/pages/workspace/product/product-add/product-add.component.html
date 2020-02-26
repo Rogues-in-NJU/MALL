@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="clearfix">
+  <nz-upload
+    nzAction="https://jsonplaceholder.typicode.com/posts/"
+    nzListType="picture-card"
+    [(nzFileList)]="fileList"
+    [nzShowUploadList]="showUploadList"
+    [nzPreview]="handlePreview"
+  >
+    <i nz-icon nzType="plus"></i>
+    <div class="ant-upload-text">Upload</div>
+  </nz-upload>
+  <nz-modal
+    [nzVisible]="previewVisible"
+    [nzContent]="modalContent"
+    [nzFooter]="null"
+    (nzOnCancel)="previewVisible = false"
+  >
+    <ng-template #modalContent>
+      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+</div>

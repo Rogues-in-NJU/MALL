@@ -1,7 +1,6 @@
 package edu.nju.mall.service;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpRequest;
@@ -13,7 +12,6 @@ import edu.nju.mall.dto.UnifiedOrderDTO;
 import edu.nju.mall.util.XmlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -46,11 +44,18 @@ public class WechatPayService {
     @Value("${wechat.pay.notify-url}")
     private String notifyUrl;
 
+    @Value("${wechat.pay.url.unified-order}")
+    private String unifiedOrderUrl;
+    @Value("${wechat.pay.url.order-query}")
+    private String orderQueryUrl;
+    @Value("${wechat.pay.url.close-order}")
+    private String closeOrderUrl;
+
     /**
      * 统一下单接口
      *
      * */
-    public String unifiedOrder(@Nonnull UnifiedOrderDTO data) {
+    public String unifiedOrder(@Nonnull final UnifiedOrderDTO data) {
         Preconditions.checkNotNull(data);
 
         Map<String, Object> generateData = new HashMap<>();
@@ -58,7 +63,9 @@ public class WechatPayService {
 
         generateData.put("appid", appId);
         generateData.put("mch_id", mchId);
-        generateData.put("nonce_str", IdUtil.fastSimpleUUID());
+
+        String nonceStr = IdUtil.fastSimpleUUID();
+        generateData.put("nonce_str", nonceStr);
 
         try {
             InetAddress ip = InetAddress.getLocalHost();
@@ -75,7 +82,7 @@ public class WechatPayService {
         log.debug("Generate Data: {}", JSON.toJSONString(generateData));
         String responseBody;
         try {
-            responseBody = HttpRequest.post("https://api.mch.weixin.qq.com/pay/unifiedorder")
+            responseBody = HttpRequest.post(this.unifiedOrderUrl)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(XmlUtils.mapToXml(generateData))
                     .execute().body();
@@ -88,9 +95,73 @@ public class WechatPayService {
 
     /**
      * 查询订单接口
+     *
+     * @param outTradeNo 商户订单号
      * */
-    public String orderQuery(@Nonnull Map<String, Object> data) {
-        return null;
+    public String orderQuery(@Nonnull final String outTradeNo) {
+        Preconditions.checkNotNull(outTradeNo);
+
+        Map<String, Object> generateData = new HashMap<>();
+        generateData.put("out_trade_no", outTradeNo);
+
+        generateData.put("appid", appId);
+        generateData.put("mch_id", mchId);
+
+        String nonce_str = IdUtil.fastSimpleUUID();
+        generateData.put("nonce_str", nonce_str);
+        generateData.put("sign", generateSign(generateData));
+
+        log.debug("Generate Data: {}", JSON.toJSONString(generateData));
+        String responseBody;
+        try {
+            responseBody = HttpRequest.post(this.orderQueryUrl)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
+                    .body(XmlUtils.mapToXml(generateData))
+                    .execute().body();
+            return responseBody;
+        } catch (TransformerException | IOException | ParserConfigurationException e) {
+            log.error(e.getMessage(), e);
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信查询订单失败!");
+        }
+    }
+
+    public String closeOrder(@Nonnull final String outTradeNo) {
+        Preconditions.checkNotNull(outTradeNo);
+
+        Map<String, Object> generateData = new HashMap<>();
+        generateData.put("out_trade_no", outTradeNo);
+
+        generateData.put("appid", appId);
+        generateData.put("mch_id", mchId);
+
+        String nonce_str = IdUtil.fastSimpleUUID();
+        generateData.put("nonce_str", nonce_str);
+        generateData.put("sign", generateSign(generateData));
+
+        log.debug("Generate Data: {}", JSON.toJSONString(generateData));
+        String responseBody;
+        try {
+            responseBody = HttpRequest.post(this.closeOrderUrl)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
+                    .body(XmlUtils.mapToXml(generateData))
+                    .execute().body();
+            return responseBody;
+        } catch (TransformerException | IOException | ParserConfigurationException e) {
+            log.error(e.getMessage(), e);
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信关闭订单失败!");
+        }
+    }
+
+    /**
+     * 生成签名
+     *
+     * */
+    private String generateSign(@Nonnull Map<String, Object> originData) {
+        Preconditions.checkNotNull(originData);
+        String originStr = mapJoin(originData);
+        String stringSignTemp = originStr + "&key=" + paySecretKey;
+        String sign = SecureUtil.md5(stringSignTemp).toUpperCase();
+        return sign;
     }
 
     private String mapJoin(@Nonnull Map<String, Object> map) {
@@ -100,17 +171,6 @@ public class WechatPayService {
                 .map(k -> k + "=" + JSON.toJSONString(map.get(k)))
                 .collect(Collectors.toList());
         return StringUtils.join(keyValues, "&");
-    }
-
-    /**
-     * 添加签名
-     * */
-    private String generateSign(@Nonnull Map<String, Object> originData) {
-        Preconditions.checkNotNull(originData);
-        String originStr = mapJoin(originData);
-        String stringSignTemp = originStr + "&key=" + paySecretKey;
-        String sign = SecureUtil.md5(stringSignTemp).toUpperCase();
-        return sign;
     }
 
 }

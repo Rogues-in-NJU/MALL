@@ -1,6 +1,7 @@
 package edu.nju.mall.util;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import edu.nju.mall.dto.UnifiedOrderDTO;
@@ -42,6 +43,9 @@ public class XmlUtilsTest {
     @Test
     public void testJSON() {
         System.out.println(JSON.toJSONString(1));
+
+        Snowflake snowflake = IdUtil.createSnowflake(1, 1);
+        System.out.println(snowflake.nextIdStr());
     }
 
 }

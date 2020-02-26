@@ -8,9 +8,9 @@ Page({
     avatarUrl: null,
     withdrawal: 0,
     subordinateNum: 0,
-    unpaidNum: null,
-    undoneNum: null,
-    doneNum: null
+    payingNum: null,
+    todoNum: null,
+    finishedNum: null
   },
   onLoad: function(options) {
     var that = this;

@@ -21,7 +21,17 @@
       </van-cell-group>
       <view slot="footer" class="order-footer">
         <view class="buttons">
-          <van-button size="small" round>申请退款</van-button>
+          <van-button 
+            wx:if="{{ orderStatus === 1 || orderStatus === 2 }}" 
+            size="small" round>申请退款</van-button>
+          <van-button
+            wx:if="{{ orderStatus === 0 }}"
+            size="small" round>取消订单</van-button>
+          <van-button
+            wx:if="{{ orderStatus === 0 }}"
+            size="small" 
+            color="rgb(255, 216, 66)"
+            round>去支付</van-button>
           <!-- <van-button size="small" type="danger">退款</van-button> -->
         </view>
       </view>

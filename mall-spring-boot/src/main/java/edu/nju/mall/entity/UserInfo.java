@@ -21,10 +21,10 @@ public class UserInfo extends BaseEntity {
     private Long userId;
 
     /**
-     * 提现额度
+     * 提现额度，单位为分
      * */
     @Column(name = "withdrawal", nullable = false)
-    private Double withdrawal;
+    private Long withdrawal;
 
     /**
      * 下级用户数量
