@@ -42,12 +42,6 @@ export class ProductAddComponent implements RefreshableTab, OnInit {
     hidePreviewIconInNonImage: true
   };
   fileList = [
-    {
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    }
   ];
   previewImage: string | undefined = '';
   previewVisible = false;
@@ -61,7 +55,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit {
     console.log("!!!!!!!!!!!!!!!!!!!!!!!")
     const url = `${AppConfig.BASE_URL}/upload-product-info`;
     const formData = new FormData();
-    formData.append('image', item.file as any);
+    formData.append('upload_file', item.file as any);
     return this.http.post(url, formData, {
       reportProgress: true,
       withCredentials: false
@@ -69,6 +63,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit {
       .subscribe(
           // tslint:disable-next-line no-any
         (event: HttpEvent<any>) => {
+          console.log(event);
           if (event.type === HttpEventType.UploadProgress) {
             if (event.total! > 0) {
               // tslint:disable-next-line:no-any
@@ -78,6 +73,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit {
           } else if (event instanceof HttpResponse) {
             item.onSuccess!(event.body, item.file!, event);
           }
+          item.onSuccess!(event, item.file!, event);
         },
         err => {
           item.onError!(err, item.file!);
