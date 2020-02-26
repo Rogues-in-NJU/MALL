@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/goodslist/index",
     "pages/user/index",
+    "pages/subordinatelist/index",
+    "pages/goodslist/index",
     "pages/goods/index",
     "pages/cart/index",
     "pages/orderslist/index",
     "pages/order/index",
-    "pages/subordinatelist/index",
     "pages/withdrawal/index"
   ],
   "window": {

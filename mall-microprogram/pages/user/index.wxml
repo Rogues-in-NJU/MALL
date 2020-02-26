@@ -55,8 +55,8 @@
   </van-cell-group>
 
   <van-cell-group>
-    <van-cell icon="points" title="我的下级客户" is-link />
-    <van-cell icon="gold-coin-o" title="我的提现金额" is-link />
+    <van-cell icon="points" title="我的下级客户" is-link url="/pages/subordinatelist/index" />
+    <van-cell icon="gold-coin-o" title="我的提现金额" is-link url="/pages/withdrawal/index" />
     <!-- <van-cell icon="gift-o" title="我收到的礼物" is-link /> -->
   </van-cell-group>
 

@@ -1,46 +1,25 @@
 // pages/withdrawal/index.js
+import common from '../../common';
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    tabActive: 0,
+    withdrawalNum: "",
+    
+    tryWithdrawalNum: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+    this.setData({
+      withdrawalNum: common.number_format(10000, 2)
+    })
   },
 
   /**
@@ -50,10 +29,7 @@ Page({
 
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
@@ -62,5 +38,15 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  onValueChange: function(event) {
+    try {
+      this.setData({
+        tryWithdrawalNum: parseFloat(event.detail)
+      });
+    } catch (e) {
+
+    } 
   }
 })

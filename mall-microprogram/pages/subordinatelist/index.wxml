@@ -1,2 +1,15 @@
 <!--pages/subordinatelist/index.wxml-->
-<text>pages/subordinatelist/index.wxml</text>
+<view class="content">
+  <van-panel title="我邀请了他们:" desc="拥有一定量的下级客户即可获取提现机会!">
+    <view class="list-content">
+      <van-cell-group>
+        <van-cell 
+          size="large"
+          wx:for="{{ subordinateList }}" 
+          title="{{ item.nickname }}" 
+          value="于{{ item.createdAt }}" />
+      </van-cell-group>
+    </view>
+  </van-panel>
+  <!-- <text class="title">我邀请了他们：</text> -->
+</view>

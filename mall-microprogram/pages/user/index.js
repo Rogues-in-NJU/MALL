@@ -28,8 +28,6 @@ Page({
     var that = this;
     http.get('/wechat/api/userInfo')
       .then(res => {
-        console.log(res);
-        console.log(app.userInfo);
         if (!res) {
           return;
         }
@@ -44,14 +42,16 @@ Page({
         });
       })
       .catch(err => {
-        console.log(err);
+        wx.showToast({
+          title: '网络连接失败!',
+          icon: 'none',
+          duration: 1500
+        });
       });
   },
   onChange: app.onRouteChange,
   goToOrders: function (event) {
-    console.log(event);
     var dataset = event.currentTarget.dataset || event.target.dataset;
-    console.log(dataset);
     var i;
     if (dataset.i) {
       i = dataset.i;

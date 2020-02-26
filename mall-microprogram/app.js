@@ -13,8 +13,8 @@ App({
     ],
     userInfo: null
   },
-  onLaunch: function() {
-    this.login();
+  onLaunch: function(query) {
+    this.login(query);
   },
   onRouteChange: function(event) {
     wx.navigateTo({
@@ -28,7 +28,7 @@ App({
       },
     });
   },
-  login: function() {
+  login: function(query) {
     var that = this;
     wx.showLoading({
       title: '登录中',
@@ -51,11 +51,19 @@ App({
                 http.post('/wechat/api/login', data)
                   .then(res => {
                     if (!res) {
-                      that.loginFailed();
+                      wx.showToast({
+                        title: '网络连接失败!',
+                        icon: 'none',
+                        duration: 1500
+                      });
                       return;
                     }
                     if (!res.code || res.code !== 10000) {
-                      that.loginFailed(res.message);
+                      wx.showToast({
+                        title: res.message,
+                        icon: 'none',
+                        duration: 1500
+                      });
                       return;
                     }
                     wx.hideLoading();

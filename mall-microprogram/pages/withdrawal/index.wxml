@@ -1,2 +1,39 @@
 <!--pages/withdrawal/index.wxml-->
-<text>pages/withdrawal/index.wxml</text>
+<view>
+  <van-tabs active="{{ tabActive }}">
+    <van-tab title="可提现金额">
+      <view>
+        <view class="withdrawal-header">
+          总计(元)：
+        </view>
+        <view class="withdrawal">
+          {{ withdrawalNum }}
+        </view>
+        <van-divider />
+        <view>
+          <van-cell-group>
+            <van-field
+              type="digit"
+              label="立即提现"
+              center
+              placeholder="请输入金额"
+              use-button-slot
+              bind:change="onValueChange"
+              clearable>
+              <van-button 
+                slot="button" 
+                size="small" 
+                type="primary"
+                color="rgb(255, 216, 66)">申请提现</van-button>
+            </van-field>
+          </van-cell-group>
+        </view>
+      </view>
+    </van-tab>
+    <van-tab title="申请记录">
+      <view>
+      
+      </view>
+    </van-tab>
+  </van-tabs>
+</view>

@@ -1,1 +1,19 @@
 /* pages/subordinatelist/index.wxss */
+.content {
+  /* padding-top: 65px; */
+}
+
+.title {
+  /* position: fixed; */
+  /* width: 100vw; */
+  /* top: 0; */
+  display: block;
+  font-size: 20px;
+  padding: 16px;
+  z-index: 100;
+}
+
+.list-content {
+  max-height: calc(100vh - 65px);
+  overflow: scroll;
+}
