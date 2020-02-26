@@ -23,19 +23,19 @@
     <van-col span="6" data-i="1" bindtap="goToOrders">
       <van-icon 
         name="pending-payment" 
-        info="{{ unpaidNum }}"/>
+        info="{{ payingNum }}"/>
       <text>待付款</text>
     </van-col>
     <van-col span="6" data-i="2" bindtap="goToOrders">
       <van-icon 
         name="records" 
-        info="{{ undoneNum }}"/>
+        info="{{ todoNum }}"/>
       <text>待完成</text>
     </van-col>
     <van-col span="6" data-i="3" bindtap="goToOrders">
       <van-icon 
         name="passed" 
-        info="{{ doneNum }}"/>
+        info="{{ finishedNum }}"/>
       <text>已完成</text>
     </van-col>
     <van-col span="6" data-i="4" bindtap="goToOrders">

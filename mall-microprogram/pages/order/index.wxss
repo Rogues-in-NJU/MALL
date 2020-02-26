@@ -1,6 +1,7 @@
 /* pages/order/index.wxss */
 .order-footer {
-  height: 30px;
+  /* height: 30px; */
+  overflow: hidden;
 }
 .order-footer .buttons {
   float: right;
