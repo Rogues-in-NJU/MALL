@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Integer>, JpaSpecificationExecutor<OrderProduct> {
 
-    List<OrderProduct> findAllByOrderId(int orderId);
+    List<OrderProduct> findAllByOrderId(Long orderId);
 }
