@@ -59,7 +59,7 @@ public class UserInfoService {
         Preconditions.checkNotNull(userId);
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)
-                .withdrawal(0.)
+                .withdrawal(0L)
                 .subordinateNum(0L)
                 .build();
         return userInfoRepository.save(userInfo);

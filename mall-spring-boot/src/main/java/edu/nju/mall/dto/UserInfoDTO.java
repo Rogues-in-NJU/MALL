@@ -16,7 +16,7 @@ public class UserInfoDTO extends BaseDTO {
     /**
      * 提现额度
      * */
-    private Double withdrawal;
+    private Long withdrawal;
 
     /**
      * 下级用户数量
@@ -26,16 +26,16 @@ public class UserInfoDTO extends BaseDTO {
     /**
      * 待付款
      * */
-    private Long unpaidNum;
+    private Long payingNum;
 
     /**
      * 待完成
      * */
-    private Long undoneNum;
+    private Long todoNum;
 
     /**
      * 已结束
      * */
-    private Long doneNum;
+    private Long finishedNum;
 
 }

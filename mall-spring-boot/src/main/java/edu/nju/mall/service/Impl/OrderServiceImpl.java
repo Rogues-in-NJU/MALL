@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int refund(int orderId) {
         Order order = orderRepository.getOne(orderId);
 //        if (order == null) {
