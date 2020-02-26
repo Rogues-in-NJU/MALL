@@ -12,7 +12,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 public class XmlUtilsTest {
 
@@ -45,7 +48,31 @@ public class XmlUtilsTest {
         System.out.println(JSON.toJSONString(1));
 
         Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        System.out.println(snowflake.nextIdStr());
+        System.out.println(snowflake.nextId());
+    }
+
+    @Test
+    public void testRepeat() {
+        Set<Long> set = new HashSet<>();
+        Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+        CountDownLatch latch = new CountDownLatch(10000);
+        Runnable work = () -> {
+            // try {
+            //     latch.await();
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
+            long id = snowflake.nextId();
+            if (set.contains(id)) {
+                System.out.println("重复id: " + id);
+            } else {
+                // System.out.println(id);
+                set.add(id);
+            }
+        };
+        for (int i = 0; i < 10000; i++) {
+            new Thread(work).start();
+        }
     }
 
 }

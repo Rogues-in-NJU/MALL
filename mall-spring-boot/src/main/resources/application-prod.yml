@@ -3,7 +3,7 @@ spring:
     include: prodConn
 
 logging:
-  file: logs/mall.log
+  file: logs/mall.prod.log
   level:
     root: info
 
