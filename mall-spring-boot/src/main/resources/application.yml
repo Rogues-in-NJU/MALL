@@ -5,10 +5,20 @@ server:
     session:
       timeout: 120m
 
+
+picture:
+  info:
+    address: D:\code\picture\productInfo
+  product:
+    address: D:\code\picture\product
+
 spring:
   profiles:
     active: #spring.profiles.active#
   datasource:
+    url: jdbc:mysql://47.97.90.30:3306/wechatMall?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    username: wechatMall
+    password: wechatMall
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: SELECT 1
@@ -28,6 +38,11 @@ spring:
       database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   main:
     allow-bean-definition-overriding: true
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
+      classpath:/static/,classpath:/public/,file:${picture.info.address},file:${picture.product.address},
+  mvc:
+    static-path-pattern: /**
 
 jwt:
   expiration: 86400000
