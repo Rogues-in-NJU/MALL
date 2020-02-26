@@ -5,8 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @Description: 作用描述
@@ -20,14 +19,32 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
+
+    @Column(name = "classification_id")
     private int classificationId;
+
+    @Column(name = "classification_name")
+    private String classificationName;
+
+    @Column(name = "buying_price")
     private double buyingPrice;
+
     private double price;
+
     private double percent;
-    private String sellTime;
+
     private int quantity;
+
+    @Column(name = "sell_start_time")
     private String sellStartTime;
+
+    @Column(name = "sell_end_time")
     private String sellEndTime;
+
     private int status;
 }
