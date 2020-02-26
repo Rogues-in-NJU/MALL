@@ -19,4 +19,6 @@ public interface OrderService {
     int finishRefund(int orderId);
 
     Page<OrderVO> getRefundingOrderList(Pageable pageable);
+
+    int generateOrder();
 }

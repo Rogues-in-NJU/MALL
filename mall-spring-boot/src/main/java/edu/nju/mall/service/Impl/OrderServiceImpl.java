@@ -1,5 +1,6 @@
 package edu.nju.mall.service.Impl;
 
+import cn.hutool.core.util.IdUtil;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
@@ -13,6 +14,7 @@ import edu.nju.mall.service.OrderService;
 import edu.nju.mall.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.commons.util.IdUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -59,10 +61,6 @@ public class OrderServiceImpl implements OrderService {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法申请退款!");
         }
         order.setStatus(OrderStatus.REFUNDING.getCode());
-        List<OrderProduct> orderProductList = orderProductRepository.findAllByOrderId(order.getId());
-        orderProductList.forEach(orderProduct -> {
-            //todo 修改商品库存
-        });
         return orderId;
     }
 
@@ -74,6 +72,10 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setStatus(OrderStatus.REFUNDED.getCode());
         orderRepository.save(order);
+        List<OrderProduct> orderProductList = orderProductRepository.findAllByOrderId(order.getId());
+        orderProductList.forEach(orderProduct -> {
+            //todo 修改商品库存
+        });
         return orderId;
     }
 
@@ -101,5 +103,14 @@ public class OrderServiceImpl implements OrderService {
             }
         });
         return new PageImpl<>(orderVOList);
+    }
+
+    @Override
+    public int generateOrder() {
+        // todo 接收OrderDTO待创建，包含order信息和orderproduct信息
+        Order order = Order.builder().id(IdUtil.createSnowflake(1,1).nextId()).build();
+
+        //todo 插入order表，order_product表，修改product库存
+        return 0;
     }
 }
