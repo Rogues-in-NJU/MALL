@@ -36,7 +36,7 @@ spring:
     allow-bean-definition-overriding: true
 #  resources:
 #    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
-#      classpath:/static/,classpath:/public/,file:${picture.info.address},file:${picture.product.address},
+#      classpath:/static/,classpath:/public/,classpath:/tempPicture/
 #  mvc:
 #    static-path-pattern: /**
 
