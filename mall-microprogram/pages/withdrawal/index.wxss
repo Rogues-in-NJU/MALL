@@ -4,6 +4,7 @@
   color: gray;
   padding: 24px;
 }
+
 .withdrawal {
   font-size: 24px;
   padding: 0 24px;
@@ -12,4 +13,12 @@
 .operation van-button {
   padding: 16px;
   float: right;
+}
+
+.green {
+  color: aquamarine!important;
+}
+
+.van-panel--status {
+  color: aquamarine;
 }

@@ -1,6 +1,6 @@
 <!--pages/withdrawal/index.wxml-->
 <view>
-  <van-tabs active="{{ tabActive }}">
+  <van-tabs active="{{ tabActive }}" sticky>
     <van-tab title="可提现金额">
       <view>
         <view class="withdrawal-header">
@@ -32,7 +32,13 @@
     </van-tab>
     <van-tab title="申请记录">
       <view>
-      
+        <van-cell 
+          title="提现金额: 1000.00" 
+          label="2020-02-02 12:00" 
+          size="large"
+          value-class="green"
+          value="待审核">
+        </van-cell>
       </view>
     </van-tab>
   </van-tabs>
