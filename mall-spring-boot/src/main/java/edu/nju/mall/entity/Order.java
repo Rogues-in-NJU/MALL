@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -14,12 +15,12 @@ import javax.persistence.*;
  */
 
 @Data
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "order_sheet")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Order extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,13 +28,20 @@ public class Order {
     /**
      * 购买人Id(微信号)
      */
+    @Column(name = "user_id")
     private String userId;
 
     /**
-     * 下单时间
+     * 微信交易号
      */
-    @Column(name = "order_time")
-    private String orderTime;
+    @Column(name = "transaction_number")
+    private String transactionNumber;
+
+    /**
+     * 支付时间
+     */
+    @Column(name = "pay_time")
+    private String payTime;
 
     /**
      * 退款时间
@@ -59,9 +67,9 @@ public class Order {
     private String consigneeAddress;
 
     /**
-     * 总金额
+     * 总金额(单位：分)
      */
-    private double price;
+    private int price;
 
     /**
      * 状态
