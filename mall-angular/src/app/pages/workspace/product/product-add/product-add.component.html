@@ -1,14 +1,17 @@
 <div class="clearfix">
   <nz-upload
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
+    [nzCustomRequest]="imageUpload"
+    nzAction="http://localhost:8080/upload-product-info"
     nzListType="picture-card"
-    [(nzFileList)]="fileList"
+    nzName="upload_file"
+    [nzFileList]="fileList"
     [nzShowUploadList]="showUploadList"
     [nzPreview]="handlePreview"
   >
     <i nz-icon nzType="plus"></i>
     <div class="ant-upload-text">Upload</div>
   </nz-upload>
+
   <nz-modal
     [nzVisible]="previewVisible"
     [nzContent]="modalContent"

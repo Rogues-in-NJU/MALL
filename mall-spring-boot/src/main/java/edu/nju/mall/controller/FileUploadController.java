@@ -2,18 +2,22 @@ package edu.nju.mall.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class FileUploadController {
 
     @Value("${picture.product.address}")
@@ -22,9 +26,14 @@ public class FileUploadController {
     @Value("${picture.info.address}")
     private String productInfoPictureAddress;
 
-    @RequestMapping("/upload")
+    @RequestMapping("/upload-product-info")
     public Map<String, String> upload(@RequestParam("upload_file")MultipartFile file) {
-        String path = productPictureAddress; // 文件保存路径
+        String path = null; // 文件保存路径
+        try {
+            path = ResourceUtils.getURL("classpath:").getPath() + "tempPicture/info/";
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(path);
         System.out.println("!!!!!!!!!!!!!!!!!!!!");
         /**
@@ -61,9 +70,10 @@ public class FileUploadController {
          * 返回值，这三个对象是ng-zorro那边需要的
          */
         Map<String, String> result = new HashMap<>();
-        result.put("url", String.format("http://localhost:8080/upload/%s", saveFileName));
+        result.put("url", saveFileName);
         result.put("uid", id);
         result.put("name", fileName);
+        result.put("path", path);
         System.out.println(fileName);
         return result;
     }

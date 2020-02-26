@@ -15,8 +15,3 @@ wechat:
       order-query: https://api.mch.weixin.qq.com/pay/orderquery
       close-order: https://api.mch.weixin.qq.com/pay/closeorder
 
-picture:
-  info:
-    address: D:\code\picture\productInfo
-  product:
-    address: D:\code\picture\product

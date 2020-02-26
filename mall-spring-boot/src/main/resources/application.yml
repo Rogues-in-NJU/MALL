@@ -34,11 +34,11 @@ spring:
       database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   main:
     allow-bean-definition-overriding: true
-  resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
-      classpath:/static/,classpath:/public/,file:${picture.info.address},file:${picture.product.address},
-  mvc:
-    static-path-pattern: /**
+#  resources:
+#    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
+#      classpath:/static/,classpath:/public/,file:${picture.info.address},file:${picture.product.address},
+#  mvc:
+#    static-path-pattern: /**
 
 jwt:
   expiration: 86400000

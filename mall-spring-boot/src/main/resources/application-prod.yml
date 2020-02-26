@@ -6,9 +6,3 @@ logging:
   file: logs/mall.prod.log
   level:
     root: info
-
-picture:
-  info:
-    address: ~/picture/productInfo
-  product:
-    address: ~/picture/product
