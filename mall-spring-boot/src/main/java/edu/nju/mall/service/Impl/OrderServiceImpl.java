@@ -1,5 +1,6 @@
 package edu.nju.mall.service.Impl;
 
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
@@ -37,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderProductRepository orderProductRepository;
+
+    Snowflake snowflake = IdUtil.getSnowflake(1,1);
 
     private Set<Integer> refundSet = new HashSet<Integer>() {
         {
@@ -108,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int generateOrder() {
         // todo 接收OrderDTO待创建，包含order信息和orderproduct信息
-        Order order = Order.builder().id(IdUtil.createSnowflake(1,1).nextId()).build();
+        Order order = Order.builder().id(snowflake.nextId()).build();
 
         //todo 插入order表，order_product表，修改product库存
         return 0;
