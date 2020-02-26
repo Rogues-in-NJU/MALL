@@ -64,7 +64,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit {
     formData.append('image', item.file as any);
     return this.http.post(url, formData, {
       reportProgress: true,
-      withCredentials: true
+      withCredentials: false
     })
       .subscribe(
           // tslint:disable-next-line no-any
