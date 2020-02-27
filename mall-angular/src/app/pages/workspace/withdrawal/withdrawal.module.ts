@@ -6,6 +6,7 @@ import {AuthorizationGuard} from "../../../guards/authorization.guard";
 import {ReactiveFormsModule} from "@angular/forms";
 import {WithdrawalRecordComponent} from "./withdrawal-record/withdrawal-record.component";
 import {WithdrawalConditionComponent} from "./withdrawal-condition/withdrawal-condition.component";
+import {WithdrawalHistoryComponent} from "./withdrawal-history/withdrawal-history.component";
 
 const routes: Routes = [
   // { path: '', pathMatch: 'full', redirectTo: 'list' },
@@ -13,6 +14,16 @@ const routes: Routes = [
     path: 'todoRecord',
     pathMatch: 'full',
     component: WithdrawalRecordComponent,
+    canActivate: [AuthorizationGuard],
+    data: {
+      title: '提现列表',
+      removable: true
+    }
+  },
+  {
+    path: 'doneRecord',
+    pathMatch: 'full',
+    component: WithdrawalHistoryComponent,
     canActivate: [AuthorizationGuard],
     data: {
       title: '提现列表',
@@ -33,7 +44,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [CoreModule, SharedModule, RouterModule.forChild(routes), ReactiveFormsModule],
-  declarations: [WithdrawalRecordComponent, WithdrawalConditionComponent],
+  declarations: [WithdrawalRecordComponent, WithdrawalHistoryComponent, WithdrawalConditionComponent],
   exports: [RouterModule]
 })
 export class WithdrawalModule {

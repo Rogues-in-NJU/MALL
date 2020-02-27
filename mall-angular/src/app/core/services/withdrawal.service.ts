@@ -46,7 +46,7 @@ export class WithdrawalService {
 
   public saveCondition(queryParams: WithdrawalCondition): Observable<ResultVO<any>> {
     return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/withdrawal/saveCondition`, queryParams, {
-      withCredentials: true
+      withCredentials: false
     });
   }
 

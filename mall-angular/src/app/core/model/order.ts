@@ -4,7 +4,9 @@ export interface Order extends BaseInfo {
 
   id?: number;
   userId?: string;
-  orderTime?: string;
+  transactionNumber?: string;
+  createdAt?: string;
+  payTime?: string;
   refundTime?: string;
   consignee?: string;
   consigneePhone?: string;
