@@ -2,6 +2,7 @@ package edu.nju.mall.controller.wechat;
 
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
+import edu.nju.mall.common.aop.RoleControl;
 import edu.nju.mall.dto.UserInfoDTO;
 import edu.nju.mall.service.UserInfoService;
 import edu.nju.mall.util.HttpSecurity;
@@ -22,6 +23,7 @@ public class WechatUserInfoController {
     private HttpSecurity security;
 
     @InvokeControl
+    @RoleControl({"user", "admin"})
     @GetMapping("/userInfo")
     public ResultVO<UserInfoDTO> getUserInfo() {
         String openId = security.getUserOpenId();

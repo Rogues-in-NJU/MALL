@@ -16,9 +16,13 @@
 }
 
 .green {
-  color: aquamarine!important;
+  color: #87d068!important;
 }
 
-.van-panel--status {
-  color: aquamarine;
+.red {
+  color: #f50!important;
+}
+
+.gray {
+  color: darkgrey!important;
 }

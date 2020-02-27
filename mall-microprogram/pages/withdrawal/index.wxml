@@ -36,7 +36,7 @@
           title="提现金额: 1000.00" 
           label="2020-02-02 12:00" 
           size="large"
-          value-class="green"
+          value-class="gray"
           value="待审核">
         </van-cell>
       </view>

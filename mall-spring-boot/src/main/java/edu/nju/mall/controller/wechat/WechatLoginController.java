@@ -2,6 +2,7 @@ package edu.nju.mall.controller.wechat;
 
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.RoleEnum;
 import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.common.aop.RoleControl;
 import edu.nju.mall.service.WechatLoginService;
