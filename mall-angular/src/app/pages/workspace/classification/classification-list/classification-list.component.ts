@@ -4,7 +4,7 @@ import {ClassificationService} from "../../../../core/services/classification.se
 import {NzMessageService} from "ng-zorro-antd";
 import {Objects} from "../../../../core/services/util.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ClassificationVO} from "../../../../core/model/classification";
+import {Classification} from "../../../../core/model/classification";
 import {ResultCode, ResultVO} from "../../../../core/model/result-vm";
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -16,7 +16,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class ClassificationListComponent implements RefreshableTab, OnInit {
   classificationEditVisible: boolean = false;
   classificationEditForm: FormGroup;
-  classificationList: ClassificationVO[] = [];
+  classificationList: Classification[] = [];
 
   constructor(
     private classificationService: ClassificationService,
@@ -46,7 +46,7 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
 
   loadData():void{
     this.classificationService.findAll()
-      .subscribe((res: ResultVO<Array<ClassificationVO>>) => {
+      .subscribe((res: ResultVO<Array<Classification>>) => {
         if (!Objects.valid(res)) {
           this.message.error("请求失败！");
           return;
@@ -70,7 +70,7 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   }
 
   confirmEdit(): void {
-    const classificationEditData: ClassificationVO = this.classificationEditForm.getRawValue();
+    const classificationEditData: Classification = this.classificationEditForm.getRawValue();
     this.classificationService.save(classificationEditData)
       .subscribe((res: ResultVO<any>) => {
         if (!Objects.valid(res)) {

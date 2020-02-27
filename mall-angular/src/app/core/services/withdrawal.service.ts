@@ -4,7 +4,6 @@ import { ResultVO, TableQueryParams, TableResultVO } from "../model/result-vm";
 import { Observable } from "rxjs";
 import { WithdrawalRecord } from "../model/withdrawalRecord";
 import { AppConfig } from "../../../environments/environment";
-import {ClassificationVO} from "../model/classification";
 import {WithdrawalCondition} from "../model/withdrawalCondition";
 
 @Injectable({
@@ -19,14 +18,14 @@ export class WithdrawalService {
   }
 
   public findTodoRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
-    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withdrawal/todoRecordList`, {
+    return this.http.get<ResultVO<TableResultVO<WithdrawalRecord>>>(`${AppConfig.BASE_URL}/api/withdrawal/todoRecordList`, {
       params: queryParams,
       withCredentials: true
     });
   };
 
   public findDoneRecordList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<WithdrawalRecord>>> {
-    return this.http.get<ResultVO<TableResultVO<ClassificationVO>>>(`${AppConfig.BASE_URL}/api/withdrawal/doneRecordList`, {
+    return this.http.get<ResultVO<TableResultVO<WithdrawalRecord>>>(`${AppConfig.BASE_URL}/api/withdrawal/doneRecordList`, {
       params: queryParams,
       withCredentials: true
     });
