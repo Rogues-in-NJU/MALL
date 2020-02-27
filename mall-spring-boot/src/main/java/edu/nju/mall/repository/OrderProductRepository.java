@@ -12,7 +12,7 @@ import java.util.List;
  * @Author: qianen.yin
  * @CreateDate: 2020-02-03 14:06
  */
-public interface OrderProductRepository extends JpaRepository<OrderProduct, Integer>, JpaSpecificationExecutor<OrderProduct> {
+public interface OrderProductRepository extends JpaRepository<OrderProduct, Long>, JpaSpecificationExecutor<OrderProduct> {
 
     List<OrderProduct> findAllByOrderId(Long orderId);
 }

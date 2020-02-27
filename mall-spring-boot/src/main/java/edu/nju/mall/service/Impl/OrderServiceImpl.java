@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderProductRepository orderProductRepository;
 
-    Snowflake snowflake = IdUtil.getSnowflake(1,1);
+    Snowflake snowflake = IdUtil.getSnowflake(1, 1);
 
     private Set<Integer> refundSet = new HashSet<Integer>() {
         {
@@ -50,12 +50,13 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 用户申请退款接口
+     *
      * @param orderId
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int refund(int orderId) {
+    public long refund(long orderId) {
         Order order = orderRepository.getOne(orderId);
 //        if (order == null) {
 //            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "没有找到该订单!");
@@ -68,9 +69,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int finishRefund(int orderId) {
+    public long finishRefund(long orderId) {
         Order order = orderRepository.getOne(orderId);
-        if(order.getStatus() != OrderStatus.REFUNDING.getCode()){
+        if (order.getStatus() != OrderStatus.REFUNDING.getCode()) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法退款!");
         }
         order.setStatus(OrderStatus.REFUNDED.getCode());
@@ -92,20 +93,47 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
         Page<Order> orderPage = orderRepository.findAll(sp, pageable);
-        List<Order> orderList = orderPage.getContent();
+        return new PageImpl<>(transfer(orderPage.getContent()));
+    }
+
+    @Override
+    public Page<OrderVO> getOrderList(Pageable pageable, String userId, Integer status, String startTime, String endTime) {
+        QueryContainer<Order> sp = new QueryContainer<>();
+        try {
+            if(userId != null){
+                sp.add(ConditionFactory.equal("userId", userId));
+            }
+            if(status != null){
+                sp.add(ConditionFactory.equal("status", status));
+            }
+            if(startTime != null){
+                sp.add(ConditionFactory.greatThanEqualTo("createdAt", startTime));
+            }
+            if(endTime != null){
+                sp.add(ConditionFactory.lessThanEqualTo("createdAt", endTime));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Page<Order> orderPage = orderRepository.findAll(sp, pageable);
+        return new PageImpl<>(transfer(orderPage.getContent()));
+    }
+
+    private List<OrderVO> transfer(List<Order> orderList) {
         List<OrderVO> orderVOList = new ArrayList<>();
         orderList.forEach(o -> {
             try {
                 OrderVO orderVO = OrderVO.builder()
                         .status(OrderStatus.of(o.getStatus()).getMessage())
                         .build();
-                BeanUtils.copyProperties(o,orderVO);
+                BeanUtils.copyProperties(o, orderVO);
                 orderVOList.add(orderVO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        return new PageImpl<>(orderVOList);
+        return orderVOList;
     }
 
     @Override
