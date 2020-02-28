@@ -39,4 +39,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize) {
         return null;
     }
+
+    @Override
+    public List<ProductVO> searchByProductName(String productName) {
+        return null;
+    }
 }

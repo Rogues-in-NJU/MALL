@@ -14,4 +14,6 @@ public interface ProductService {
 
     Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize);
 
+    List<ProductVO> searchByProductName(String productName);
+
 }
