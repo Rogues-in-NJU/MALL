@@ -8,6 +8,7 @@ import edu.nju.mall.service.ProductInfoImageService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductVO getProductById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize) {
         return null;
     }
 }
