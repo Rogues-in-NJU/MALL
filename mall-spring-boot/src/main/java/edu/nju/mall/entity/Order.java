@@ -29,6 +29,12 @@ public class Order extends BaseEntity{
     private String userId;
 
     /**
+     * 订单流水号
+     */
+    @Column(name = "order_code")
+    private Long orderCode;
+
+    /**
      * 微信交易号
      */
     @Column(name = "transaction_number")

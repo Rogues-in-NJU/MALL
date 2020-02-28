@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int generateOrder() {
         // todo 接收OrderDTO待创建，order信息
-        Order order = Order.builder().id(snowflake.nextId()).build();
+        Order order = Order.builder().orderCode(snowflake.nextId()).build();
 
         //todo 插入order表，修改product库存
         return 0;
