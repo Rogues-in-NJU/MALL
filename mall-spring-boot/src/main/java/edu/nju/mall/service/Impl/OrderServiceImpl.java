@@ -138,6 +138,12 @@ public class OrderServiceImpl implements OrderService {
                 OrderVO orderVO = OrderVO.builder()
                         .status(OrderStatus.of(o.getStatus()).getMessage())
                         .build();
+                ProductVO productVO = productService.getProductById(o.getProductId());
+                List<String> productImg = productVO.getImageAddresses();
+                if (!CollectionUtils.isEmpty(productImg)) {
+                    orderVO.setProductImage(productImg.get(0));
+                }
+                orderVO.setProductName(productVO.getName());
                 BeanUtils.copyProperties(o, orderVO);
                 orderVOList.add(orderVO);
             } catch (Exception e) {
@@ -152,11 +158,6 @@ public class OrderServiceImpl implements OrderService {
         // todo 接收OrderDTO待创建，order信息
 
         Order order = Order.builder().orderCode(snowflake.nextId()).build();
-        ProductVO productVO = productService.getProductById(order.getProductId());
-        List<String> productImg = productVO.getImageAddresses();
-        if (!CollectionUtils.isEmpty(productImg)) {
-            order.setProductImage(productImg.get(0));
-        }
         //todo 插入order表，修改product库存
         return 0;
     }

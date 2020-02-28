@@ -32,6 +32,8 @@ public class OrderVO {
 
     private String productName;
 
+    private String productImage;
+
     private int num;
 
     private String consignee;
