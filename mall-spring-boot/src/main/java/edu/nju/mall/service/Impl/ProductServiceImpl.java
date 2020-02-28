@@ -1,5 +1,6 @@
 package edu.nju.mall.service.Impl;
 
+import edu.nju.mall.entity.Product;
 import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.entity.ProductInfoImage;
 import edu.nju.mall.repository.ProductRepository;
@@ -32,5 +33,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductVO getProductById(Long id) {
         return null;
+    }
+
+    @Override
+    public Integer saveProduct(Product product) {
+        return productRepository.save(product).getId();
     }
 }

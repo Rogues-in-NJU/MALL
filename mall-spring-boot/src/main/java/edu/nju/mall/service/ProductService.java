@@ -12,4 +12,6 @@ public interface ProductService {
 
     ProductVO getProductById(Long id);
 
+    Integer saveProduct(Product product);
+
 }
