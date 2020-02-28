@@ -34,7 +34,7 @@ public class OrderVO {
 
     private String consigneeAddress;
 
-    private double price;
+    private Integer price;
 
     private String status;
 }

@@ -20,7 +20,9 @@ public interface OrderService {
 
     Page<OrderVO> getRefundingOrderList(Pageable pageable);
 
-    Page<OrderVO> getOrderList(Pageable pageable, String userId, Integer status, String startTime, String endTime);
+    Page<OrderVO> getOrderList(Pageable pageable, Long userId, Integer status, String startTime, String endTime);
+
+    Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, String openId);
 
     int generateOrder();
 }

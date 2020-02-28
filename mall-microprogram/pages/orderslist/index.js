@@ -7,7 +7,8 @@ Page({
   data: {
     searchValue: '',
     tabActive: 0,
-    orders: [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
+    orders: [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }],
+    canRefresh: true
   },
   // [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
   /**
@@ -32,7 +33,13 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log('search more');
+    console.log(this.data);
+    if (this.data.canRefresh) {
+      this.setData({
+        canRefresh: false
+      });
+      console.log('search more');
+    }
   },
 
   onTabChange: function(event) {
