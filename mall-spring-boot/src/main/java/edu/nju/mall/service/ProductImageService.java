@@ -7,5 +7,5 @@ import java.util.List;
 public interface ProductImageService {
     List<ProductImage> getProductImagesByProductId(Long productId);
 
-    Integer saveProductImage(ProductImage productImage);
+    Long saveProductImage(ProductImage productImage);
 }

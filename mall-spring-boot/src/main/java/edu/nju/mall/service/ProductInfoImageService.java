@@ -8,5 +8,5 @@ public interface ProductInfoImageService {
 
     List<ProductInfoImage> getProductInfoImagesByProductId(Long productId);
 
-    Integer saveProductInfoImage(ProductInfoImage productInfoImage);
+    Long saveProductInfoImage(ProductInfoImage productInfoImage);
 }

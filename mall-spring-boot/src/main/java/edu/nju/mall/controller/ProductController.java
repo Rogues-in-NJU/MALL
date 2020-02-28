@@ -19,8 +19,8 @@ public class ProductController {
 
     @PostMapping(value = "save")
     public ResultVO<Integer> saveProduct(@RequestBody Product product) {
-        Integer id = productService.saveProduct(product);
-        return ResultVO.ok(id);
+        Long id = productService.saveProduct(product);
+        return ResultVO.ok(id.intValue());
     }
 
 }

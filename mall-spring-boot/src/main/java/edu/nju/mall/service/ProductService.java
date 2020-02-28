@@ -13,7 +13,7 @@ public interface ProductService {
 
     ProductVO getProductById(Long id);
 
-    Integer saveProduct(Product product);
+    Long saveProduct(Product product);
 
     Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize);
 
