@@ -1,3 +1,147 @@
+<div class="content">
+  <form nz-form nzLayout='vertical'  (ngSubmit)="submitForm()">
+
+    <nz-form-item>
+      <nz-form-label nzRequired>产品名称</nz-form-label>
+      <nz-form-control >
+        <input nz-input [(ngModel)]="name" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label  nzRequired>分类</nz-form-label>
+      <nz-form-control >
+        <nz-select [(ngModel)]="classificationId">
+          <nz-option nzLabel="类型1" [nzValue]="1"></nz-option>
+          <nz-option nzLabel="类型2" [nzValue]="2"></nz-option>
+          <nz-option nzLabel="类型3" [nzValue]="3"></nz-option>
+          <nz-option nzLabel="类型4" [nzValue]="4"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>进货价/元</nz-form-label>
+      <nz-form-control >
+        <nz-input-group nzSuffix="元">
+          <nz-input-number nzMin="0" nzStep="0.01"
+                           [(ngModel)]="buyingPrice"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>售价/元</nz-form-label>
+      <nz-form-control >
+        <nz-input-group nzSuffix="元">
+          <nz-input-number nzMin="0" nzStep="0.01"
+                         [(ngModel)]="price"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>抽成比例</nz-form-label>
+      <nz-form-control >
+        <nz-input-group nzSuffix="%">
+          <nz-input-number nzMin="0" nzStep="0.01"
+                           [(ngModel)]="percent"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>库存数量</nz-form-label>
+      <nz-form-control >
+        <nz-input-number nzMin="0" nzStep="1"
+                         [(ngModel)]="quantity"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>开售时间</nz-form-label>
+      <nz-form-control>
+        <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                         nzFormat="yyyy-MM-dd HH:mm"
+                         [nzPlaceHolder]="['开始时间', '结束时间']"
+                         [(ngModel)]="sellStartTime">
+
+        </nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>结束时间</nz-form-label>
+      <nz-form-control>
+        <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                         nzFormat="yyyy-MM-dd HH:mm"
+                         [nzPlaceHolder]="['开始时间', '结束时间']"
+                         [(ngModel)]="sellEndTime">
+
+        </nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Phone Number</nz-form-label>
+      <nz-form-control
+        [nzSm]="14"
+        [nzXs]="24"
+        [nzValidateStatus]="validateForm.controls['phoneNumber']"
+        nzErrorTip="Please input your phone number!"
+      >
+        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+          <ng-template #addOnBeforeTemplate>
+            <nz-select formControlName="phoneNumberPrefix" class="phone-select">
+              <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+              <nz-option nzLabel="+87" nzValue="+87"></nz-option>
+            </nz-select>
+          </ng-template>
+          <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="website" nzRequired>Website</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input website!">
+        <input nz-input id="website" formControlName="website" placeholder="website" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>Captcha</nz-form-label>
+      <nz-form-control
+        [nzSm]="14"
+        [nzXs]="24"
+        nzErrorTip="Please input the captcha you got!"
+        nzExtra="We must make sure that your are a human."
+      >
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="12">
+            <input nz-input formControlName="captcha" id="captcha" />
+          </div>
+          <div nz-col [nzSpan]="12">
+            <button nz-button (click)="getCaptcha($event)">Get captcha</button>
+          </div>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <label nz-checkbox formControlName="agree">
+          <span>I have read the <a>agreement</a></span>
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary">Register</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+</div>
+
 <div class="clearfix">
   <nz-upload
     [nzCustomRequest]="imageUpload"
