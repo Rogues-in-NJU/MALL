@@ -50,7 +50,7 @@ App({
                 wx.clearStorageSync('UserToken');
                 http.post('/wechat/api/login', data)
                   .then(res => {
-                    if (!res) {
+                    if (res === undefined || res === null) {
                       wx.showToast({
                         title: '网络连接失败!',
                         icon: 'none',
@@ -58,7 +58,7 @@ App({
                       });
                       return;
                     }
-                    if (!res.code || res.code !== 10000) {
+                    if (res.code !== 10000) {
                       wx.showToast({
                         title: res.message,
                         icon: 'none',

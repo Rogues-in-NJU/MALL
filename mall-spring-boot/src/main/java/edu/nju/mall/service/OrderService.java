@@ -22,7 +22,9 @@ public interface OrderService {
 
     Page<OrderVO> getOrderList(Pageable pageable, Long userId, Integer status, String startTime, String endTime);
 
-    Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, String openId);
+    Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, Integer status, Long userId);
+
+    List<OrderVO> searchByProductName(String productName, Integer status, Long userId);
 
     int generateOrder();
 }
