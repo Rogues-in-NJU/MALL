@@ -7,15 +7,12 @@ import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
 import edu.nju.mall.entity.Order;
-import edu.nju.mall.entity.OrderProduct;
 import edu.nju.mall.enums.OrderStatus;
-import edu.nju.mall.repository.OrderProductRepository;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.commons.util.IdUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +33,6 @@ import java.util.Set;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private OrderProductRepository orderProductRepository;
 
     Snowflake snowflake = IdUtil.getSnowflake(1, 1);
 
@@ -76,10 +71,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setStatus(OrderStatus.REFUNDED.getCode());
         orderRepository.save(order);
-        List<OrderProduct> orderProductList = orderProductRepository.findAllByOrderId(order.getId());
-        orderProductList.forEach(orderProduct -> {
-            //todo 修改商品库存
-        });
+
         return orderId;
     }
 
@@ -138,10 +130,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int generateOrder() {
-        // todo 接收OrderDTO待创建，包含order信息和orderproduct信息
+        // todo 接收OrderDTO待创建，order信息
         Order order = Order.builder().id(snowflake.nextId()).build();
 
-        //todo 插入order表，order_product表，修改product库存
+        //todo 插入order表，修改product库存
         return 0;
     }
 }

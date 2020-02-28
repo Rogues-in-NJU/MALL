@@ -28,6 +28,12 @@ public class OrderVO {
 
     private String refundTime;
 
+    private Long productId;
+
+    private String productName;
+
+    private int num;
+
     private String consignee;
 
     private String consigneePhone;

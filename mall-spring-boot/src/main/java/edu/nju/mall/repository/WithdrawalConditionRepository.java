@@ -1,7 +1,5 @@
 package edu.nju.mall.repository;
 
-import edu.nju.mall.entity.Order;
-import edu.nju.mall.entity.OrderProduct;
 import edu.nju.mall.entity.WithdrawalCondition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

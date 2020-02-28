@@ -8,6 +8,9 @@ export interface Order extends BaseInfo {
   createdAt?: string;
   payTime?: string;
   refundTime?: string;
+  productId?: number;
+  productName?: string;
+  num?: number;
   consignee?: string;
   consigneePhone?: string;
   consigneeAddress?: string;

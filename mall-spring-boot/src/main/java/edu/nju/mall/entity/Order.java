@@ -50,6 +50,23 @@ public class Order extends BaseEntity{
     private String refundTime;
 
     /**
+     * 商品ID
+     */
+    @Column(name = "product_id")
+    private Long productId;
+
+    /**
+     * 商品名称
+     */
+    @Column(name = "product_name")
+    private String productName;
+
+    /**
+     * 商品数量
+     */
+    private int num;
+
+    /**
      * 收货人(姓名)
      */
     private String consignee;
