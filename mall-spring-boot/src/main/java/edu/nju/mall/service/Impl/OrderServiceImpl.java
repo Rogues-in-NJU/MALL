@@ -2,13 +2,13 @@ package edu.nju.mall.service.Impl;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.google.common.base.Preconditions;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Order;
-import edu.nju.mall.entity.Product;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
@@ -41,8 +41,6 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private UserService userService;
     @Autowired
     private ProductService productService;
 
@@ -89,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setStatus(OrderStatus.REFUNDED.getCode());
         orderRepository.save(order);
-
         return orderId;
     }
 
@@ -124,17 +121,34 @@ public class OrderServiceImpl implements OrderService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         Page<Order> orderPage = orderRepository.findAll(sp, pageable);
         return new PageImpl<>(transfer(orderPage.getContent()));
     }
 
     @Override
-    public Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, String openId) {
+    public Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, Integer status, Long userId) {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
-        UserDTO userDTO = userService.findUser(openId);
-        return this.getOrderList(pageable, userDTO.getId(), null, null, null);
+        return this.getOrderList(pageable, userId, status, null, null);
+    }
+
+    @Override
+    public List<OrderVO> searchByProductName(String productName, Integer status, Long userId) {
+        Preconditions.checkNotNull(productName);
+
+        QueryContainer<Order> sp = new QueryContainer<>();
+        try {
+            sp.add(ConditionFactory.equal("userId", userId));
+            if (status != null) {
+                sp.add(ConditionFactory.equal("status", status));
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        List<Order> orders = orderRepository.findAll(sp);
+        List<OrderVO> orderVOS = transfer(orders);
+        return orderVOS.stream().filter(o -> o.getProductName() != null && o.getProductName().contains(productName)).collect(Collectors.toList());
     }
 
     private List<OrderVO> transfer(List<Order> orderList) {
@@ -142,18 +156,19 @@ public class OrderServiceImpl implements OrderService {
         orderList.forEach(o -> {
             try {
                 OrderVO orderVO = OrderVO.builder()
-                        .status(OrderStatus.of(o.getStatus()).getMessage())
                         .build();
                 ProductVO productVO = productService.getProductById(o.getProductId());
-                List<String> productImg = productVO.getImageAddresses();
-                if (!CollectionUtils.isEmpty(productImg)) {
-                    orderVO.setProductImage(productImg.get(0));
+                if (productVO != null) {
+                    List<String> productImg = productVO.getImageAddresses();
+                    if (!CollectionUtils.isEmpty(productImg)) {
+                        orderVO.setProductImage(productImg.get(0));
+                    }
+                    orderVO.setProductName(productVO.getName());
                 }
-                orderVO.setProductName(productVO.getName());
                 BeanUtils.copyProperties(o, orderVO);
                 orderVOList.add(orderVO);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         });
         return orderVOList;

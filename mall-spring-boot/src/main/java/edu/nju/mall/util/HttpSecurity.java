@@ -1,5 +1,6 @@
 package edu.nju.mall.util;
 
+import edu.nju.mall.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,8 @@ public class HttpSecurity {
 
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private UserService userService;
 
     public HttpServletRequest getHttpServletRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
@@ -31,6 +34,15 @@ public class HttpSecurity {
             return null;
         }
         return jwtUtils.getInfo(token);
+    }
+
+    public Long getUserId() {
+        String openId = this.getUserOpenId();
+        if (Objects.nonNull(openId)) {
+            return userService.findUser(openId).getId();
+        } else {
+            return null;
+        }
     }
 
 }

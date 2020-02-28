@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProductInfoImageService {
 
     List<ProductInfoImage> getProductInfoImagesByProductId(Long productId);
+
+    Long saveProductInfoImage(ProductInfoImage productInfoImage);
 }

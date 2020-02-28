@@ -1,4 +1,6 @@
 // pages/orderslist.js
+import http from '../../request';
+
 Page({
 
   /**
@@ -7,8 +9,10 @@ Page({
   data: {
     searchValue: '',
     tabActive: 0,
-    orders: [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }],
-    canRefresh: true
+    orders: [],
+    canRefresh: true,
+    pageIndex: 0,
+    pageSize: 10
   },
   // [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
   /**
@@ -20,25 +24,30 @@ Page({
         tabActive: parseInt(options.i)
       });
     }
+    this.loadOrders();
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log('refresh');
+    // console.log('refresh');
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log(this.data);
-    if (this.data.canRefresh) {
-      this.setData({
-        canRefresh: false
-      });
-      console.log('search more');
+    console.log('reach bottom');
+    if (this.data.searchValue) {
+
+    } else {
+      if (this.data.canRefresh) {
+        this.setData({
+          canRefresh: false
+        });
+        this.loadOrders();
+      }
     }
   },
 
@@ -46,6 +55,17 @@ Page({
     this.setData({
       tabActive: event.detail.index
     });
+    if (this.data.searchValue) {
+      this.searchOrders();
+    } else {
+      this.setData({
+        pageIndex: 0,
+        pageSize: 10,
+        canRefresh: true,
+        orders: []
+      });
+      this.loadOrders();
+    }
   },
   onSearchInputChange: function(e) {
     this.setData({
@@ -53,16 +73,121 @@ Page({
     });
   },
   onSearch: function() {
-    console.log(this.data.searchValue);
+    this.setData({
+      orders: []
+    });
+    this.searchOrders();
   },
   onSearchCancel: function() {
     this.setData({
-      searchValue: ''
+      searchValue: '',
+      pageIndex: 0,
+      pageSize: 10,
+      canRefresh: true
     });
+    this.orders = [];
+    this.loadOrders();
+  },
+
+  loadOrders: function() {
+    var url = '/wechat/api/order/list?pageIndex=' 
+      + (this.data.pageIndex + 1) + '&pageSize=' + this.data.pageSize;
+    if (this.data.tabActive !== 0) {
+      url += '&status=' + (this.data.tabActive - 1)
+    }
+    http.get(url)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        let listData = res.data;
+        let orderShowList = listData.result.map(o => {
+          let ov = {
+            id: o.id,
+            num: o.num,
+            price: (o.price / 100.0).toFixed(2),
+            status: o.status,
+            statusName: getStatus(o.status),
+            productImage: o.productImage,
+            productName: o.productName,
+          }
+          return ov;
+        });
+        console.log(orderShowList);
+        this.setData({
+          pageIndex: listData.pageIndex,
+          pageSize: listData.pageSize, 
+          orders: [
+            ...this.data.orders,
+            ...orderShowList
+          ],
+          canRefresh: true
+        });
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+        this.setData({
+          canRefresh: true
+        });
+      });
   },
 
   searchOrders: function() {
-
+    var url = '/wechat/api/order/search?productName='
+      + this.data.searchValue;
+    if (this.data.tabActive !== 0) {
+      url += '&status=' + (this.data.tabActive - 1)
+    }
+    http.get(url)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          return;
+        }
+        console.log(res);
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+      });
   },
 
   onOrderItemButtonClick: function(event) {
@@ -93,3 +218,19 @@ Page({
     }
   }
 })
+
+function getStatus(i) {
+  if (i === 0) {
+    return '待付款';
+  } else if (i === 1) {
+    return '待完成';
+  } else if (i === 2) {
+    return '已完成';
+  } else if (i === 3) {
+    return '退款中';
+  } else if (i === 4) {
+    return '退款成功';
+  } else {
+    return '已废弃';
+  }
+}
