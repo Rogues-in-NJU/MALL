@@ -8,6 +8,7 @@ import edu.nju.mall.enums.WithDrawlRecordStatus;
 import edu.nju.mall.repository.WithdrawalConditionRepository;
 import edu.nju.mall.repository.WithdrawalRecordRepository;
 import edu.nju.mall.service.WithDrawlService;
+import edu.nju.mall.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,8 @@ public class WithDrawlServiceImpl implements WithDrawlService {
     @Override
     public Integer saveRecord(WithdrawalRecord withdrawalRecord) {
         if (withdrawalRecord.getId() == null) {
+            withdrawalRecord.setStatus(WithDrawlRecordStatus.TODO.getCode());
+            withdrawalRecord.setWithdrawalTime(DateUtils.getTime());
             return withdrawalRecordRepository.saveAndFlush(withdrawalRecord).getId();
         } else {
             return withdrawalRecordRepository.save(withdrawalRecord).getId();

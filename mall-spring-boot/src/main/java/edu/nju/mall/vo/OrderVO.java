@@ -16,13 +16,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderVO {
 
-    private Integer id;
+    private Long id;
 
-    private String userId;
+    private Long userId;
 
-    private String orderTime;
+    private String transactionNumber;
+
+    private String createdAt;
+
+    private String payTime;
 
     private String refundTime;
+
+    private Long productId;
+
+    private String productName;
+
+    private String productImage;
+
+    private int num;
 
     private String consignee;
 
@@ -30,7 +42,7 @@ public class OrderVO {
 
     private String consigneeAddress;
 
-    private double price;
+    private Integer price;
 
-    private String status;
+    private Integer status;
 }

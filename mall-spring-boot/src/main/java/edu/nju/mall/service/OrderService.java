@@ -14,11 +14,17 @@ import java.util.List;
  * @CreateDate: 2020-02-03 19:27
  */
 public interface OrderService {
-    int refund(int orderId);
+    long refund(long orderId);
 
-    int finishRefund(int orderId);
+    long finishRefund(long orderId);
 
     Page<OrderVO> getRefundingOrderList(Pageable pageable);
+
+    Page<OrderVO> getOrderList(Pageable pageable, Long userId, Integer status, String startTime, String endTime);
+
+    Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, Integer status, Long userId);
+
+    List<OrderVO> searchByProductName(String productName, Integer status, Long userId);
 
     int generateOrder();
 }

@@ -1,6 +1,6 @@
 import {BaseInfo} from "./base-info";
 
-export interface ClassificationVO extends BaseInfo {
+export interface Classification extends BaseInfo {
 
   id?: number;
   name?: string;

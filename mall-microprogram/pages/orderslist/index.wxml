@@ -11,28 +11,29 @@
       <van-tab title="待付款"></van-tab>
       <van-tab title="待完成"></van-tab>
       <van-tab title="已完成"></van-tab>
-      <van-tab title="退款/售后"></van-tab>
+      <van-tab title="退款中"></van-tab>
+      <van-tab title="退款成功"></van-tab>
     </van-tabs>
   </view>
   <view class="order-list">
-    <view wx:if="{{ !orders }}" class="order-empty">
+    <view wx:if="{{ !orders || orders.length === 0 }}" class="order-empty">
       您没有相关订单!
     </view>
     <view class="order-item" wx:for="{{ orders }}">
       <van-card
-        num="2"
+        num="{{ item.num }}"
+        tag="{{ item.statusName }}"
         price="10.00"
-        desc="{{ item.name }}"
-        title="商品标题"
-        thumb="https://img.yzcdn.cn/vant/ipad.jpeg" 
-        data-id="{{ item.name }}"
+        title="{{ item.productName }}"
+        thumb="{{ item.productImage }}" 
+        data-id="{{ item.id }}"
         bindtap="goToOrderDetail">
         <view slot="footer">
           <van-button 
             round 
             size="mini" 
             class="footer-item" 
-            data-orderId="1"
+            data-orderId="{{ item.id }}"
             catchtap="onOrderItemButtonClick">按钮</van-button>
         </view>
       </van-card>

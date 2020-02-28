@@ -21,15 +21,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     /**
      * 购买人Id(微信号)
      */
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
+
+    /**
+     * 订单流水号
+     */
+    @Column(name = "order_code", unique = true)
+    private Long orderCode;
 
     /**
      * 微信交易号
@@ -48,6 +51,17 @@ public class Order extends BaseEntity{
      */
     @Column(name = "refund_time")
     private String refundTime;
+
+    /**
+     * 商品ID
+     */
+    @Column(name = "product_id")
+    private Long productId;
+
+    /**
+     * 商品数量
+     */
+    private int num;
 
     /**
      * 收货人(姓名)
