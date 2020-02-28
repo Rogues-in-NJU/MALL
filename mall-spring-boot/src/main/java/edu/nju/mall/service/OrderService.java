@@ -1,6 +1,7 @@
 package edu.nju.mall.service;
 
 import edu.nju.mall.repository.OrderRepository;
+import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,6 @@ public interface OrderService {
     Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, String openId);
 
     int generateOrder();
+
+    OrderSummaryVO getSummaryInfo();
 }

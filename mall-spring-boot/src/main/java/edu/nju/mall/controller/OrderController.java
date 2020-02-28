@@ -4,6 +4,7 @@ import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.util.ListResponseUtils;
+import edu.nju.mall.vo.OrderSummaryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,11 @@ public class OrderController {
     @GetMapping(value = "finishRefund/{id}")
     public ResultVO<Long> finishRefund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.finishRefund(id));
+    }
+
+    @GetMapping(value = "summaryInfo")
+    public ResultVO<OrderSummaryVO> summaryInfo() {
+        return ResultVO.ok(orderService.getSummaryInfo());
     }
 
     @GetMapping(value = "orderList")

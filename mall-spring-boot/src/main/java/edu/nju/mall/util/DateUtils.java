@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class DateUtils {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    private static SimpleDateFormat sdfInDay = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 获取当前时间，精确到秒
@@ -18,5 +18,13 @@ public class DateUtils {
      */
     public static String getTime() {
         return sdf.format(new Date());
+    }
+
+    /**
+     * 获取当天日期
+     * @return
+     */
+    public static String getToday() {
+        return sdfInDay.format(new Date());
     }
 }

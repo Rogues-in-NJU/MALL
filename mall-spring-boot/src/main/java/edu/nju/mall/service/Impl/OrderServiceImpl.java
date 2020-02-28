@@ -14,21 +14,22 @@ import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.service.UserService;
+import edu.nju.mall.util.DateUtils;
+import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
 import edu.nju.mall.vo.ProductVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 作用描述
@@ -45,15 +46,20 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
 
+    private List<Integer> dealStatus = new ArrayList<Integer>() {{
+        add(OrderStatus.TODO.getCode());
+        add(OrderStatus.FINISHED.getCode());
+    }};
 
-    Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+    private List<Integer> badDealStatus = new ArrayList<Integer>() {{
+        add(OrderStatus.REFUNDING.getCode());
+        add(OrderStatus.REFUNDED.getCode());
+//        add(OrderStatus.ABANDON.getCode());
+    }};
 
-    private Set<Integer> refundSet = new HashSet<Integer>() {
-        {
-            add(OrderStatus.TODO.getCode());
-            add(OrderStatus.FINISHED.getCode());
-        }
-    };
+    private Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     /**
      * 用户申请退款接口
@@ -68,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 //        if (order == null) {
 //            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "没有找到该订单!");
 //        }
-        if (!refundSet.contains(order.getStatus())) {
+        if (!dealStatus.contains(order.getStatus())) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法申请退款!");
         }
         order.setStatus(OrderStatus.REFUNDING.getCode());
@@ -161,4 +167,43 @@ public class OrderServiceImpl implements OrderService {
         //todo 插入order表，修改product库存
         return 0;
     }
+
+    @Override
+    public OrderSummaryVO getSummaryInfo() {
+        List<Order> totalDeal = getOrder(false, null);
+        List<Order> todayDeal = getOrder(false, DateUtils.getToday());
+        List<Order> totalBadDeal = getOrder(true, null);
+        List<Order> todayBadDeal = getOrder(true, DateUtils.getToday());
+        int totalIncome = totalDeal.stream().mapToInt(Order::getPrice).sum();
+        int todayIncome = todayDeal.stream().mapToInt(Order::getPrice).sum();
+        //单位是分，下方需转换为元
+        OrderSummaryVO orderSummaryVO = OrderSummaryVO.builder()
+                .totalInCome(Double.valueOf(df.format((float) totalIncome / 100)))
+                .totalDeal(totalDeal.size())
+                .totalBadDeal(totalBadDeal.size())
+                .todayInCome(Double.valueOf(df.format((float) todayIncome / 100)))
+                .todayDeal(todayDeal.size())
+                .todayBadDeal(todayBadDeal.size())
+                .build();
+        return orderSummaryVO;
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    private List<Order> getOrder(boolean isBad, String date) {
+        QueryContainer<Order> sp = new QueryContainer<>();
+        try {
+            sp.add(ConditionFactory.In("status", isBad ? badDealStatus : dealStatus));
+            if (date != null) {
+                //因为当天所以只考虑下界
+                sp.add(ConditionFactory.greatThanEqualTo("payTime", date));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderRepository.findAll(sp);
+    }
+
 }
