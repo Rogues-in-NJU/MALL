@@ -65,6 +65,12 @@ public class Order extends BaseEntity{
     private String productName;
 
     /**
+     * 商品图片
+     */
+    @Column(name = "product_image")
+    private String productImage;
+
+    /**
      * 商品数量
      */
     private int num;
