@@ -6,16 +6,17 @@ import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
+import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
+import edu.nju.mall.service.UserService;
 import edu.nju.mall.vo.OrderVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,10 +30,13 @@ import java.util.Set;
  * @Author: qianen.yin
  * @CreateDate: 2020-02-03 19:27
  */
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserService userService;
 
     Snowflake snowflake = IdUtil.getSnowflake(1, 1);
 
@@ -89,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderVO> getOrderList(Pageable pageable, String userId, Integer status, String startTime, String endTime) {
+    public Page<OrderVO> getOrderList(Pageable pageable, Long userId, Integer status, String startTime, String endTime) {
         QueryContainer<Order> sp = new QueryContainer<>();
         try {
             if(userId != null){
@@ -110,6 +114,13 @@ public class OrderServiceImpl implements OrderService {
         }
         Page<Order> orderPage = orderRepository.findAll(sp, pageable);
         return new PageImpl<>(transfer(orderPage.getContent()));
+    }
+
+    @Override
+    public Page<OrderVO> getOrderList(Integer pageIndex, Integer pageSize, String openId) {
+        Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
+        UserDTO userDTO = userService.findUser(openId);
+        return this.getOrderList(pageable, userDTO.getId(), null, null, null);
     }
 
     private List<OrderVO> transfer(List<Order> orderList) {

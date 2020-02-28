@@ -48,7 +48,7 @@ public class OrderController {
                                             @RequestParam(value = "startTime", required = false) String startTime,
                                             @RequestParam(value = "endTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable, userId, status, startTime, endTime), pageIndex, pageSize));
+        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable, Long.valueOf(userId), status, startTime, endTime), pageIndex, pageSize));
     }
 
 }
