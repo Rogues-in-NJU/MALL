@@ -1,3 +1,5 @@
+import http from '../../request';
+
 var app = getApp();
 
 Page({
