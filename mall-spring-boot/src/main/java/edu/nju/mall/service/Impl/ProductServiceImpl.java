@@ -14,6 +14,7 @@ import edu.nju.mall.service.ProductInfoImageService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.vo.OrderVO;
 import edu.nju.mall.vo.ProductVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
@@ -86,12 +88,12 @@ public class ProductServiceImpl implements ProductService {
                 .build();
         try {
             List<String> productImagesAddresses =
-                    productImageService.getProductImagesByProductId(product.getId());
+                    productImageService.getProductImagesByProductId(product.getId()).stream().map(ProductImage::getImageLink).collect(Collectors.toList());
             List<String> productInfoImagesAddresses =
-                    productInfoImageService.getProductInfoImagesByProductId(product.getId());
+                    productInfoImageService.getProductInfoImagesByProductId(product.getId()).stream().map(ProductInfoImage::getImageLink).collect(Collectors.toList());
 
             productVO.setImageAddresses(productImagesAddresses);
-            productVO.setInfoImageAddresses(productInfoImagesAddresses);
+            productVO.setImageInfoAddresses(productInfoImagesAddresses);
             BeanUtils.copyProperties(product, productVO);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

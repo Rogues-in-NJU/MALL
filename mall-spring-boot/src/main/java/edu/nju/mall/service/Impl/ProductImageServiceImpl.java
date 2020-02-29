@@ -8,12 +8,14 @@ import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.repository.ProductImageRepository;
 import edu.nju.mall.service.ProductImageService;
 import edu.nju.mall.vo.OrderVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ProductImageServiceImpl implements ProductImageService {
 

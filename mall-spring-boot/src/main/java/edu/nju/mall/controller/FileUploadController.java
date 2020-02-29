@@ -28,7 +28,7 @@ public class FileUploadController {
 
     @RequestMapping("/upload-product-info")
     public Map<String, String> upload(@RequestParam("upload_file")MultipartFile file,
-                                      @RequestParam("product_id")String productId) {
+                                      @RequestParam("product_id")Long productId) {
 
         Map<String, String> result = fileService.saveImage(file);
 

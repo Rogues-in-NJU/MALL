@@ -7,11 +7,13 @@ import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.entity.ProductInfoImage;
 import edu.nju.mall.repository.ProductInfoImageRepository;
 import edu.nju.mall.service.ProductInfoImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProductInfoImageServiceImpl  implements ProductInfoImageService {
     @Autowired
