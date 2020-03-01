@@ -1,0 +1,31 @@
+<div class="login-content">
+  <div class="login-header">
+    <h1 class="login-title">登录</h1>
+  </div>
+  <form id="login-form" nz-form [formGroup]="loginForm">
+    <nz-form-item>
+      <nz-form-label>账户</nz-form-label>
+      <nz-form-control nzHasFeedback>
+        <nz-input-group nzPrefixIcon="user">
+          <input nz-input name="username" type="text" id="phoneNumber"
+                 formControlName="phoneNumber" placeholder="输入手机号" (keypress)="($event.which === 13) ? login() : 0"/>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>密码</nz-form-label>
+      <nz-form-control nzHasFeedback>
+        <nz-input-group nzPrefixIcon="lock">
+          <input nz-input name="password" type="password" id="password"
+                 formControlName="password" placeholder="输入密码" (keypress)="($event.which === 13) ? login() : 0"/>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <a class="login-form-forgot" (click)="forgetPassword()">忘记密码</a>
+        <button nz-button nzType="primary" class="login-form-button" type="button" (click)="login()" [nzLoading]="isLoading">登录</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
