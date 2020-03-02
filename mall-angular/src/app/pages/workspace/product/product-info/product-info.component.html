@@ -1,10 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="content">
+  <div  nz-form nzLayout='vertical'>
+    <b>产品信息</b>
+    <br>
+    <br>
+    <nz-form-item>
+      <nz-form-label nzRequired>产品名称</nz-form-label>
+      <nz-form-control >
+        <input nz-input [(ngModel)]="name" style="width: 180px"/>
+      </nz-form-control>
+    </nz-form-item>
 
-</body>
-</html>
+    <nz-form-item>
+      <nz-form-label  nzRequired>分类</nz-form-label>
+      <nz-form-control >
+        <nz-select [(ngModel)]="classificationId"
+                   style="width: 180px">
+          <nz-option nzLabel="类型1" [nzValue]="1"></nz-option>
+          <nz-option nzLabel="类型2" [nzValue]="2"></nz-option>
+          <nz-option nzLabel="类型3" [nzValue]="3"></nz-option>
+          <nz-option nzLabel="类型4" [nzValue]="4"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>进货价/元</nz-form-label>
+      <nz-form-control >
+        <nz-input-group>
+          <nz-input-number nzMin="0" nzStep="0.01"
+                           [(ngModel)]="buyingPrice"
+                           style="width: 180px"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>售价/元</nz-form-label>
+      <nz-form-control >
+        <nz-input-group>
+          <nz-input-number nzMin="0" nzStep="0.01"
+                           [(ngModel)]="price"
+                           style="width: 180px"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>抽成比例</nz-form-label>
+      <nz-form-control >
+        <nz-input-group>
+          <nz-input-number nzMin="0" nzStep="0.01"
+                           [(ngModel)]="percent"
+                           style="width: 180px"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired>库存数量</nz-form-label>
+      <nz-form-control >
+        <nz-input-number nzMin="0" nzStep="1"
+                         [(ngModel)]="quantity"
+                         style="width: 180px"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>销售时间</nz-form-label>
+      <nz-form-control>
+        <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                         nzFormat="yyyy-MM-dd HH:mm"
+                         [nzPlaceHolder]="['开始时间', '结束时间']"
+                         [(ngModel)]="timeRange">
+
+        </nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" (click)="submitForm()">确认</button>
+      </nz-form-control>
+    </nz-form-item>
+
+  </div>
+
+
+</div>
+
+<div class="content">
+  <b>产品图片</b>
+  <br>
+  <br>
+  <div class="clearfix">
+    <nz-upload
+      [nzCustomRequest]="imageUpload"
+      nzAction="http://localhost:8080/upload-product-info"
+      nzListType="picture-card"
+      nzName="upload_file"
+      [nzFileList]="fileList"
+      [nzShowUploadList]="showUploadList"
+      [nzPreview]="handlePreview"
+    >
+      <i nz-icon nzType="plus"></i>
+      <div class="ant-upload-text">Upload</div>
+    </nz-upload>
+
+    <nz-modal
+      [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible = false"
+    >
+      <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+      </ng-template>
+    </nz-modal>
+  </div>
+
+</div>
+
+<div class="content">
+  <b>产品详情</b>
+  <br>
+  <br>
+  <div class="clearfix">
+    <nz-upload
+      [nzCustomRequest]="imageUpload"
+      nzAction="http://localhost:8080/upload-product-info"
+      nzListType="picture-card"
+      nzName="upload_file"
+      [nzFileList]="fileList"
+      [nzShowUploadList]="showUploadList"
+      [nzPreview]="handlePreview"
+    >
+      <i nz-icon nzType="plus"></i>
+      <div class="ant-upload-text">Upload</div>
+    </nz-upload>
+
+    <nz-modal
+      [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible = false"
+    >
+      <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+      </ng-template>
+    </nz-modal>
+  </div>
+
+</div>
+
+

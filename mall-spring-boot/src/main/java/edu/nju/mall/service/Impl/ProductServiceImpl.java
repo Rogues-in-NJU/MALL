@@ -38,13 +38,13 @@ public class ProductServiceImpl implements ProductService {
     ProductImageService productImageService;
 
     @Override
-    public List<ProductVO> getProductList(Pageable pageable) {
+    public Page<ProductVO> getProductList(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
         List<ProductVO> productVOS = new ArrayList<>();
         productPage.getContent().forEach(product ->{
             productVOS.add(transfer(product));
         });
-        return productVOS;
+        return new PageImpl<>(productVOS);
     }
 
     @Override

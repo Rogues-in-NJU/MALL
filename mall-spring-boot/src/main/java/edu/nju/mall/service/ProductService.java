@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductVO> getProductList(Pageable pageable);
+    Page<ProductVO> getProductList(Pageable pageable);
 
     ProductVO getProductById(Long id);
 
