@@ -41,4 +41,9 @@ public class ProductImageServiceImpl implements ProductImageService {
         return productImageRepository.save(productImage).getId();
     }
 
+    @Override
+    public int deleteProductImage(Integer productImageId) {
+        return 0;
+    }
+
 }

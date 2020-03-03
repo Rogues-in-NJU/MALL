@@ -15,7 +15,8 @@ public class OptionsRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(Objects.equals("OPTIONS", request.getMethod())) {
             response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,HEAD");
-            response.setHeader("Access-Control-Allow-Headers", response.getHeader("Access-Control-Request-Headers"));
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type,XFILENAME," +
+                    "XFILECATEGORY,XFILESIZE,Accept,,Referer,Sec-Fetch-Dest,User-Agent");
             response.setHeader("Access-Control-Allow-Origin", "*");
             return;
         }

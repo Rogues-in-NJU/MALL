@@ -1,14 +1,18 @@
 package edu.nju.mall.controller;
 
+import edu.nju.mall.common.ListResponse;
+import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.entity.ProductInfoImage;
 import edu.nju.mall.service.FileService;
 import edu.nju.mall.service.ProductImageService;
 import edu.nju.mall.service.ProductInfoImageService;
+import edu.nju.mall.util.ListResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
@@ -26,19 +30,40 @@ public class FileUploadController {
     @Autowired
     ProductInfoImageService productInfoImageService;
 
-    @RequestMapping("/upload-product-info")
+    @RequestMapping("/upload-product-image")
     public Map<String, String> upload(@RequestParam("upload_file")MultipartFile file,
                                       @RequestParam("product_id")Long productId) {
 
         Map<String, String> result = fileService.saveImage(file);
 
-        //todo 绑定图片与产品
+        ProductImage productImage = new ProductImage();
+        productImage.setProductId(productId);
+        productImage.setImageLink(result.get("url"));
+
+        Long id = productImageService.saveProductImage(productImage);
+        result.put("uid", id.toString());
+        return result;
+    }
+
+    @RequestMapping("/upload-product-info")
+    public Map<String, String> uploadInfo(@RequestParam("upload_file")MultipartFile file,
+                                      @RequestParam("product_id")Long productId) {
+
+        Map<String, String> result = fileService.saveInfoImage(file);
+
         ProductInfoImage productInfoImage = new ProductInfoImage();
         productInfoImage.setProductId(productId);
         productInfoImage.setImageLink(result.get("url"));
 
-        productInfoImageService.saveProductInfoImage(productInfoImage);
-
+        Long id = productInfoImageService.saveProductInfoImage(productInfoImage);
+        result.put("uid", id.toString());
         return result;
+    }
+
+    @GetMapping("deleteImage/{productImageId}")
+    public ResultVO<Integer> deleteProductImage(@PathVariable("productImageId") int productImageId){
+        System.out.println(productImageId);
+        return ResultVO.ok(productImageService.deleteProductImage(productImageId));
+
     }
 }

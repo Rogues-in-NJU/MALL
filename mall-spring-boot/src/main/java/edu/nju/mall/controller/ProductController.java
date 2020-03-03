@@ -25,7 +25,7 @@ public class ProductController {
         return ResultVO.ok(id.intValue());
     }
 
-    @GetMapping
+    @GetMapping("list")
     public ResultVO<ListResponse> getProductList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize){
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "sellStartTime"));

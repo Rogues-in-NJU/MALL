@@ -45,6 +45,28 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
   timeRange: Date[];
   status: number = 0;
 
+
+  showUploadList = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  };
+  fileList = [
+  ];
+  previewImage: string | undefined = '';
+  previewVisible = false;
+
+  //info
+  showUploadList_info = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  };
+  fileList_info = [
+  ];
+  previewImage_info: string | undefined = '';
+  previewVisible_info = false;
+
   ngOnInit(): void {
   }
 
@@ -92,7 +114,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
         this.productVO.id = id;
         this.id = String(id);
         this.message.success('新增成功,请上传相关图片！');
-        this.tabClose();
+        // this.tabClose();
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       }, () => {
@@ -101,27 +123,46 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
 
   }
 
-  showUploadList = {
-    showPreviewIcon: true,
-    showRemoveIcon: true,
-    hidePreviewIconInNonImage: true
+  handlePreview_info = (file: UploadFile) => {
+    this.previewImage_info = file.url || file.thumbUrl;
+    this.previewVisible_info = true;
   };
-  fileList = [
-  ];
-  previewImage: string | undefined = '';
-  previewVisible = false;
 
   handlePreview = (file: UploadFile) => {
     this.previewImage = file.url || file.thumbUrl;
     this.previewVisible = true;
   };
 
+  imageDelete = (file: UploadFile) => {
+    console.log(file);
+    console.log(this.fileList);
+    this.product.deleteProductImage(file.response['uid']).subscribe(
+      (res: ResultVO<any>) => {
+        console.log(res);
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.fileList = this.fileList.filter(f => f.uid != file.uid);
+        console.log(this.fileList);
+        // this.tabClose();
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      }, () => {
+
+      });
+  };
+
   imageUpload = (item: UploadXHRArgs) => {
-    if(!Objects.isNaN(this.id)){
+    if(Objects.isNaN(this.id)){
       this.message.warning("请先上传产品信息!");
       return ;
     }
-    const url = `${AppConfig.BASE_URL}/upload-product-info`;
+    const url = `${AppConfig.BASE_URL}/upload-product-image`;
     const formData = new FormData();
     formData.append('upload_file', item.file as any);
     formData.append('product_id', this.id);
@@ -143,11 +184,48 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
             item.onSuccess!(event.body, item.file!, event);
           }
           item.onSuccess!(event, item.file!, event);
+          item.file.uid = event['uid'];
         },
         err => {
           item.onError!(err, item.file!);
+          this.message.error("图片上传失败！")
         }
         );
+  };
+
+  infoImageUpload = (item: UploadXHRArgs) => {
+    if(Objects.isNaN(this.id)){
+      this.message.warning("请先上传产品信息!");
+      return ;
+    }
+    const url = `${AppConfig.BASE_URL}/upload-product-info`;
+    const formData = new FormData();
+    formData.append('upload_file', item.file as any);
+    formData.append('product_id', this.id);
+    return this.http.post(url, formData, {
+      reportProgress: true,
+      withCredentials: false
+    })
+      .subscribe(
+        // tslint:disable-next-line no-any
+        (event: HttpEvent<any>) => {
+          console.log(event);
+          if (event.type === HttpEventType.UploadProgress) {
+            if (event.total! > 0) {
+              // tslint:disable-next-line:no-any
+              (event as any).percent = (event.loaded / event.total!) * 100;
+            }
+            item.onProgress!(event, item.file!);
+          } else if (event instanceof HttpResponse) {
+            item.onSuccess!(event.body, item.file!, event);
+          }
+          item.onSuccess!(event, item.file!, event);
+        },
+        err => {
+          item.onError!(err, item.file!);
+          this.message.error("图片上传失败！")
+        }
+      );
   };
 
   tabClose(): void {

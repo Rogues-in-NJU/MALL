@@ -32,12 +32,16 @@ export class ProductService {
   public updateOrAddProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
     console.log(queryParams);
     return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/save`, queryParams, {
-      withCredentials: true
+      withCredentials: false
     });
   }
 
   public deleteProduct(productId: number): Observable<ResultVO<any>>{
     return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/delete/${productId}`);
+  }
+
+  public deleteProductImage(productImageId: number): Observable<ResultVO<any>>{
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/deleteImage/${productImageId}`);
   }
 
 }

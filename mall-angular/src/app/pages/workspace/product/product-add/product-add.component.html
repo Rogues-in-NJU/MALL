@@ -95,12 +95,13 @@
   <div class="clearfix">
     <nz-upload
       [nzCustomRequest]="imageUpload"
-      nzAction="http://localhost:8080/upload-product-info"
+      nzAction="http://localhost:8080/upload-product-image"
       nzListType="picture-card"
       nzName="upload_file"
-      [nzFileList]="fileList"
+      [(nzFileList)]="fileList"
       [nzShowUploadList]="showUploadList"
       [nzPreview]="handlePreview"
+      [nzRemove]="imageDelete"
     >
       <i nz-icon nzType="plus"></i>
       <div class="ant-upload-text">Upload</div>
@@ -126,26 +127,26 @@
   <br>
   <div class="clearfix">
     <nz-upload
-      [nzCustomRequest]="imageUpload"
+      [nzCustomRequest]="infoImageUpload"
       nzAction="http://localhost:8080/upload-product-info"
       nzListType="picture-card"
       nzName="upload_file"
-      [nzFileList]="fileList"
-      [nzShowUploadList]="showUploadList"
-      [nzPreview]="handlePreview"
+      [nzFileList]="fileList_info"
+      [nzShowUploadList]="showUploadList_info"
+      [nzPreview]="handlePreview_info"
     >
       <i nz-icon nzType="plus"></i>
       <div class="ant-upload-text">Upload</div>
     </nz-upload>
 
     <nz-modal
-      [nzVisible]="previewVisible"
-      [nzContent]="modalContent"
+      [nzVisible]="previewVisible_info"
+      [nzContent]="infoModalContent"
       [nzFooter]="null"
-      (nzOnCancel)="previewVisible = false"
+      (nzOnCancel)="previewVisible_info = false"
     >
-      <ng-template #modalContent>
-        <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+      <ng-template #infoModalContent>
+        <img [src]="previewImage_info" [ngStyle]="{ width: '100%' }" />
       </ng-template>
     </nz-modal>
   </div>
