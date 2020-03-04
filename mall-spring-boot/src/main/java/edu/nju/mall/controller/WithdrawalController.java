@@ -45,6 +45,7 @@ public class WithdrawalController {
         WithdrawalRecord withdrawalRecord = withDrawlService.getRecordById(id);
         withdrawalRecord.setStatus(WithDrawlRecordStatus.DONE.getCode());
         withDrawlService.saveRecord(withdrawalRecord);
+        //todo 修改对应用户余额
         return ResultVO.ok(id);
     }
 

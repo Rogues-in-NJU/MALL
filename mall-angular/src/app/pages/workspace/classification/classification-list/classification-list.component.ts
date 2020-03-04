@@ -30,7 +30,9 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   refresh(): void {
     this.classificationEditForm.reset({
       id: null,
-      name: null
+      name: null,
+      createdAt: null,
+      updatedAt: null
     });
     this.classificationEditVisible = false;
     this.loadData();
@@ -39,12 +41,14 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
   ngOnInit(): void {
     this.classificationEditForm = this.fb.group({
       id: [null, Validators.required],
-      name: [null, Validators.required]
+      name: [null, Validators.required],
+      createdAt:[null, Validators.required],
+      updatedAt: [null, Validators.required]
     });
     this.loadData();
   }
 
-  loadData():void{
+  loadData(): void {
     this.classificationService.findAll()
       .subscribe((res: ResultVO<Array<Classification>>) => {
         if (!Objects.valid(res)) {
@@ -60,6 +64,7 @@ export class ClassificationListComponent implements RefreshableTab, OnInit {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       });
   }
+
   showEditModal(id: number): void {
     const index: number = this.classificationList.findIndex(item => item.id === id);
     if (index === -1) {
