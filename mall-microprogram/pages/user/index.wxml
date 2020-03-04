@@ -65,3 +65,7 @@
     <van-tabbar-item icon="user-o">用户中心</van-tabbar-item>
   </van-tabbar>
 </view>
+<!-- TODO 这里可能需要完善 -->
+<!-- <view>
+  <button open-type="getUserInfo">用户授权</button>
+</view> -->
