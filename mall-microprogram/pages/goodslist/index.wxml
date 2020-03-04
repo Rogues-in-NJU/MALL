@@ -19,7 +19,7 @@
   wx:key="{{ item.id }}"
   >
   <van-card
-        title="{{ item.title }}"
+        title="{{ item.name }}"
         desc="{{ item.desc }}"
         price="{{ item.price }}"
         thumb="{{ item.thumb }}"

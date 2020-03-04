@@ -152,10 +152,7 @@ Page({
         this.setData({
           pageIndex: listData.pageIndex,
           pageSize: listData.pageSize,
-          goods: [
-            ...this.data.goods,
-            ...goodShowList
-          ],
+          goods: goodShowList,
           canRefresh: true
         });
       })
