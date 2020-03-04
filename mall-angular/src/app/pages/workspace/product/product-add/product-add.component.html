@@ -131,9 +131,10 @@
       nzAction="http://localhost:8080/upload-product-info"
       nzListType="picture-card"
       nzName="upload_file"
-      [nzFileList]="fileList_info"
+      [(nzFileList)]="fileList_info"
       [nzShowUploadList]="showUploadList_info"
       [nzPreview]="handlePreview_info"
+      [nzRemove]="imageDelete_info"
     >
       <i nz-icon nzType="plus"></i>
       <div class="ant-upload-text">Upload</div>

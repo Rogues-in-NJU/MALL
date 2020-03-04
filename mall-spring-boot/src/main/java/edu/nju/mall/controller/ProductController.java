@@ -6,6 +6,7 @@ import edu.nju.mall.entity.Product;
 import edu.nju.mall.entity.WithdrawalCondition;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.util.ListResponseUtils;
+import edu.nju.mall.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,14 @@ public class ProductController {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "sellStartTime"));
         return ResultVO.ok(ListResponseUtils.generateResponse(productService.getProductList(pageable), pageIndex, pageSize));
 
+    }
+
+    @GetMapping("info/{productId}")
+    public ResultVO<ProductVO> getProduct(@PathVariable("productId") long productId){
+//        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "sellStartTime"));
+//        return ResultVO.ok(ListResponseUtils.generateResponse(productService.getProductList(pageable), pageIndex, pageSize));
+
+        return ResultVO.ok(productService.getProductById(productId));
     }
 
 }

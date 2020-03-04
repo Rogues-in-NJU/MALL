@@ -26,13 +26,13 @@ const routes: Routes = [
       removable: true
     }
   },
-  { path: 'info',
-    pathMatch: 'full',
+  { path: 'info/:productId',
     component: ProductInfoComponent,
     canActivate: [ AuthorizationGuard ],
     data: {
-      title: '商品详情',
-      removable: true
+      title: '商品详情{}',
+      removable: true,
+      replaceParams: ['productId'],
     }
   },
 ];

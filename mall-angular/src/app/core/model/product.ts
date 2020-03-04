@@ -16,4 +16,8 @@ export interface ProductVO extends BaseInfo {
   updatedAt?: string;
   deletedAt?: string;
   createdAt?: string;
+
+  imageAddresses?: string[];
+  imageInfoAddresses?: string[];
+
 }

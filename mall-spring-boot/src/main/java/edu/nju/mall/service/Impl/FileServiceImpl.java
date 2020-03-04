@@ -37,7 +37,7 @@ public class FileServiceImpl implements FileService {
         String name = fileName.substring(0, fileName.lastIndexOf("."));
         // 生成最终保存的文件名,格式为: 时间戳-文件名.扩展名
         String id = String.valueOf(new Date().getTime());
-        String saveFileName = id + "-" + name + "." + fileExtensionName;
+        String saveFileName = id + "-" + "product" + "." + fileExtensionName;
         /**
          * 上传操作：可能upload目录不存在，所以先判断一下如果不存在，那么新建这个目录
          */
@@ -61,6 +61,7 @@ public class FileServiceImpl implements FileService {
         Map<String, String> result = new HashMap<>();
         result.put("uid", id);
         result.put("name", fileName);
+        result.put("url", '/' + saveFileName);
 //        result.put("path", path);
 //        System.out.println(fileName);
         return result;
@@ -88,7 +89,7 @@ public class FileServiceImpl implements FileService {
         String name = fileName.substring(0, fileName.lastIndexOf("."));
         // 生成最终保存的文件名,格式为: 时间戳-文件名.扩展名
         String id = String.valueOf(new Date().getTime());
-        String saveFileName = id + "-" + name + "." + fileExtensionName;
+        String saveFileName = id + "-" + "productInfo" + "." + fileExtensionName;
         /**
          * 上传操作：可能upload目录不存在，所以先判断一下如果不存在，那么新建这个目录
          */
@@ -112,6 +113,7 @@ public class FileServiceImpl implements FileService {
         Map<String, String> result = new HashMap<>();
         result.put("uid", id);
         result.put("name", fileName);
+        result.put("url", '/' + saveFileName);
 //        result.put("path", path);
 //        System.out.println(fileName);
         return result;

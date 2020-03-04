@@ -134,8 +134,6 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
   };
 
   imageDelete = (file: UploadFile) => {
-    console.log(file);
-    console.log(this.fileList);
     this.product.deleteProductImage(file.response['uid']).subscribe(
       (res: ResultVO<any>) => {
         console.log(res);
@@ -149,7 +147,26 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
         }
         this.fileList = this.fileList.filter(f => f.uid != file.uid);
         console.log(this.fileList);
-        // this.tabClose();
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      }, () => {
+
+      });
+  };
+
+  imageDelete_info = (file: UploadFile) => {
+    this.product.deleteProductInfoImage(file.response['uid']).subscribe(
+      (res: ResultVO<any>) => {
+        console.log(res);
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.fileList_info = this.fileList_info.filter(f => f.uid != file.uid);
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       }, () => {

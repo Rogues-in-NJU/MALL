@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductVO getProductById(Long id) {
-        return transfer(productRepository.getOne(id.intValue()));
+        return transfer(productRepository.getOne(id));
     }
 
     @Override

@@ -9,5 +9,7 @@ public interface ProductImageService {
 
     Long saveProductImage(ProductImage productImage);
 
-    int deleteProductImage(Integer productImageId);
+    Long deleteProductImage(Long productImageId);
+
+    void deleteProductImageByImageLink(String imageLink);
 }

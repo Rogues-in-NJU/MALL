@@ -22,30 +22,39 @@ import {AppConfig} from "../../../../../environments/environment";
 })
 export class ProductInfoComponent implements RefreshableTab, OnInit {
 
-  productVO: ProductVO = {
-    id: null,
-    name: "",
-    classificationId: null,
-    classificationName: null,
-    buyingPrice: null,
-    price: null,
-    percent: null,
-    quantity: null,
-    sellStartTime: null,
-    sellEndTime: null,
-  };
-
+  productVO: ProductVO ={};
   id:string = "";
-  name: string = "";
-  classificationId: number = -1;
-  buyingPrice: number = 0;
-  price: number = 0;
-  percent: number = 0;
-  quantity: number = 0;
-  timeRange: Date[];
-  status: number = 0;
+  productId: number;
+  isLoading: boolean = true;
+
+
+  //image
+  showUploadList = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  };
+  fileList = [
+  ];
+  previewImage: string | undefined = '';
+  previewVisible = false;
+
+  //info
+  showUploadList_info = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  };
+  fileList_info = [
+  ];
+  previewImage_info: string | undefined = '';
+  previewVisible_info = false;
+
 
   ngOnInit(): void {
+    this.productId = this.route.snapshot.params['productId'];
+    this.isLoading = true;
+    this.refresh();
   }
 
   constructor(
@@ -61,24 +70,13 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
   }
 
   refresh(): void {
+    this.search();
   }
 
-  submitForm(): void {
-    //todo
-    this.productVO.name = this.name;
-    this.productVO.classificationId = this.classificationId;
-    this.productVO.buyingPrice = this.buyingPrice;
-    this.productVO.price = this.price;
-    this.productVO.percent = this.percent;
-    this.productVO.quantity = this.quantity;
-    if (Objects.valid(this.timeRange) && this.timeRange.length === 2) {
-      this.productVO.sellStartTime = DateUtils.format(this.timeRange[0]);
-      this.productVO.sellEndTime = DateUtils.format(this.timeRange[1]);
-    }
-
+  search(): void{
     console.log(this.productVO);
-    this.product.updateOrAddProduct(this.productVO)
-      .subscribe((res: ResultVO<any>) => {
+    this.product.findOne(this.productId)
+      .subscribe((res: ResultVO<ProductVO>) => {
         console.log(res);
         if (!Objects.valid(res)) {
           this.message.error("请求失败！");
@@ -88,36 +86,122 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
           this.message.error(res.message);
           return;
         }
-        const id: number = res.data;
-        this.productVO.id = id;
-        this.id = String(id);
-        this.message.success('新增成功,请上传相关图片！');
-        this.tabClose();
+        this.productVO = res.data;
+        this.id = String(this.productVO.id);
+        for(let link of this.productVO.imageAddresses){
+          this.fileList.push({'url': AppConfig.BASE_URL + link,
+            "response" : {
+              "url" : link
+            }});
+        }
+        for(let link of this.productVO.imageInfoAddresses){
+          this.fileList_info.push({'url': AppConfig.BASE_URL + link,
+            "response" : {
+              "url" : link
+            }});
+        }
+
+        console.log(this.fileList);
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
       }, () => {
-
+        this.isLoading = false;
       });
-
   }
 
-  showUploadList = {
-    showPreviewIcon: true,
-    showRemoveIcon: true,
-    hidePreviewIconInNonImage: true
+
+  handlePreview_info = (file: UploadFile) => {
+    this.previewImage_info = file.url || file.thumbUrl;
+    this.previewVisible_info = true;
   };
-  fileList = [
-  ];
-  previewImage: string | undefined = '';
-  previewVisible = false;
 
   handlePreview = (file: UploadFile) => {
     this.previewImage = file.url || file.thumbUrl;
     this.previewVisible = true;
   };
 
+  imageDelete = (file: UploadFile) => {
+    this.product.deleteProductImageByImageLink(file['response']['url']).subscribe(
+      (res: ResultVO<any>) => {
+        console.log(res);
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.fileList = this.fileList.filter(f => (f['url'] != file['url'])
+                          || f['response']['url']!= file['response']['url']);
+        console.log(this.fileList);
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      }, () => {
+
+      });
+  };
+
+  imageDelete_info = (file: UploadFile) => {
+    this.product.deleteProductInfoImageByImageLink(file['response']['url']).subscribe(
+      (res: ResultVO<any>) => {
+        console.log(res);
+        if (!Objects.valid(res)) {
+          this.message.error("请求失败！");
+          return;
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          this.message.error(res.message);
+          return;
+        }
+        this.fileList_info = this.fileList_info.filter(f => (f['url'] != file['url'])
+          || f['response']['url']!= file['response']['url']);
+      }, (error: HttpErrorResponse) => {
+        this.message.error('网络异常，请检查网络或者尝试重新登录!');
+      }, () => {
+
+      });
+  };
+
   imageUpload = (item: UploadXHRArgs) => {
-    if(!Objects.isNaN(this.id)){
+    if(Objects.isNaN(this.id)){
+      this.message.warning("请先上传产品信息!");
+      return ;
+    }
+    const url = `${AppConfig.BASE_URL}/upload-product-image`;
+    const formData = new FormData();
+    formData.append('upload_file', item.file as any);
+    formData.append('product_id', this.id);
+    return this.http.post(url, formData, {
+      reportProgress: true,
+      withCredentials: false
+    })
+      .subscribe(
+        // tslint:disable-next-line no-any
+        (event: HttpEvent<any>) => {
+          console.log(event);
+          if (event.type === HttpEventType.UploadProgress) {
+            if (event.total! > 0) {
+              // tslint:disable-next-line:no-any
+              (event as any).percent = (event.loaded / event.total!) * 100;
+            }
+            item.onProgress!(event, item.file!);
+          } else if (event instanceof HttpResponse) {
+            item.onSuccess!(event.body, item.file!, event);
+          }
+          item.onSuccess!(event, item.file!, event);
+          // item['url'] = event['link'];
+          console.log(this.fileList)
+        },
+        err => {
+          item.onError!(err, item.file!);
+          this.message.error("图片上传失败！")
+        }
+      );
+  };
+
+  infoImageUpload = (item: UploadXHRArgs) => {
+    if(Objects.isNaN(this.id)){
       this.message.warning("请先上传产品信息!");
       return ;
     }
@@ -146,16 +230,10 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
         },
         err => {
           item.onError!(err, item.file!);
+          this.message.error("图片上传失败！")
         }
       );
   };
 
-  tabClose(): void {
-    this.tab.closeEvent.emit({
-      url: this.router.url,
-      goToUrl: '/workspace/product/list',
-      refreshUrl: '/workspace/product/list',
-      routeConfig: this.route.snapshot.routeConfig
-    });
-  }
+
 }

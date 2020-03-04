@@ -61,9 +61,27 @@ public class FileUploadController {
     }
 
     @GetMapping("deleteImage/{productImageId}")
-    public ResultVO<Integer> deleteProductImage(@PathVariable("productImageId") int productImageId){
-        System.out.println(productImageId);
-        return ResultVO.ok(productImageService.deleteProductImage(productImageId));
+    public ResultVO<Integer> deleteProductImage(@PathVariable("productImageId") Long productImageId){
+        return ResultVO.ok(productImageService.deleteProductImage(productImageId).intValue());
 
     }
+
+    @GetMapping("deleteInfoImage/{productInfoImageId}")
+    public ResultVO<Integer> deleteProductInfoImage(@PathVariable("productInfoImageId") Long productInfoImageId){
+        return ResultVO.ok(productInfoImageService.deleteProductInfoImage(productInfoImageId).intValue());
+
+    }
+
+    @GetMapping("deleteImageByImageLink/{imageLink}")
+    public ResultVO<Integer> deleteProductImageByImageLink(@PathVariable("imageLink") String imageLink){
+        productImageService.deleteProductImageByImageLink(imageLink);
+        return ResultVO.ok(0);
+    }
+
+    @GetMapping("deleteInfoImageByImageLink/{imageLink}")
+    public ResultVO<Integer> deleteProductInfoImageByImageLink(@PathVariable("imageLink") String imageLink){
+        productInfoImageService.deleteProductImageByImageLink(imageLink);
+        return ResultVO.ok(0);
+    }
+
 }

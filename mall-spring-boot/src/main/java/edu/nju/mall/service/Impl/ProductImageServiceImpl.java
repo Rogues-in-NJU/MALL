@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +43,17 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public int deleteProductImage(Integer productImageId) {
-        return 0;
+    public Long deleteProductImage(Long productImageId) {
+        productImageRepository.deleteById(productImageId);
+        return 0l;
+    }
+
+    @Transactional
+    @Override
+    public void deleteProductImageByImageLink(String imageLink) {
+        //todo "/"临时做法
+        Long id = productImageRepository.findByImageLink("/" + imageLink).getId();
+        productImageRepository.deleteById(id);
     }
 
 }
