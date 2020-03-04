@@ -3,13 +3,13 @@
 </nz-page-header>
 <div class="content">
   <nz-descriptions nzTitle="订单总计情况">
-    <nz-descriptions-item nzTitle="总收入">{{summary.totalInCome}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="总单数">{{summary.totalDeal}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="总退款单数">{{summary.totalBadDeal}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="总收入" *ngIf="summary">{{summary.totalInCome}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="总单数" *ngIf="summary">{{summary.totalDeal}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="总退款单数" *ngIf="summary">{{summary.totalBadDeal}}</nz-descriptions-item>
   </nz-descriptions>
   <nz-descriptions nzTitle="今日订单情况">
-    <nz-descriptions-item nzTitle="今日收入">{{summary.todayInCome}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="今日单数">{{summary.todayDeal}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="今日退款单数">{{summary.todayBadDeal}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="今日收入" *ngIf="summary">{{summary.todayInCome}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="今日单数" *ngIf="summary">{{summary.todayDeal}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="今日退款单数" *ngIf="summary">{{summary.todayBadDeal}}</nz-descriptions-item>
   </nz-descriptions>
 </div>
