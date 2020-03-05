@@ -63,5 +63,12 @@ export class DateUtils {
     return DateUtils.format(d);
   }
 
+
 }
 
+export class NumberUtils {
+
+  public static toInteger(value: number){
+    return parseInt(String(value));
+  }
+}

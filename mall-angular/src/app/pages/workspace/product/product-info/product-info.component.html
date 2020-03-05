@@ -1,19 +1,59 @@
 <nz-page-header>
-  <nz-page-header-title>出货单详情</nz-page-header-title>
+  <nz-page-header-title>产品详情</nz-page-header-title>
 </nz-page-header>
 <div class="content" *ngIf="!isLoading">
   <nz-descriptions nzBordered nzSize="small" >
     <nz-descriptions-item nzTitle="产品名称" [nzSpan]="4">{{ productVO.name }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="产品分类" [nzSpan]="4">{{ productVO.classificationName }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="进货价" [nzSpan]="2">{{ productVO.buyingPrice }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="售价" [nzSpan]="2">{{ productVO.price }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="提成比例" [nzSpan]="4">{{ productVO.percent }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="库存数量" [nzSpan]="4">{{ productVO.quantity }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="进货价(元)" [nzSpan]="4">{{ productVO.buyingPrice / 100}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="售价(元)" [nzSpan]="4">{{ productVO.price / 100}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="提成比例" [nzSpan]="4">{{ productVO.percent }} %</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="库存数量(件)" [nzSpan]="4">{{ productVO.quantity }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="销售时间" [nzSpan]="4">{{ productVO.sellStartTime }} ~ {{ productVO.sellEndTime}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="状态" [nzSpan]="4">{{ productVO.status }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="状态" [nzSpan]="4">
+      <nz-tag nzColor="{{ productVO.status | product_status_color }}">
+        {{ productVO.status | product_status }}
+      </nz-tag>
+    </nz-descriptions-item>
     <nz-descriptions-item nzTitle="创建时间" [nzSpan]="4">{{ productVO.createdAt }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="更新时间" [nzSpan]="4">{{ productVO.updatedAt }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="废弃时间" [nzSpan]="4">{{ productVO.deletedAt }}</nz-descriptions-item>
+
+<!--    <nz-descriptions-item nzTitle="截至时间" [nzSpan]="4">-->
+<!--      <nz-form-control *ngIf="!isChangeDueDate">-->
+<!--        {{ arrearOrderData.dueDate }}-->
+<!--        <a (click)="changeDueDate()" style="cursor: pointer">-->
+<!--          <i nz-icon nzType="edit" nzTheme="outline" ></i>-->
+<!--        </a>-->
+<!--      </nz-form-control>-->
+
+<!--      <div nz-form nzLayout="inline" *ngIf="isChangeDueDate">-->
+<!--        <nz-form-item>-->
+<!--          <nz-form-control>-->
+<!--            <nz-date-picker nzShowTime-->
+<!--                            [(ngModel)]="duedate"-->
+<!--                            nzFormat="yyyy-MM-dd HH:mm"-->
+<!--                            nzPlaceHolder="选择时间">-->
+
+<!--            </nz-date-picker>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--        <nz-form-item>-->
+<!--          <nz-form-control>-->
+<!--            <a (click)="confirmChangeDueDate()" style="color: #52c41a"><i nz-icon nzType="check" nzTheme="outline"></i></a>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--        <nz-form-item>-->
+<!--          <nz-form-control>-->
+<!--            <a (click)="cancelChangeDueDate()" style="color: #f50"><i nz-icon nzType="close" nzTheme="outline"></i></a>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--      </div>-->
+<!--      <ng-container>-->
+
+<!--      </ng-container>-->
+<!--    </nz-descriptions-item>-->
+
   </nz-descriptions>
 
   <p>产品图片</p>

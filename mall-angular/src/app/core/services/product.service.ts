@@ -29,9 +29,16 @@ export class ProductService {
     });
   };
 
-  public updateOrAddProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
+  public addProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
     console.log(queryParams);
     return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/save`, queryParams, {
+      withCredentials: false
+    });
+  }
+
+  public updateProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
+    console.log(queryParams);
+    return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/update`, queryParams, {
       withCredentials: false
     });
   }

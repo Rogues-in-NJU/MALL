@@ -13,10 +13,14 @@ public interface ProductService {
 
     ProductVO getProductById(Long id);
 
-    Long saveProduct(Product product);
+    Long addProduct(Product product);
+
+    Long updateProduct(Product product);
 
     Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize);
 
     List<ProductVO> searchByProductName(String productName);
+
+    Integer deleteProductById(Long productId);
 
 }

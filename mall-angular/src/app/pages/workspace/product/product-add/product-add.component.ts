@@ -7,7 +7,7 @@ import {ProductService} from "../../../../core/services/product.service";
 import {HttpClient, HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse} from "@angular/common/http";
 import {NzMessageService, UploadFile, UploadXHRArgs} from "ng-zorro-antd";
 import {BehaviorSubject, Observable} from "rxjs";
-import {DateUtils, Objects} from "../../../../core/services/util.service";
+import {DateUtils, NumberUtils, Objects} from "../../../../core/services/util.service";
 import {ResultCode, ResultVO, TableQueryParams, TableResultVO} from "../../../../core/model/result-vm";
 import {environment} from "ng-zorro-antd/core/environments/environment";
 import {AppConfig} from "../../../../../environments/environment";
@@ -89,8 +89,8 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
     //todo
     this.productVO.name = this.name;
     this.productVO.classificationId = this.classificationId;
-    this.productVO.buyingPrice = this.buyingPrice;
-    this.productVO.price = this.price;
+    this.productVO.buyingPrice = NumberUtils.toInteger(this.buyingPrice * 100);
+    this.productVO.price = NumberUtils.toInteger(this.price * 100);
     this.productVO.percent = this.percent;
     this.productVO.quantity = this.quantity;
     if (Objects.valid(this.timeRange) && this.timeRange.length === 2) {
@@ -99,7 +99,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
     }
 
     console.log(this.productVO);
-    this.product.updateOrAddProduct(this.productVO)
+    this.product.addProduct(this.productVO)
       .subscribe((res: ResultVO<any>) => {
         console.log(res);
         if (!Objects.valid(res)) {

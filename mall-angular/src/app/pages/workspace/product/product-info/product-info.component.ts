@@ -53,7 +53,7 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.params['productId'];
-    this.isLoading = true;
+
     this.refresh();
   }
 
@@ -74,6 +74,7 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
   }
 
   search(): void{
+    this.isLoading = true;
     console.log(this.productVO);
     this.product.findOne(this.productId)
       .subscribe((res: ResultVO<ProductVO>) => {
@@ -109,6 +110,23 @@ export class ProductInfoComponent implements RefreshableTab, OnInit {
       });
   }
 
+  update():void {
+    this.product.updateProduct(this.productVO).subscribe((res: ResultVO<any>) => {
+      console.log(res);
+      if (!Objects.valid(res)) {
+        this.message.error("请求失败！");
+        return;
+      }
+      if (res.code !== ResultCode.SUCCESS.code) {
+        this.message.error(res.message);
+        return;
+      }
+      this.refresh();
+    }, (error: HttpErrorResponse) => {
+      this.message.error('网络异常，请检查网络或者尝试重新登录!');
+    }, () => {
+    });
+  }
 
   handlePreview_info = (file: UploadFile) => {
     this.previewImage_info = file.url || file.thumbUrl;
