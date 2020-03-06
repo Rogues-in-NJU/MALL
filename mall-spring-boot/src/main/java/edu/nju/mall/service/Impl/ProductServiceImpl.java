@@ -5,13 +5,11 @@ import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
-import edu.nju.mall.entity.Order;
-import edu.nju.mall.entity.Product;
-import edu.nju.mall.entity.ProductImage;
-import edu.nju.mall.entity.ProductInfoImage;
+import edu.nju.mall.entity.*;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.enums.ProductStatus;
 import edu.nju.mall.repository.ProductRepository;
+import edu.nju.mall.service.ClassificationService;
 import edu.nju.mall.service.ProductImageService;
 import edu.nju.mall.service.ProductInfoImageService;
 import edu.nju.mall.service.ProductService;
@@ -40,6 +38,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductImageService productImageService;
+
+    @Autowired
+    ClassificationService classificationService;
 
     @Override
     public Page<ProductVO> getProductList(Pageable pageable) {
@@ -132,10 +133,23 @@ public class ProductServiceImpl implements ProductService {
 
             productVO.setImageAddresses(productImagesAddresses);
             productVO.setImageInfoAddresses(productInfoImagesAddresses);
+
             BeanUtils.copyProperties(product, productVO);
+            productVO.setClassificationName(getClassificationNameById(product.getClassificationId()));
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return productVO;
+    }
+
+    private String getClassificationNameById(Integer classidicationId){
+        List<Classification> classifications = classificationService.getClassificationList();
+        for(Classification c : classifications){
+            if(c.getId().equals(classidicationId)){
+                return c.getName();
+            }
+        }
+        return "";
     }
 }

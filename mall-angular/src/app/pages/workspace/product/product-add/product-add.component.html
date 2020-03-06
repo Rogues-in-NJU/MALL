@@ -12,13 +12,19 @@
 
     <nz-form-item>
       <nz-form-label  nzRequired>分类</nz-form-label>
-      <nz-form-control >
-        <nz-select [(ngModel)]="classificationId"
-                   style="width: 180px">
-          <nz-option nzLabel="类型1" [nzValue]="1"></nz-option>
-          <nz-option nzLabel="类型2" [nzValue]="2"></nz-option>
-          <nz-option nzLabel="类型3" [nzValue]="3"></nz-option>
-          <nz-option nzLabel="类型4" [nzValue]="4"></nz-option>
+      <nz-form-control>
+        <nz-select [(ngModel)]="classification"
+                   nzShowSearch
+                   nzServerSearch
+                   (nzOnSearch)="onProductSearch($event)"
+                   (ngModelChange)="onChangeSelectedProduct($event)"
+                   style="width: 100px">
+          <ng-container *ngFor="let p of searchProducts; let i = index;">
+            <nz-option *ngIf="!isProductsLoading" nzLabel="{{ p.name }}" [nzValue]="p"></nz-option>
+          </ng-container>
+          <nz-option *ngIf="isProductsLoading" nzDisabled nzCustomContent>
+            <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
+          </nz-option>
         </nz-select>
       </nz-form-control>
     </nz-form-item>

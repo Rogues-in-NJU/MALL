@@ -15,6 +15,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import {ProductVO} from "../../../../core/model/product";
 import {TabService} from "../../../../core/services/tab.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {debounceTime, map, switchMap} from "rxjs/operators";
+import {Classification} from "../../../../core/model/classification";
+import {ClassificationService} from "../../../../core/services/classification.service";
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-add.component.html',
@@ -37,7 +40,9 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
 
   id:string = "";
   name: string = "";
+  classification: Classification = {};
   classificationId: number = -1;
+  classificationName: string = "";
   buyingPrice: number = 0;
   price: number = 0;
   percent: number = 0;
@@ -67,10 +72,14 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
   previewImage_info: string | undefined = '';
   previewVisible_info = false;
 
-  ngOnInit(): void {
-  }
+  //select
+  searchProducts: Classification[];
+  searchChanges$: BehaviorSubject<string> = new BehaviorSubject('');
+  isProductsLoading: boolean = false;
+
 
   constructor(
+    private classificationService: ClassificationService,
     private product : ProductService,
     private message: NzMessageService,
     // private fb: FormBuilder,
@@ -81,6 +90,34 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
   ){
 
   }
+
+  ngOnInit(): void {
+    const getProducts: any = (name: string) => {
+      const t: Observable<ResultVO<Array<Classification>>>
+        = <Observable<ResultVO<Array<Classification>>>>this.classificationService
+        .findAll();
+
+      return t.pipe(map(res => {
+        if (!Objects.valid(res)) {
+          return [];
+        }
+        if (res.code !== ResultCode.SUCCESS.code) {
+          return [];
+        }
+        return res.data;
+      }));
+    };
+
+    const productOptionList$: Observable<Classification[]> = this.searchChanges$
+      .asObservable()
+      .pipe(debounceTime(500))
+      .pipe(switchMap(getProducts));
+    productOptionList$.subscribe((data: Classification[]) => {
+      this.searchProducts = data;
+      this.isProductsLoading = false;
+    });
+  }
+
 
   refresh(): void {
   }
@@ -122,6 +159,18 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
       });
 
   }
+
+  onProductSearch(value: string): void {
+    this.isProductsLoading = true;
+    this.searchChanges$.next(value);
+  }
+
+  onChangeSelectedProduct(event: Classification): void {
+    this.classification = event;
+    this.classificationId = event.id;
+    this.classificationName = event.name;
+  }
+
 
   handlePreview_info = (file: UploadFile) => {
     this.previewImage_info = file.url || file.thumbUrl;
