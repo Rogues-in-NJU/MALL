@@ -15,5 +15,6 @@ export interface Order extends BaseInfo {
   consigneePhone?: string;
   consigneeAddress?: string;
   price?: number;
-  status?: string;
+  status?: number;
+  statusName?: string;
 }

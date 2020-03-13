@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {AppConfig} from "../../../environments/environment";
 import {Order} from "../model/order";
 import {OrderSummary} from "../model/orderSummary";
+import {ProductVO} from "../model/product";
 
 
 @Injectable({
@@ -22,6 +23,13 @@ export class OrderService {
     return this.http.get<ResultVO<TableResultVO<Order>>>(`${AppConfig.BASE_URL}/api/order/refundOrderList`, {
       params: queryParams,
       withCredentials: true
+    });
+  };
+
+  public findOrderList(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<Order>>>{
+    return this.http.get<ResultVO<TableResultVO<Order>>>(`${AppConfig.BASE_URL}/api/order/orderList`, {
+      params: queryParams,
+      withCredentials: false
     });
   };
 

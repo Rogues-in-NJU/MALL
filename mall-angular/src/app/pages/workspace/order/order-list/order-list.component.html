@@ -1,14 +1,42 @@
 <nz-page-header>
-  <nz-page-header-title>申请退款订单列表</nz-page-header-title>
+  <nz-page-header-title>订单列表</nz-page-header-title>
 </nz-page-header>
 <div class="content">
+  <div nz-form nzLayout="inline">
+    <nz-form-item>
+      <nz-form-label>状态</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="selectedStatus"
+                   (ngModelChange)="resetIndex()"
+                   nzAllowClear="true" style="width: 7em">
+          <nz-option nzLabel="待支付" nzValue="0"></nz-option>
+          <nz-option nzLabel="未完成" nzValue="1"></nz-option>
+          <nz-option nzLabel="已完成" nzValue="2"></nz-option>
+          <nz-option nzLabel="申请退款中" nzValue="3"></nz-option>
+          <nz-option nzLabel="退款成功" nzValue="4"></nz-option>
+          <nz-option nzLabel="已废弃" nzValue="5"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button class="queryButton" nz-button nzType="primary" (click)="search()">搜索</button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button class="queryButton" nz-button nzType="default" (click)="resetQueryParams()">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
   <div class="table-wrapper">
-    <nz-table #todoRecordTable
-              [nzData]="refundOrderList"
+    <nz-table #orderTable
+              [nzData]="orderList"
               [(nzPageIndex)]="pageIndex"
               [(nzPageSize)]="pageSize"
               [nzTotal]="totalPages * pageSize"
               [nzFrontPagination]="false"
+              [nzLoading]="isLoading"
               [nzScroll]="{ x: '100%'}">
       <thead>
       <tr>
@@ -20,6 +48,7 @@
         <th>交易号</th>
         <th>商品名称</th>
         <th>商品数量</th>
+        <th>状态</th>
         <th>下单时间</th>
         <th>支付时间</th>
         <th>申请退款时间</th>
@@ -27,7 +56,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let data of todoRecordTable.data">
+      <tr *ngFor="let data of orderTable.data">
         <td>{{ data.id }}</td>
         <td>{{ data.userId }}</td>
         <td>{{ data.consignee }}</td>
@@ -36,11 +65,13 @@
         <td>{{ data.transactionNumber }}</td>
         <td>{{ data.productName }}</td>
         <td>{{ data.num }}</td>
+        <td>{{ data.statusName }}</td>
         <td>{{ data.createdAt }}</td>
         <td>{{ data.payTime }}</td>
         <td>{{ data.refundTime }}</td>
         <td>
-          <a [class.disabled]="false"
+          <a class="abandon"
+             [class.disabled]=" data.status !== 3"
              nz-popconfirm
              nzPopconfirmTitle="确认退款?"
              nzPopconfirmPlacement="top"
