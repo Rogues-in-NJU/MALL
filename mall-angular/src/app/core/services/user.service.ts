@@ -20,7 +20,7 @@ export class UserService {
 
   public login(loginVO: PassportVO): Observable<ResultVO<Boolean>> {
     return this.http.post<ResultVO<Boolean>>(`${AppConfig.BASE_URL}/api/admin/login`, loginVO, {
-      withCredentials: true
+      withCredentials: false
     });
   }
 

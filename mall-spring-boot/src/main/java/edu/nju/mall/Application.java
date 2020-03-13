@@ -14,6 +14,7 @@ public class Application {
 
     public static void main(String[] args) {
         System.setProperty("tomcat.util.http.parser.HttpParser.requestTargetAllow","|{}");
+        System.setProperty("tomcat.max-http-header-size","8192");
         SpringApplication.run(Application.class, args);
     }
 
