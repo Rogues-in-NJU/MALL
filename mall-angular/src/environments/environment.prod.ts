@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  BASE_URL: 'http://localhost:8080'
+  environment: 'PROD',
+  BASE_URL: 'http://175.24.41.132:8080'
 };

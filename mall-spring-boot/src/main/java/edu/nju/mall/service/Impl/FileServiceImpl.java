@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +18,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Map<String, String> saveImage(MultipartFile file) {
-        String path = null; // 文件保存路径
+        String path =  "/home/ubuntu/images/"; // 文件保存路径
+//        path = request.getServletContext().getRealPath("templates/images/");
         try {
             path = ResourceUtils.getURL("classpath:").getPath() + "static/";
         } catch (FileNotFoundException e) {
@@ -63,13 +65,13 @@ public class FileServiceImpl implements FileService {
         result.put("name", fileName);
         result.put("url", '/' + saveFileName);
 //        result.put("path", path);
-//        System.out.println(fileName);
+        System.out.println(fileName);
         return result;
     }
 
     @Override
     public Map<String, String> saveInfoImage(MultipartFile file) {
-        String path = null; // 文件保存路径
+        String path =  "/home/ubuntu/images/"; // 文件保存路径
         try {
             path = ResourceUtils.getURL("classpath:").getPath() + "static/";
         } catch (FileNotFoundException e) {
