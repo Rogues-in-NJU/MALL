@@ -165,6 +165,7 @@ public class OrderServiceImpl implements OrderService {
                     }
                     orderVO.setProductName(productVO.getName());
                 }
+                orderVO.setStatusName(OrderStatus.of(o.getStatus()).getMessage());
                 BeanUtils.copyProperties(o, orderVO);
                 orderVOList.add(orderVO);
             } catch (Exception e) {

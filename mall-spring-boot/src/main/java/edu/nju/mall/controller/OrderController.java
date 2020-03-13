@@ -49,12 +49,11 @@ public class OrderController {
     @GetMapping(value = "orderList")
     public ResultVO<ListResponse> orderList(@RequestParam(value = "pageIndex") int pageIndex,
                                             @RequestParam(value = "pageSize") int pageSize,
-                                            @RequestParam(value = "userId", required = false) String userId,
                                             @RequestParam(value = "status", required = false) Integer status,
                                             @RequestParam(value = "startTime", required = false) String startTime,
                                             @RequestParam(value = "endTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable, Long.valueOf(userId), status, startTime, endTime), pageIndex, pageSize));
+        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable,null, status, startTime, endTime), pageIndex, pageSize));
     }
 
 }
