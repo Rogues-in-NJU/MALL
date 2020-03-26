@@ -20,9 +20,9 @@
   >
   <van-card
         title="{{ item.name }}"
-        desc="{{ item.desc }}"
-        price="{{ item.price }}"
-        thumb="{{ item.thumb }}"
+        desc="{{ item.classification_name }}"
+        price="{{ item.buyingPrice }}"
+        thumb="{{ item.imageAddresses[0] }}"
         data-i="{{ item.id }}"
         bindtap="goToGoods"
       />
