@@ -99,16 +99,20 @@ Page({
   },
 
   onClickButton:function(event) {
-    wx.navigateTo({
-      url: '/pages/cart/index',
-      success: () => { },
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: '查看商品失败!',
-        });
-      },
+    wx.showToast({
+      title: '点击结算',
+      icon: 'none'
     });
+    // wx.navigateTo({
+    //   url: '/pages/cart/index',
+    //   success: () => { },
+    //   error: () => {
+    //     wx.showToast({
+    //       icon: 'none',
+    //       title: '查看商品失败!',
+    //     });
+    //   },
+    // });
   }
 
 });
