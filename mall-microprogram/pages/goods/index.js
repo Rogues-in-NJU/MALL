@@ -4,7 +4,7 @@ var app = getApp();
 
 Page({
   data: {
-    buyingPrice: 0,
+    // buyingPrice: 0,
     classificationName:"",
     imageAddresses:[],
     imageInfoAddresses:[],
@@ -46,7 +46,7 @@ Page({
         let thisgood = res.data;
         console.log(thisgood);
         this.setData({
-          buyingPrice: thisgood.buyingPrice,
+          // buyingPrice: thisgood.buyingPrice,
           classificationName: thisgood.classificationName,
           imageAddresses: thisgood.imageAddresses,
           imageInfoAddresses: thisgood.imageInfoAddresses,

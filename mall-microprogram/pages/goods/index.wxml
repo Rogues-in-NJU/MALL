@@ -10,7 +10,7 @@
     <van-cell
       custom-class="goods-message"
       title="{{ name }}"
-      label="{{ buyingPrice }}"
+      label="{{ price }}"
     />
     <van-cell custom-class="goods-express" border="{{ false }}">
       <!-- <van-col span="10">运费：{{ goods.express }}</van-col> -->

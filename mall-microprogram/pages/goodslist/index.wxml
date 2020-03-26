@@ -21,8 +21,8 @@
   <van-card
         title="{{ item.name }}"
         desc="{{ item.classification_name }}"
-        price="{{ item.buyingPrice }}"
-        thumb="{{ item.imageAddresses[0] }}"
+        price="{{ item.price }}"
+        thumb="https://175.24.41.132:8080{{ item.imageAddresses[0] }}"
         data-i="{{ item.id }}"
         bindtap="goToGoods"
       />
