@@ -40,8 +40,16 @@ public class WechatProductController {
     @InvokeControl
     @RoleControl({"user", "admin"})
     @GetMapping("/product/search")
-    public ResultVO<List<ProductVO>> searchOrder(@RequestParam(value = "productName") final String productName) {
+    public ResultVO<List<ProductVO>> searchProduct(@RequestParam(value = "productName") final String productName) {
         List<ProductVO> results = productService.searchByProductName(productName);
+        return ResultVO.ok(results);
+    }
+
+    @InvokeControl
+    @RoleControl({"user", "admin"})
+    @GetMapping("/product/get")
+    public ResultVO<ProductVO> getProductById(@RequestParam(value = "id") final long id) {
+        ProductVO results = productService.getProductById(id);
         return ResultVO.ok(results);
     }
 

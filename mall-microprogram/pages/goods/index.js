@@ -1,28 +1,75 @@
+import http from '../../request';
+
+var app = getApp();
+
 Page({
   data: {
-    goods: {
-      id:'1',
-      title: '苏州园林',
-      price: 239900,
-      formatPrice: '2399',
-      express: '免运费',
-      remain: 19,
-      thumb:
-        '/images/2.png',
-    },
+    buyingPrice: 0,
+    classificationName:"",
+    imageAddresses:[],
+    imageInfoAddresses:[],
+    name:"",
+    price:0,
+    quantity:0,
+    sellEndTime:"",
+    sellStartTime:"",
+    status:0
   },
   onLoad(options) {
-    // console.log(options);
     console.log(options.id);
     //TODO 根据options.id获取对应的商品
-    const { goods } = this.data;
-    const formatPrice = `¥${(goods.price / 100).toFixed(2)}`;
-    this.setData({
-      goods: {
-        ...goods,
-        formatPrice,
-      },
-    });
+    var url = '/wechat/api/product/get?id=' + options.id;
+    http.get(url)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        let thisgood = res.data;
+        console.log(thisgood);
+        this.setData({
+          buyingPrice: thisgood.buyingPrice,
+          classificationName: thisgood.classificationName,
+          imageAddresses: thisgood.imageAddresses,
+          imageInfoAddresses: thisgood.imageInfoAddresses,
+          name: thisgood.name,
+          price: thisgood.price,
+          quantity: thisgood.quantity,
+          sellEndTime: thisgood.sellEndTime,
+          sellStartTime: thisgood.sellStartTime,
+          status: thisgood.status,
+          canRefresh: true
+        });
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+        this.setData({
+          canRefresh: true
+        });
+      });
+    // const formatPrice = `¥${(goods.price / 100).toFixed(2)}`;
   },
 
   onClickCart() {
