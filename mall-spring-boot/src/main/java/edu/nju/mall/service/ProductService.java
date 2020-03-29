@@ -17,6 +17,8 @@ public interface ProductService {
 
     Long updateProduct(Product product);
 
+    Product getProduct(Long id);
+
     Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize);
 
     List<ProductVO> searchByProductName(String productName);

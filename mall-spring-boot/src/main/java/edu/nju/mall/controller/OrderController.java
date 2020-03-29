@@ -2,6 +2,8 @@ package edu.nju.mall.controller;
 
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.dto.OrderDTO;
+import edu.nju.mall.entity.Order;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.util.ListResponseUtils;
 import edu.nju.mall.vo.OrderSummaryVO;
@@ -53,7 +55,34 @@ public class OrderController {
                                             @RequestParam(value = "startTime", required = false) String startTime,
                                             @RequestParam(value = "endTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable,null, status, startTime, endTime), pageIndex, pageSize));
+        return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getOrderList(pageable, null, status, startTime, endTime), pageIndex, pageSize));
+    }
+
+
+    /**
+     * 获取订单信息
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "orderInfo/{id}")
+    public ResultVO<Order> orderInfo(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.getOrder(id));
+    }
+
+    /**
+     * 生成订单，对应商品库存不够会失败
+     * @param orderDTO
+     * @return
+     */
+    @PostMapping(value = "generateOrder")
+    public ResultVO<String> generateOrder(@RequestBody OrderDTO orderDTO) {
+        Boolean result = orderService.generateOrder(orderDTO);
+        if (!result) {
+            return ResultVO.ok("库存不足,下单失败!");
+        } else {
+            return ResultVO.ok("下单成功!");
+        }
+
     }
 
 }

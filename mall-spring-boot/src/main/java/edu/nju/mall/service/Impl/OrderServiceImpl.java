@@ -7,8 +7,10 @@ import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
+import edu.nju.mall.dto.OrderDTO;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Order;
+import edu.nju.mall.entity.Product;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
@@ -175,13 +177,34 @@ public class OrderServiceImpl implements OrderService {
         return orderVOList;
     }
 
+    @Transactional
     @Override
-    public int generateOrder() {
-        // todo 接收OrderDTO待创建，order信息
+    public Boolean generateOrder(OrderDTO orderDTO) {
+        Order order = Order.builder()
+                .orderCode(snowflake.nextId())
+                .status(OrderStatus.PAYING.getCode())
+                .build();
+        BeanUtils.copyProperties(orderDTO, order);
+        Product product = productService.getProduct(orderDTO.getProductId());
+        int remain = product.getQuantity() - orderDTO.getNum();
+        if (remain < 0) {
+            return false;
+        }
+        product.setQuantity(remain);
+        productService.updateProduct(product);
+        order.setPrice(product.getPrice() * orderDTO.getNum());
+        orderRepository.save(order);
+        return true;
+    }
 
-        Order order = Order.builder().orderCode(snowflake.nextId()).build();
-        //todo 插入order表，修改product库存
-        return 0;
+    @Override
+    public long updateOrder(Order order) {
+        return orderRepository.save(order).getId();
+    }
+
+    @Override
+    public Order getOrder(long id) {
+        return orderRepository.getOne(id);
     }
 
     @Override
@@ -203,6 +226,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         return orderSummaryVO;
     }
+
 
     /**
      * @param date

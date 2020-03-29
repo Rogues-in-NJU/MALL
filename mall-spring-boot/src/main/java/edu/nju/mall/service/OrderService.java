@@ -1,5 +1,7 @@
 package edu.nju.mall.service;
 
+import edu.nju.mall.dto.OrderDTO;
+import edu.nju.mall.entity.Order;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
@@ -27,7 +29,11 @@ public interface OrderService {
 
     List<OrderVO> searchByProductName(String productName, Integer status, Long userId);
 
-    int generateOrder();
-
     OrderSummaryVO getSummaryInfo();
+
+    Boolean generateOrder(OrderDTO orderDTO);
+
+    long updateOrder(Order order);
+
+    Order getOrder(long id);
 }

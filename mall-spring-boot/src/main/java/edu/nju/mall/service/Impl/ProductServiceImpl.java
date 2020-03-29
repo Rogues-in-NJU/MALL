@@ -84,6 +84,11 @@ public class ProductServiceImpl implements ProductService {
         return product.getId();
     }
 
+    @Override
+    public Product getProduct(Long id) {
+        return productRepository.getOne(id);
+    }
+
     public Page<ProductVO> getProductPage(Integer pageIndex, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "sellStartTime"));
 
