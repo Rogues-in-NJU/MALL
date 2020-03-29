@@ -1,5 +1,6 @@
 package edu.nju.mall.service;
 
+import com.alibaba.fastjson.JSON;
 import edu.nju.mall.common.WechatSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +27,8 @@ public class WechatApiServiceTest {
 
     @Test
     public void testConnection() {
-        WechatSession wechatSession = wechatApiService.jscode2Session(appId, appSecret, "test", grantType);
-        System.out.println(wechatSession.getErrcode());
+        WechatSession wechatSession = wechatApiService.jscode2Session(appId, appSecret, "021u5fN51tpSJR1EW5O517L5N51u5fN2", grantType);
+        System.out.println(JSON.toJSONString(wechatSession));
     }
 
 }

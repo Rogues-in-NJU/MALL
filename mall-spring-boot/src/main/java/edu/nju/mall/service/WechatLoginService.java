@@ -36,6 +36,7 @@ public class WechatLoginService {
     private JwtUtils jwtUtils;
 
     public String login(String code, String rawData, String signature) {
+        log.info("Login code: {}", code);
         WechatSession wechatSession = wechatApiService.jscode2Session(appId, appSecret, code, grantType);
         if (Objects.nonNull(wechatSession.getErrcode())
                 && !Objects.equals(wechatSession.getErrcode(), WechatSession.WechatSessionCode.SUCCESS.getCode())) {
