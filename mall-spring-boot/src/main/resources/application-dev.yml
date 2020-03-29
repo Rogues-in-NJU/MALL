@@ -12,6 +12,6 @@ wechat:
   pay:
     url:
       unified-order: https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder
-      order-query: https://api.mch.weixin.qq.com/pay/orderquery
-      close-order: https://api.mch.weixin.qq.com/pay/closeorder
+      order-query: https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery
+      close-order: https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder
 
