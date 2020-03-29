@@ -85,10 +85,21 @@ public class OrderController {
      * @return
      */
     @PostMapping(value = "generateOrder")
-    public ResultVO<String> generateOrder(@RequestBody OrderDTO orderDTO) {
+    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
         Order order = orderService.generateOrder(orderDTO);
+        return ResultVO.ok(order.getId());
+    }
+
+    /**
+     * 支付接口，传order的id
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "pay/{id}")
+    public ResultVO<String> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        Order order = orderService.getOrder(id);
         UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
-                .body(productService.getProduct(orderDTO.getProductId()).getName())
+                .body(productService.getProduct(order.getProductId()).getName())
                 .out_trade_no(String.valueOf(order.getOrderCode()))
                 .total_fee(order.getPrice())
                 .build();

@@ -16,6 +16,7 @@ import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.service.UserService;
+import edu.nju.mall.util.CommonUtils;
 import edu.nju.mall.util.DateUtils;
 import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
@@ -90,6 +91,17 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.REFUNDED.getCode());
         orderRepository.save(order);
         return orderId;
+    }
+
+    @Override
+    public List<Order> getAllUnPayOrder() {
+        QueryContainer<Order> sp = new QueryContainer<>();
+        try {
+            sp.add(ConditionFactory.equal("status", OrderStatus.PAYING.getCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderRepository.findAll(sp);
     }
 
 
@@ -181,6 +193,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order generateOrder(OrderDTO orderDTO) {
         Order order = Order.builder()
+                .createdAt(DateUtils.getTime())
                 .orderCode(snowflake.nextId())
                 .status(OrderStatus.PAYING.getCode())
                 .build();
@@ -188,12 +201,13 @@ public class OrderServiceImpl implements OrderService {
         Product product = productService.getProduct(orderDTO.getProductId());
         int remain = product.getQuantity() - orderDTO.getNum();
         if (remain < 0) {
-            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"库存不够，下单失败！");
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "库存不够，下单失败！");
         }
         product.setQuantity(remain);
         productService.updateProduct(product);
         order.setPrice(product.getPrice() * orderDTO.getNum());
-        orderRepository.save(order);
+        Long orderId = orderRepository.saveAndFlush(order).getId();
+        order.setId(orderId);
         return order;
     }
 
