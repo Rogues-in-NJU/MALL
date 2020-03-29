@@ -5,5 +5,7 @@ import edu.nju.mall.entity.ProductInfoImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ProductInfoImageRepository extends JpaRepository<ProductInfoImage, Integer>, JpaSpecificationExecutor<ProductInfoImage> {
+public interface ProductInfoImageRepository extends JpaRepository<ProductInfoImage, Long>, JpaSpecificationExecutor<ProductInfoImage> {
+
+    void deleteProductInfoImagesByImageLink(String imageLink);
 }

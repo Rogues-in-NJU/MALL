@@ -32,9 +32,9 @@ public class Product extends BaseEntity {
     private String classificationName;
 
     @Column(name = "buying_price")
-    private double buyingPrice;
+    private Integer buyingPrice;
 
-    private double price;
+    private Integer price;
 
     private double percent;
 

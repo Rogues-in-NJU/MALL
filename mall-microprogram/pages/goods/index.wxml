@@ -3,18 +3,18 @@
     <van-image
       height="414"
       width="100%"
-      src="{{ goods.thumb }}"
+      src="http://175.24.41.132:8080{{imageAddresses[0]}}"
     />
   </view>
   <van-cell-group border="{{ false }}">
     <van-cell
       custom-class="goods-message"
-      title="{{ goods.title }}"
-      label="{{ goods.formatPrice }}"
+      title="{{ name }}"
+      label="{{ price }}"
     />
     <van-cell custom-class="goods-express" border="{{ false }}">
-      <van-col span="10">运费：{{ goods.express }}</van-col>
-      <van-col span="14">剩余：{{ goods.remain }}</van-col>
+      <!-- <van-col span="10">运费：{{ goods.express }}</van-col> -->
+      <van-col span="14">库存：{{ quantity }}</van-col>
     </van-cell>
   </van-cell-group>
   <van-goods-action>

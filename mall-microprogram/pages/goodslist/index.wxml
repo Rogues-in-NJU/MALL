@@ -19,10 +19,10 @@
   wx:key="{{ item.id }}"
   >
   <van-card
-        title="{{ item.title }}"
-        desc="{{ item.desc }}"
+        title="{{ item.name }}"
+        desc="{{ item.classification_name }}"
         price="{{ item.price }}"
-        thumb="{{ item.thumb }}"
+        thumb="http://175.24.41.132:8080{{ item.imageAddresses[0] }}"
         data-i="{{ item.id }}"
         bindtap="goToGoods"
       />

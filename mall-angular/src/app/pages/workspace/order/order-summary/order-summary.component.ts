@@ -19,7 +19,6 @@ import {OrderSummary} from "../../../../core/model/orderSummary";
 })
 export class OrderSummaryComponent implements RefreshableTab, OnInit {
   summary: OrderSummary;
-
   constructor(
     private orderService: OrderService,
     private message: NzMessageService,
@@ -47,6 +46,7 @@ export class OrderSummaryComponent implements RefreshableTab, OnInit {
         return;
       }
       this.summary = res.data;
+      console.log(this.summary);
     }, (error: HttpErrorResponse) => {
       this.message.error('网络异常，请检查网络或者尝试重新登录!');
     });

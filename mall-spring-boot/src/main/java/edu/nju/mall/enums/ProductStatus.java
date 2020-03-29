@@ -1,8 +1,25 @@
 package edu.nju.mall.enums;
 
-/**
- * todo 产品的状态似乎多余了。
- * 依靠销售时间来判断是否可售出
- */
-public class ProductStatus {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum ProductStatus {
+
+    NORMAL(1, "正常"),
+    DELETED(2, "已删除");
+
+
+    private int code;
+    private String message;
+
+    public static ProductStatus of(int code) throws Exception {
+        for (ProductStatus item : ProductStatus.values()) {
+            if (item.code == code) {
+                return item;
+            }
+        }
+        throw new Exception();
+    }
 }

@@ -19,20 +19,27 @@ export class ProductService {
   public findAll(queryParams: TableQueryParams): Observable<ResultVO<TableResultVO<ProductVO>>>{
     return this.http.get<ResultVO<TableResultVO<ProductVO>>>(`${AppConfig.BASE_URL}/api/product/list`, {
       params: queryParams,
-      withCredentials: true
+      withCredentials: false
     });
   };
 
   public findOne(productId: number): Observable<ResultVO<ProductVO>>{
     return this.http.get<ResultVO<ProductVO>>(`${AppConfig.BASE_URL}/api/product/info/${productId}`, {
-      withCredentials: true
+      withCredentials: false
     });
   };
 
-  public updateOrAddProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
+  public addProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
     console.log(queryParams);
     return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/save`, queryParams, {
-      withCredentials: true
+      withCredentials: false
+    });
+  }
+
+  public updateProduct(queryParams: ProductVO): Observable<ResultVO<any>>{
+    console.log(queryParams);
+    return this.http.post<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/update`, queryParams, {
+      withCredentials: false
     });
   }
 
@@ -40,4 +47,19 @@ export class ProductService {
     return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/api/product/delete/${productId}`);
   }
 
+  public deleteProductImage(productImageId: number): Observable<ResultVO<any>>{
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/deleteImage/${productImageId}`);
+  }
+
+  public deleteProductInfoImage(productInfoImageId: number): Observable<ResultVO<any>>{
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/deleteInfoImage/${productInfoImageId}`);
+  }
+
+  public deleteProductImageByImageLink(imageLink: string): Observable<ResultVO<any>>{
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/deleteImageByImageLink/${imageLink}`);
+  }
+
+  public deleteProductInfoImageByImageLink(imageLink: string): Observable<ResultVO<any>>{
+    return this.http.get<ResultVO<any>>(`${AppConfig.BASE_URL}/deleteInfoImageByImageLink/${imageLink}`);
+  }
 }

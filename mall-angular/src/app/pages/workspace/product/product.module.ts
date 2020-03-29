@@ -5,6 +5,7 @@ import {AuthorizationGuard} from "../../../guards/authorization.guard";
 import {SharedModule} from "../../../shared/shared.module";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {ProductAddComponent} from "./product-add/product-add.component";
+import {ProductStatusColorPipe, ProductStatusPipe} from "./product.pipe";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'list' },
@@ -26,13 +27,13 @@ const routes: Routes = [
       removable: true
     }
   },
-  { path: 'info',
-    pathMatch: 'full',
+  { path: 'info/:productId',
     component: ProductInfoComponent,
     canActivate: [ AuthorizationGuard ],
     data: {
-      title: '商品详情',
-      removable: true
+      title: '商品详情{}',
+      removable: true,
+      replaceParams: ['productId'],
     }
   },
 ];
@@ -42,6 +43,8 @@ const routes: Routes = [
   declarations: [ProductListComponent,
     ProductInfoComponent,
     ProductAddComponent,
+    ProductStatusPipe,
+    ProductStatusColorPipe,
     ],
   exports: [ RouterModule ]
 })

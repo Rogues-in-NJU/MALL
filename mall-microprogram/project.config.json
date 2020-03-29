@@ -28,7 +28,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.9.4",
 	"appid": "wx914c89b261bb6d56",
-	"projectname": "vant-demo",
+	"projectname": "mall-microprogram",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

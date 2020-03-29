@@ -3,6 +3,7 @@ package edu.nju.mall.controller;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.entity.Classification;
 import edu.nju.mall.service.ClassificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @Author: qianen.yin
  * @CreateDate: 2020-02-03 14:21
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/classification")
 public class ClassificationController {

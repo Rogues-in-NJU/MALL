@@ -9,4 +9,8 @@ public interface ProductInfoImageService {
     List<ProductInfoImage> getProductInfoImagesByProductId(Long productId);
 
     Long saveProductInfoImage(ProductInfoImage productInfoImage);
+
+    Long deleteProductInfoImage(Long productInfoImageId);
+
+    void deleteProductImageByImageLink(String imageLink);
 }

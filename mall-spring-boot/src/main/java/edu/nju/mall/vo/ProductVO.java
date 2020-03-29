@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.Column;
 import java.util.List;
 
 @Data
@@ -21,9 +24,9 @@ public class ProductVO {
 
     private String classificationName;
 
-    private double buyingPrice;
+    private Integer buyingPrice;
 
-    private double price;
+    private Integer price;
 
     private double percent;
 
@@ -38,4 +41,10 @@ public class ProductVO {
     private List<String> imageAddresses;
 
     private List<String> imageInfoAddresses;
+
+    protected String createdAt;
+
+    protected String updatedAt;
+
+    protected String deletedAt;
 }

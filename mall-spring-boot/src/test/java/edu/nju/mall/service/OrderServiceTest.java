@@ -38,7 +38,7 @@ public class OrderServiceTest {
     public void testAdd() {
         Order order = Order.builder()
                 .orderCode(snowflake.nextId())
-                .userId(1L)
+                .userId("")
                 .num(2)
                 .price(2000)
                 .consigneePhone("12345678999090")
