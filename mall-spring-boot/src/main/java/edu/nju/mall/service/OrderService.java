@@ -31,7 +31,7 @@ public interface OrderService {
 
     OrderSummaryVO getSummaryInfo();
 
-    Boolean generateOrder(OrderDTO orderDTO);
+    Order generateOrder(OrderDTO orderDTO);
 
     long updateOrder(Order order);
 

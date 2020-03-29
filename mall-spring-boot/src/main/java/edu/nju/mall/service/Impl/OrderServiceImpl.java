@@ -179,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Boolean generateOrder(OrderDTO orderDTO) {
+    public Order generateOrder(OrderDTO orderDTO) {
         Order order = Order.builder()
                 .orderCode(snowflake.nextId())
                 .status(OrderStatus.PAYING.getCode())
@@ -188,13 +188,13 @@ public class OrderServiceImpl implements OrderService {
         Product product = productService.getProduct(orderDTO.getProductId());
         int remain = product.getQuantity() - orderDTO.getNum();
         if (remain < 0) {
-            return false;
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"库存不够，下单失败！");
         }
         product.setQuantity(remain);
         productService.updateProduct(product);
         order.setPrice(product.getPrice() * orderDTO.getNum());
         orderRepository.save(order);
-        return true;
+        return order;
     }
 
     @Override
