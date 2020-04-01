@@ -117,9 +117,11 @@ Page({
         'signType': 'MD5',
         'paySign': '',
         'success': function (res) {
+          //TODO 跳转至订单
           console.log('支付成功');
         },
         'fail': function (res) {
+          //TODO 跳转至订单
           console.log('支付失败');
           return;
         },
