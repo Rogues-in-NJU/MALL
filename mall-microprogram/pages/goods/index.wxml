@@ -16,7 +16,21 @@
       <!-- <van-col span="10">运费：{{ goods.express }}</van-col> -->
       <van-col span="14">库存：{{ quantity }}</van-col>
     </van-cell>
+
+    
+
+<van-col span="14">商品详情</van-col>
+<view   wx:for="{{ imageInfoAddresses }}"
+  wx:key="{{ item.id }}">
+    <van-image
+      height="414"
+      width="100%"
+      src="http://175.24.41.132:8080{{item}}"
+    />
+  </view>
+
   </van-cell-group>
+  
   <van-goods-action>
     <van-goods-action-button
       text="立即购买"
