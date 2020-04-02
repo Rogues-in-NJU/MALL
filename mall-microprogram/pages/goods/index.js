@@ -4,6 +4,7 @@ var app = getApp();
 
 Page({
   data: {
+    productid:0,
     // buyingPrice: 0,
     classificationName:"",
     imageAddresses:[],
@@ -47,6 +48,7 @@ Page({
         console.log(thisgood);
         this.setData({
           // buyingPrice: thisgood.buyingPrice,
+          productid: options.id,
           classificationName: thisgood.classificationName,
           imageAddresses: thisgood.imageAddresses,
           imageInfoAddresses: thisgood.imageInfoAddresses,
@@ -103,16 +105,20 @@ Page({
       title: '点击结算',
       icon: 'none'
     });
-    // wx.navigateTo({
-    //   url: '/pages/cart/index',
-    //   success: () => { },
-    //   error: () => {
-    //     wx.showToast({
-    //       icon: 'none',
-    //       title: '查看商品失败!',
-    //     });
-    //   },
-    // });
+    //TODO 跳转到结算页面，
+    wx.navigateTo({
+      url: '/pages/cart/index?id=' + this.data.productid,
+      success: () => { },
+      error: () => {
+        wx.showToast({
+          icon: 'none',
+          title: '结算页面加载失败',
+        });
+      },
+    });
+
+
+    
   }
 
 });

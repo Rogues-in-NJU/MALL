@@ -1,5 +1,5 @@
 <view>
-  <van-checkbox-group
+  <!-- <van-checkbox-group
     class="card-goods"
     value="{{ checkedGoods }}"
     bind:change="onChange"
@@ -9,18 +9,30 @@
       wx:for="{{ goods }}"
       wx:key="{{ item.id }}"
       name="{{ item.id }}"
-    >
+    > -->
       <van-card
-        title="{{ item.title }}"
-        num="{{ item.num }}"
-        price="{{ item.formatPrice }}"
-        thumb="{{ item.thumb }}"
+        title="{{ name }}"
+        num="1"
+        price="{{ price }}"
+        thumb="http://175.24.41.132:8080{{ imageAddresses[0] }}"
       />
-    </van-checkbox>
-  </van-checkbox-group>
+    <!-- </van-checkbox> -->
+  <!-- </van-checkbox-group> -->
+
+<view class="inputView">
+    <input class="input"  type="text" placeholder="请输入收货人姓名" placeholder-style="color: gray" bindinput="listenerNameInput" />
+</view>
+
+<view class="inputView">
+    <input class="input"  type="number" placeholder="请输入收货人手机号码" placeholder-style="color: gray" bindinput="listenerPhoneInput" />
+</view>
+
+<view class="inputView">
+    <input class="input"  type="number" placeholder="请输入收货人身份证号码" placeholder-style="color: gray" bindinput="listeneridentityCardInput" />
+</view>
+
   <van-submit-bar
-    price="{{ totalPrice }}"
-    disabled="{{ !checkedGoods.length }}"
+    price="{{ price }}"
     button-text="{{ submitBarText }}"
     bind:submit="onSubmit"
   />

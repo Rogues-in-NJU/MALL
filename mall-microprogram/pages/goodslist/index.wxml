@@ -6,14 +6,14 @@
       src="/images/wechartMall.png"
     />
   </view>
-  <view>
+  <!-- <view>
     <van-grid>
       <van-grid-item icon="/icons/cart.png" text="{{ category[0].name }}" />
       <van-grid-item icon="/icons/home.png" text="{{ category[1].name }}" />
       <van-grid-item icon="/icons/usercenter.png" text="{{ category[2].name }}" />
       <van-grid-item icon="/icons/home-selected.png" text="{{ category[3].name }}" />
     </van-grid>
-  </view>
+  </view> -->
   <view 
   wx:for="{{ goods }}"
   wx:key="{{ item.id }}"
