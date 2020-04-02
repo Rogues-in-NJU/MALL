@@ -2,6 +2,7 @@ package edu.nju.mall.controller;
 
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.entity.Product;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.util.ListResponseUtils;
@@ -19,19 +20,21 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @InvokeControl
     @PostMapping(value = "save")
     public ResultVO<Integer> saveProduct(@RequestBody Product product) {
         Long id = productService.addProduct(product);
         return ResultVO.ok(id.intValue());
     }
 
+    @InvokeControl
     @PostMapping(value = "update")
     public ResultVO<Integer> updateProduct(@RequestBody Product product) {
         Long id = productService.updateProduct(product);
         return ResultVO.ok(id.intValue());
     }
 
-
+    @InvokeControl
     @GetMapping("list")
     public ResultVO<ListResponse> getProductList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize){
@@ -40,11 +43,13 @@ public class ProductController {
 
     }
 
+    @InvokeControl
     @GetMapping("info/{productId}")
     public ResultVO<ProductVO> getProduct(@PathVariable("productId") long productId){
         return ResultVO.ok(productService.getProductById(productId));
     }
 
+    @InvokeControl
     @GetMapping("delete/{productId}")
     public ResultVO<Integer> deleteProduct(@PathVariable("productId") long productId){
         return ResultVO.ok(productService.deleteProductById(productId));

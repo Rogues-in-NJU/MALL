@@ -3,6 +3,7 @@ package edu.nju.mall.controller;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.dto.OrderDTO;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.service.OrderService;
@@ -36,6 +37,7 @@ public class OrderController {
 
     private static String wechatPatCode = "return_code";
 
+    @InvokeControl
     @GetMapping(value = "refundOrderList")
     public ResultVO<ListResponse> refundOrderList(@RequestParam(value = "pageIndex") int pageIndex,
                                                   @RequestParam(value = "pageSize") int pageSize) {
@@ -43,21 +45,26 @@ public class OrderController {
         return ResultVO.ok(ListResponseUtils.generateResponse(orderService.getRefundingOrderList(pageable), pageIndex, pageSize));
     }
 
+
+    @InvokeControl
     @GetMapping(value = "refund/{id}")
     public ResultVO<Long> refund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.refund(id));
     }
 
+    @InvokeControl
     @GetMapping(value = "finishRefund/{id}")
     public ResultVO<Long> finishRefund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.finishRefund(id));
     }
 
+    @InvokeControl
     @GetMapping(value = "summaryInfo")
     public ResultVO<OrderSummaryVO> summaryInfo() {
         return ResultVO.ok(orderService.getSummaryInfo());
     }
 
+    @InvokeControl
     @GetMapping(value = "orderList")
     public ResultVO<ListResponse> orderList(@RequestParam(value = "pageIndex") int pageIndex,
                                             @RequestParam(value = "pageSize") int pageSize,
@@ -75,6 +82,7 @@ public class OrderController {
      * @param id
      * @return
      */
+    @InvokeControl
     @GetMapping(value = "orderInfo/{id}")
     public ResultVO<Order> orderInfo(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.getOrder(id));
@@ -86,6 +94,7 @@ public class OrderController {
      * @param orderDTO
      * @return
      */
+    @InvokeControl
     @PostMapping(value = "generateOrder")
     public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
         Order order = orderService.generateOrder(orderDTO);
@@ -98,6 +107,7 @@ public class OrderController {
      * @param id
      * @return
      */
+    @InvokeControl
     @GetMapping(value = "pay/{id}")
     public ResultVO<Map<String, String>> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         Map<String, String> result = orderService.pay(id);
