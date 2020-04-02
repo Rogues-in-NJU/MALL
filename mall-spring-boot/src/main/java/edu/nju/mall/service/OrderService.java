@@ -1,16 +1,14 @@
 package edu.nju.mall.service;
 
 import edu.nju.mall.dto.OrderDTO;
+import edu.nju.mall.dto.UnifiedOrderResponseDTO;
 import edu.nju.mall.entity.Order;
-import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 作用描述
@@ -40,5 +38,5 @@ public interface OrderService {
 
     Order getOrder(long id);
 
-    Map<String, String> pay(Long id);
+    UnifiedOrderResponseDTO pay(Long id);
 }

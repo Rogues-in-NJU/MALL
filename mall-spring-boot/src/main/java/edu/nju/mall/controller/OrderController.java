@@ -5,6 +5,7 @@ import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.dto.OrderDTO;
+import edu.nju.mall.dto.UnifiedOrderResponseDTO;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Description: 作用描述
@@ -34,8 +36,6 @@ public class OrderController {
     ProductService productService;
     @Autowired
     WechatPayService wechatPayService;
-
-    private static String wechatPatCode = "return_code";
 
     @InvokeControl
     @GetMapping(value = "refundOrderList")
@@ -109,9 +109,9 @@ public class OrderController {
      */
     @InvokeControl
     @GetMapping(value = "pay/{id}")
-    public ResultVO<Map<String, String>> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
-        Map<String, String> result = orderService.pay(id);
-        if (result.containsKey(wechatPatCode) && result.get(wechatPatCode).equals("SUCCESS")) {
+    public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        UnifiedOrderResponseDTO result = orderService.pay(id);
+        if (Objects.nonNull(result.getReturn_code()) && result.getReturn_code().equals("SUCCESS")) {
             return ResultVO.ok(result);
         }
         return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");

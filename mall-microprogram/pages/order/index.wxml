@@ -33,7 +33,9 @@
             wx:if="{{ status === 0 }}"
             size="small" 
             color="rgb(255, 216, 66)"
-            round>去支付</van-button>
+            round
+            bindtap="pay"
+            >去支付</van-button>
           <!-- <van-button size="small" type="danger">退款</van-button> -->
         </view>
       </view>

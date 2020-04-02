@@ -5,11 +5,11 @@ import cn.hutool.core.util.IdUtil;
 import com.google.common.base.Preconditions;
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
-import edu.nju.mall.common.WechatSession;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
 import edu.nju.mall.dto.OrderDTO;
 import edu.nju.mall.dto.UnifiedOrderDTO;
+import edu.nju.mall.dto.UnifiedOrderResponseDTO;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.entity.Product;
 import edu.nju.mall.enums.OrderStatus;
@@ -19,7 +19,6 @@ import edu.nju.mall.service.ProductService;
 import edu.nju.mall.service.WechatPayService;
 import edu.nju.mall.util.DateUtils;
 import edu.nju.mall.util.HttpSecurity;
-import edu.nju.mall.util.XmlUtils;
 import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
 import edu.nju.mall.vo.ProductVO;
@@ -31,8 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,25 +233,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<String, String> pay(Long id) {
+    public UnifiedOrderResponseDTO pay(Long id) {
         Order order = getOrder(id);
         UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
                 .body(productService.getProduct(order.getProductId()).getName())
                 .out_trade_no(String.valueOf(order.getOrderCode()))
                 .total_fee(order.getPrice())
                 .build();
-        Map<String, String> resultMap = new HashMap<>();
-        try {
-            resultMap = XmlUtils.xmlToMap(wechatPayService.unifiedOrder(unifiedOrderDTO));
-            log.info("ans:{}", resultMap);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (org.xml.sax.SAXException e) {
-            e.printStackTrace();
-        }
-        return resultMap;
+        UnifiedOrderResponseDTO unifiedOrderResponseDTO = wechatPayService.unifiedOrder(unifiedOrderDTO);
+        log.info("ans:{}", unifiedOrderResponseDTO);
+        return unifiedOrderResponseDTO;
     }
 
     @Override

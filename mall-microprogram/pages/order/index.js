@@ -86,6 +86,16 @@ Page({
       });
   },
 
+  pay: function () {
+    http.get('/wechat/api/order/pay/' + this.data.id)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+
+      });
+  },
+
   goToProductDetail: function(event) {
     console.log(event);
     var dataset = event.currentTarget.dataset || event.target.dataset;
@@ -108,4 +118,5 @@ Page({
       });
     }
   }
+
 })
