@@ -109,25 +109,51 @@ Page({
     //TODO 商品信息（是否勾选）、库存、用户信息的检查
 
     //TODO 调用支付接口获取支付信息
-    wx.requestPayment(
-      {
-        'timeStamp': '',
-        'nonceStr': '',
-        'package': '',
-        'signType': 'MD5',
-        'paySign': '',
-        'success': function (res) {
-          //TODO 跳转至订单
-          console.log('支付成功');
-        },
-        'fail': function (res) {
-          //TODO 跳转至订单
-          console.log('支付失败');
-          return;
-        },
-        'complete': function (res) {
-          //TODO 完成支付调用接口
-        }
-      })
+    wx.request({
+      url: "/api/product/generateOrder",
+      method: "POST",
+      data: {
+        userId: 'py',
+        productId: 18,
+        num: 2,
+        consignee: 'xx',
+        consigneePhone: 'xx',
+        consigneeAddress: 'xx'
+      },
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      success: function (res) {
+        console.log(res.data);
+        wx.showToast({
+          title: '成功！',
+          icon: 'success',
+        })
+      },
+    })
+
+  //   wx.requestPayment(
+  //     {
+  //       'timeStamp': '',
+  //       'nonceStr': '',
+  //       'package': '',
+  //       'signType': 'MD5',
+  //       'paySign': '',
+  //       'success': function (res) {
+  //         //TODO 跳转至订单
+  //         console.log('支付成功');
+  //       },
+  //       'fail': function (res) {
+  //         //TODO 跳转至订单
+  //         console.log('支付失败');
+  //         return;
+  //       },
+  //       'complete': function (res) {
+  //         //TODO 完成支付调用接口
+  //       }
+  //     })
+
+
+
   },
 });
