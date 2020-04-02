@@ -15,10 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    /**
-     * 微信号ID
-     */
-    private String userId;
+
+    private Long userId;
 
     private Long productId;
 

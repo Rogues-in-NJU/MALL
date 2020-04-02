@@ -107,30 +107,43 @@ Page({
     console.log('Phone=' + this.data.phone)
     console.log('identityCard=' + this.data.identityCard)
     //TODO 商品信息（是否勾选）、库存、用户信息的检查
-
+    var data = {
+      userId: 'py',
+      productId: 18,
+      num: 2,
+      consignee: 'xx',
+      consigneePhone: 'xx',
+      consigneeAddress: 'xx'
+    };
     //TODO 调用支付接口获取支付信息
-    wx.request({
-      url: "/api/product/generateOrder",
-      method: "POST",
-      data: {
-        userId: 'py',
-        productId: 18,
-        num: 2,
-        consignee: 'xx',
-        consigneePhone: 'xx',
-        consigneeAddress: 'xx'
-      },
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      success: function (res) {
+    http.post('/api/order/generateOrder', data)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            title: '网络连接失败!',
+            icon: 'none',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            title: res.message,
+            icon: 'none',
+            duration: 1500
+          });
+          return;
+        }
         console.log(res.data);
+      })
+      .catch(err => {
+        wx.hideLoading();
         wx.showToast({
-          title: '成功！',
-          icon: 'success',
-        })
-      },
-    })
+          title: '网络连接失败!',
+          icon: 'none',
+          duration: 1500
+        });
+      });
 
   //   wx.requestPayment(
   //     {

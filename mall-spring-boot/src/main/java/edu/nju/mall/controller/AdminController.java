@@ -1,6 +1,7 @@
 package edu.nju.mall.controller;
 
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.dto.LoginDTO;
 import edu.nju.mall.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class AdminController {
     @Autowired
     private AdminUserService adminUserService;
 
+    @InvokeControl
     @PostMapping(value = "login")
     public ResultVO<Boolean> login(@RequestBody LoginDTO loginDTO) {
         return ResultVO.ok(adminUserService.checkLogin(loginDTO.getPhoneNumber(), loginDTO.getPassword()));
