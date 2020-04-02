@@ -19,19 +19,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log('load');
     if (options && options.i) {
       this.setData({
         tabActive: parseInt(options.i)
       });
+    } else {
+      this.loadOrders();
     }
-    this.loadOrders();
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    // console.log('refresh');
+    console.log('refresh');
+    this.setData({
+      pageIndex: 0,
+      pageSize: 10,
+      canRefresh: true,
+      orders: []
+    });
+    this.loadOrders();
   },
 
   /**
@@ -40,7 +49,7 @@ Page({
   onReachBottom: function () {
     console.log('reach bottom');
     if (this.data.searchValue) {
-
+      this.searchOrders();
     } else {
       if (this.data.canRefresh) {
         this.setData({
@@ -52,18 +61,19 @@ Page({
   },
 
   onTabChange: function(event) {
+    console.log('tab change');
     this.setData({
       tabActive: event.detail.index
+    });
+    this.setData({
+      pageIndex: 0,
+      pageSize: 10,
+      canRefresh: true,
+      orders: []
     });
     if (this.data.searchValue) {
       this.searchOrders();
     } else {
-      this.setData({
-        pageIndex: 0,
-        pageSize: 10,
-        canRefresh: true,
-        orders: []
-      });
       this.loadOrders();
     }
   },
@@ -74,6 +84,9 @@ Page({
   },
   onSearch: function() {
     this.setData({
+      pageIndex: 0,
+      pageSize: 10,
+      canRefresh: true,
       orders: []
     });
     this.searchOrders();
@@ -83,9 +96,9 @@ Page({
       searchValue: '',
       pageIndex: 0,
       pageSize: 10,
-      canRefresh: true
+      canRefresh: true,
+      orders: []
     });
-    this.orders = [];
     this.loadOrders();
   },
 
@@ -132,7 +145,6 @@ Page({
           }
           return ov;
         });
-        console.log(orderShowList);
         this.setData({
           pageIndex: listData.pageIndex,
           pageSize: listData.pageSize, 
@@ -169,6 +181,9 @@ Page({
             title: '网络连接失败!',
             duration: 1500
           });
+          this.setData({
+            canRefresh: true
+          });
           return;
         }
         if (res.code !== 10000) {
@@ -177,15 +192,42 @@ Page({
             title: res.message,
             duration: 1500
           });
+          this.setData({
+            canRefresh: true
+          });
           return;
         }
-        console.log(res);
+        let listData = res.data;
+        let orderShowList = listData.result.map(o => {
+          let ov = {
+            id: o.id,
+            num: o.num,
+            price: (o.price / 100.0).toFixed(2),
+            status: o.status,
+            statusName: getStatus(o.status),
+            productImage: o.productImage,
+            productName: o.productName,
+          }
+          return ov;
+        });
+        this.setData({
+          pageIndex: listData.pageIndex,
+          pageSize: listData.pageSize,
+          orders: [
+            ...this.data.orders,
+            ...orderShowList
+          ],
+          canRefresh: true
+        });
       })
       .catch(err => {
         wx.showToast({
           icon: 'none',
           title: '网络连接失败!',
           duration: 1500
+        });
+        this.setData({
+          canRefresh: true
         });
       });
   },

@@ -17,4 +17,6 @@ public class InfoSecurityUserDTO {
 
     private String avatarUrl;
 
+    private String createdAt;
+
 }

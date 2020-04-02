@@ -5,30 +5,32 @@
       <van-card
         desc="描述"
         title="商品标题"
+        num="{{ num }}"
         thumb="https://img.yzcdn.cn/vant/ipad.jpeg" 
+        data-product="{{ productId }}"
         bindtap="goToProductDetail">
       </van-card>
       <van-cell-group>
-        <van-cell title="联系人手机号" value="{{ 1234565679801 }}" border="{{ false }}"/>
+        <van-cell title="联系人手机号" value="{{ consigneePhone }}" border="{{ false }}"/>
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="订单编号" value="1" border="{{ false }}"/>
-        <van-cell title="微信交易号" value="1238492304" border="{{ false }}"/>
-        <van-cell title="订单总价" value="¥10" border="{{ false }}"/>
-        <van-cell title="创建时间" value="2020-02-20 14:00:00" border="{{ false }}"/>
-        <van-cell title="付款时间" value="2020-02-20 14:00:00" border="{{ false }}"/>
+        <van-cell title="订单编号" value="{{ orderCode }}" border="{{ false }}"/>
+        <van-cell title="微信交易号" value="{{ transactionNumber }}" border="{{ false }}"/>
+        <van-cell title="订单总价" value="¥{{ price }}" border="{{ false }}"/>
+        <van-cell title="创建时间" value="{{ createdAt }}" border="{{ false }}"/>
+        <van-cell title="付款时间" value="{{ payTime }}" border="{{ false }}"/>
         <van-cell title="退款时间" value="" border="{{ false }}"/>
       </van-cell-group>
       <view slot="footer" class="order-footer">
         <view class="buttons">
           <van-button 
-            wx:if="{{ orderStatus === 1 || orderStatus === 2 }}" 
+            wx:if="{{ status === 1 || status === 2 }}" 
             size="small" round>申请退款</van-button>
           <van-button
-            wx:if="{{ orderStatus === 0 }}"
+            wx:if="{{ status === 0 }}"
             size="small" round>取消订单</van-button>
           <van-button
-            wx:if="{{ orderStatus === 0 }}"
+            wx:if="{{ status === 0 }}"
             size="small" 
             color="rgb(255, 216, 66)"
             round>去支付</van-button>

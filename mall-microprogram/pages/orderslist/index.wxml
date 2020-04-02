@@ -28,14 +28,14 @@
         thumb="{{ item.productImage }}" 
         data-id="{{ item.id }}"
         bindtap="goToOrderDetail">
-        <view slot="footer">
+        <!-- <view slot="footer">
           <van-button 
             round 
             size="mini" 
             class="footer-item" 
             data-orderId="{{ item.id }}"
-            catchtap="onOrderItemButtonClick">按钮</van-button>
-        </view>
+            catchtap="onOrderItemButtonClick">按钮</van-button> -->
+        <!-- </view> -->
       </van-card>
     </view>
   </view>
