@@ -60,7 +60,7 @@ public class WithDrawlServiceImpl implements WithDrawlService {
     }
 
     @Override
-    public Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, String userId, String startTime, String endTime) {
+    public Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, Long userId, String startTime, String endTime) {
         QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
         try {
             sp.add(ConditionFactory.equal("status", WithDrawlRecordStatus.DONE.getCode()));
@@ -72,7 +72,7 @@ public class WithDrawlServiceImpl implements WithDrawlService {
     }
 
     @Override
-    public Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, String userId, String startTime, String endTime) {
+    public Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, Long userId, String startTime, String endTime) {
         QueryContainer<WithdrawalRecord> sp = new QueryContainer<>();
         try {
             sp.add(ConditionFactory.equal("status", WithDrawlRecordStatus.TODO.getCode()));
@@ -83,10 +83,10 @@ public class WithDrawlServiceImpl implements WithDrawlService {
         return withdrawalRecordRepository.findAll(sp, pageable);
     }
 
-    private void setQueryContainer(QueryContainer<WithdrawalRecord> sp, String userId, String startTime, String endTime) {
+    private void setQueryContainer(QueryContainer<WithdrawalRecord> sp, Long userId, String startTime, String endTime) {
         try {
             if (userId != null) {
-                sp.add(ConditionFactory.like("userId", userId));
+                sp.add(ConditionFactory.equal("userId", userId));
             }
             if (startTime != null) {
                 sp.add(ConditionFactory.greatThanEqualTo("withdrawalTime", startTime));

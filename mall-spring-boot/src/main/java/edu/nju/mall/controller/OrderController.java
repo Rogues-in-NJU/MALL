@@ -1,11 +1,10 @@
 package edu.nju.mall.controller;
 
+import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.dto.OrderDTO;
-import edu.nju.mall.dto.UnifiedOrderDTO;
 import edu.nju.mall.entity.Order;
-import edu.nju.mall.entity.Product;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.service.WechatPayService;
@@ -18,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 /**
  * @Description: 作用描述
@@ -33,6 +33,8 @@ public class OrderController {
     ProductService productService;
     @Autowired
     WechatPayService wechatPayService;
+
+    private static String wechatPatCode = "return_code";
 
     @GetMapping(value = "refundOrderList")
     public ResultVO<ListResponse> refundOrderList(@RequestParam(value = "pageIndex") int pageIndex,
@@ -92,18 +94,17 @@ public class OrderController {
 
     /**
      * 支付接口，传order的id
+     *
      * @param id
      * @return
      */
     @GetMapping(value = "pay/{id}")
-    public ResultVO<String> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
-        Order order = orderService.getOrder(id);
-        UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
-                .body(productService.getProduct(order.getProductId()).getName())
-                .out_trade_no(String.valueOf(order.getOrderCode()))
-                .total_fee(order.getPrice())
-                .build();
-        return ResultVO.ok(wechatPayService.unifiedOrder(unifiedOrderDTO));
+    public ResultVO<Map<String, String>> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        Map<String, String> result = orderService.pay(id);
+        if (result.containsKey(wechatPatCode) && result.get(wechatPatCode).equals("SUCCESS")) {
+            return ResultVO.ok(result);
+        }
+        return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
     }
 
 }

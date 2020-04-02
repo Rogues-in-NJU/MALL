@@ -19,7 +19,7 @@ public interface WithDrawlService {
 
     WithdrawalCondition getWithdrawalCondition();
 
-    Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, String userId, String startTime, String endTime);
+    Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, Long userId, String startTime, String endTime);
 
-    Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, String userId, String startTime, String endTime);
+    Page<WithdrawalRecord> getTodoRecordList(Pageable pageable, Long userId, String startTime, String endTime);
 }

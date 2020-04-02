@@ -58,7 +58,7 @@ public class WithdrawalController {
     @GetMapping(value = "todoRecordList")
     public ResultVO<ListResponse> todoRecordList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize,
-                                                 @RequestParam(value = "userId", required = false) String userId,
+                                                 @RequestParam(value = "userId", required = false) Long userId,
                                                  @RequestParam(value = "createAtStartTime", required = false) String startTime,
                                                  @RequestParam(value = "createAtEndTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "withdrawalTime"));
@@ -68,7 +68,7 @@ public class WithdrawalController {
     @GetMapping(value = "doneRecordList")
     public ResultVO<ListResponse> doneRecordList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize,
-                                                 @RequestParam(value = "userId", required = false) String userId,
+                                                 @RequestParam(value = "userId", required = false) Long userId,
                                                  @RequestParam(value = "createAtStartTime", required = false) String startTime,
                                                  @RequestParam(value = "createAtEndTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "withdrawalTime"));
