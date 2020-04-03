@@ -91,7 +91,27 @@ Page({
   },
 
   onSubmit() {
-    //TODO 商品信息（是否勾选）、库存、用户信息的检查
+    //验证手机号码
+    var pattern = /^[1][3-9]\d{9}$/
+    if (!pattern.test(this.data.identityCard)) {
+      wx.showToast({
+        title: "手机号码格式有误",
+        icon: 'none',
+        duration: 1500
+      });
+      return;
+    }
+    //验证身份证号码
+    var idpattern = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/
+    if (!idpattern.test(this.data.phone)){
+      wx.showToast({
+        title: "身份证号码格式有误",
+        icon: 'none',
+        duration: 1500
+      });
+      return;
+    }
+    //包装post数据
     console.log(this.data.productid);
     var data = {
       // userId: 111,
@@ -101,7 +121,7 @@ Page({
       consigneePhone: this.data.phone,
       consigneeAddress: this.data.identityCard
     };
-    //TODO 调用支付接口获取支付信息
+    //生成订单
     http.post('/wechat/api/order/generate', data)
       .then(res => {
         if (res === undefined || res === null) {
@@ -134,7 +154,7 @@ Page({
           duration: 1500
         });
       });
-
+    //跳转至生成的未支付状态的订单
     wx.navigateTo({
       url: '/pages/order/index?id=' + this.data.orderid,
       success: () => { },
@@ -145,37 +165,6 @@ Page({
         });
       },
     });
-      //调用pay接口
-    // console.log(this.data.orderid);
-    // http.get('/wechat/api/order/pay/' +this.data. orderid)
-    //   .then(res => {
-    //     if (res === undefined || res === null) {
-    //       wx.showToast({
-    //         title: '网络连接失败!',
-    //         icon: 'none',
-    //         duration: 1500
-    //       });
-    //       return;
-    //     }
-    //     if (res.code !== 10000) {
-    //       wx.showToast({
-    //         title: res.message,
-    //         icon: 'none',
-    //         duration: 1500
-    //       });
-    //       return;
-    //     }
-    //     console.log(res.data);
-    //   })
-    //   .catch(err => {
-    //     wx.hideLoading();
-    //     wx.showToast({
-    //       title: '网络连接失败!',
-    //       icon: 'none',
-    //       duration: 1500
-    //     });
-    //   });
-
   //   wx.requestPayment(
   //     {
   //       'timeStamp': '',
@@ -196,8 +185,5 @@ Page({
   //         //TODO 完成支付调用接口
   //       }
   //     })
-
-
-
   },
 });
