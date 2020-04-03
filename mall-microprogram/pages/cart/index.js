@@ -8,6 +8,7 @@ Page({
     phone: '',
     identityCard:'',
 
+    productid:0,
     imageAddresses: [],
     name: "",
     price: 0,
@@ -103,17 +104,14 @@ Page({
   },
 
   onSubmit() {
-    console.log('Name=' + this.data.name)
-    console.log('Phone=' + this.data.phone)
-    console.log('identityCard=' + this.data.identityCard)
     //TODO 商品信息（是否勾选）、库存、用户信息的检查
     var data = {
-      userId: 'py',
-      productId: 18,
-      num: 2,
-      consignee: 'xx',
-      consigneePhone: 'xx',
-      consigneeAddress: 'xx'
+      // userId: 'py',
+      productId: this.data.productId,
+      num: 1,
+      consignee: this.data.name,
+      consigneePhone: this.data.phone,
+      consigneeAddress: this.data.identityCard
     };
     //TODO 调用支付接口获取支付信息
     http.post('/api/order/generateOrder', data)
