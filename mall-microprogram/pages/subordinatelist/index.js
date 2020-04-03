@@ -1,29 +1,13 @@
 // pages/subordinatelist/index.js
+import http from '../../request';
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    subordinateList: [
-      {nickname: '测试', createdAt: 'test'},
-
-      { nickname: '测试', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' },
-      { nickname: 'test', createdAt: 'test' }
-    ]
+    subordinateList: []
   },
 
   /**
@@ -55,6 +39,39 @@ Page({
   },
 
   refresh: function() {
-    console.log('refresh');
+    this.loadSubordinates();
+    // console.log('refresh');
+  },
+
+  loadSubordinates: function() {
+    http.get('/wechat/api/subordinate/list')
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          return;
+        }
+        this.setData({
+          subordinateList: res.data
+        });
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+      });
   }
 })

@@ -8,16 +8,17 @@ import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
 import edu.nju.mall.dto.OrderDTO;
-import edu.nju.mall.dto.UserDTO;
+import edu.nju.mall.dto.UnifiedOrderDTO;
+import edu.nju.mall.dto.UnifiedOrderResponseDTO;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.entity.Product;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
-import edu.nju.mall.service.UserService;
-import edu.nju.mall.util.CommonUtils;
+import edu.nju.mall.service.WechatPayService;
 import edu.nju.mall.util.DateUtils;
+import edu.nju.mall.util.HttpSecurity;
 import edu.nju.mall.vo.OrderSummaryVO;
 import edu.nju.mall.vo.OrderVO;
 import edu.nju.mall.vo.ProductVO;
@@ -31,7 +32,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +49,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private WechatPayService wechatPayService;
+    @Autowired
+    private HttpSecurity httpSecurity;
 
     private List<Integer> dealStatus = new ArrayList<Integer>() {{
         add(OrderStatus.TODO.getCode());
@@ -193,12 +200,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order generateOrder(OrderDTO orderDTO) {
         Order order = Order.builder()
+                .userId(httpSecurity.getUserId())
                 .createdAt(DateUtils.getTime())
                 .orderCode(snowflake.nextId())
                 .status(OrderStatus.PAYING.getCode())
                 .build();
         BeanUtils.copyProperties(orderDTO, order);
         Product product = productService.getProduct(orderDTO.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "错误的商品Id！");
+        }
         int remain = product.getQuantity() - orderDTO.getNum();
         if (remain < 0) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "库存不够，下单失败！");
@@ -218,7 +229,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrder(long id) {
-        return orderRepository.getOne(id);
+        return orderRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public UnifiedOrderResponseDTO pay(Long id) {
+        Order order = getOrder(id);
+        UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
+                .body(productService.getProduct(order.getProductId()).getName())
+                .out_trade_no(String.valueOf(order.getOrderCode()))
+                .total_fee(order.getPrice())
+                .build();
+        UnifiedOrderResponseDTO unifiedOrderResponseDTO = wechatPayService.unifiedOrder(unifiedOrderDTO);
+        log.info("ans:{}", unifiedOrderResponseDTO);
+        return unifiedOrderResponseDTO;
     }
 
     @Override

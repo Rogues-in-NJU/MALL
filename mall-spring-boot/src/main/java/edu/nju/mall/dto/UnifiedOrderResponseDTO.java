@@ -25,6 +25,7 @@ public class UnifiedOrderResponseDTO {
      *
      * */
     private String return_msg;
+    private String retmsg;
 
     // 以下字段在return_code为SUCCESS的时候有返回
     /**

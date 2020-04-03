@@ -2,6 +2,7 @@ package edu.nju.mall.controller;
 
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.entity.ProductInfoImage;
 import edu.nju.mall.service.FileService;
@@ -30,6 +31,7 @@ public class FileUploadController {
     @Autowired
     ProductInfoImageService productInfoImageService;
 
+    @InvokeControl
     @RequestMapping("/upload-product-image")
     public Map<String, String> upload(@RequestParam("upload_file")MultipartFile file,
                                       @RequestParam("product_id")Long productId) {
@@ -45,6 +47,7 @@ public class FileUploadController {
         return result;
     }
 
+    @InvokeControl
     @RequestMapping("/upload-product-info")
     public Map<String, String> uploadInfo(@RequestParam("upload_file")MultipartFile file,
                                       @RequestParam("product_id")Long productId) {

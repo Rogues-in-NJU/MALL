@@ -2,6 +2,7 @@ package edu.nju.mall.controller;
 
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
+import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.entity.WithdrawalCondition;
 import edu.nju.mall.entity.WithdrawalRecord;
 import edu.nju.mall.enums.WithDrawlRecordStatus;
@@ -28,18 +29,21 @@ public class WithdrawalController {
     @Autowired
     private WithDrawlService withDrawlService;
 
+    @InvokeControl
     @PostMapping(value = "saveRecord")
     public ResultVO<Integer> saveRecord(@RequestBody WithdrawalRecord withdrawalRecord) {
         Integer id = withDrawlService.saveRecord(withdrawalRecord);
         return ResultVO.ok(id);
     }
 
+    @InvokeControl
     @PostMapping(value = "saveCondition")
     public ResultVO<Integer> saveCondition(@RequestBody WithdrawalCondition withdrawalCondition) {
         Integer id = withDrawlService.saveCondition(withdrawalCondition);
         return ResultVO.ok(id);
     }
 
+    @InvokeControl
     @GetMapping(value = "withdrawal/{id}")
     public ResultVO<Integer> withdrawal(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
         WithdrawalRecord withdrawalRecord = withDrawlService.getRecordById(id);
@@ -49,26 +53,29 @@ public class WithdrawalController {
         return ResultVO.ok(id);
     }
 
+    @InvokeControl
     @GetMapping(value = "withdrawalCondition")
     public ResultVO<WithdrawalCondition> withdrawalCondition() {
         WithdrawalCondition withdrawalCondition = withDrawlService.getWithdrawalCondition();
         return ResultVO.ok(withdrawalCondition);
     }
 
+    @InvokeControl
     @GetMapping(value = "todoRecordList")
     public ResultVO<ListResponse> todoRecordList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize,
-                                                 @RequestParam(value = "userId", required = false) String userId,
+                                                 @RequestParam(value = "userId", required = false) Long userId,
                                                  @RequestParam(value = "createAtStartTime", required = false) String startTime,
                                                  @RequestParam(value = "createAtEndTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "withdrawalTime"));
         return ResultVO.ok(ListResponseUtils.generateResponse(withDrawlService.getTodoRecordList(pageable, userId, startTime, endTime), pageIndex, pageSize));
     }
 
+    @InvokeControl
     @GetMapping(value = "doneRecordList")
     public ResultVO<ListResponse> doneRecordList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize,
-                                                 @RequestParam(value = "userId", required = false) String userId,
+                                                 @RequestParam(value = "userId", required = false) Long userId,
                                                  @RequestParam(value = "createAtStartTime", required = false) String startTime,
                                                  @RequestParam(value = "createAtEndTime", required = false) String endTime) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "withdrawalTime"));

@@ -31,7 +31,7 @@ public class XmlUtils {
         org.w3c.dom.Element root = document.createElement("xml");
         document.appendChild(root);
         for (String key: data.keySet()) {
-            String value = JSON.toJSONString(data.get(key));
+            String value = String.valueOf(data.get(key));
             if (value == null) {
                 value = "";
             }

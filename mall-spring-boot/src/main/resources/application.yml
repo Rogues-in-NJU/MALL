@@ -52,3 +52,5 @@ jwt:
 wechat:
   micro-program:
   pay:
+    url:
+      sandbox-sign:

@@ -1,12 +1,13 @@
 package edu.nju.mall.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @Description: 作用描述
@@ -20,13 +21,13 @@ import javax.persistence.*;
 @Table(name = "order_sheet")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order extends BaseEntity{
+public class Order extends BaseEntity {
 
     /**
      * 购买人Id(微信号)
      */
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     /**
      * 订单流水号
