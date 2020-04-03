@@ -15,6 +15,7 @@ import edu.nju.mall.dto.UnifiedOrderResponseDTO;
 import edu.nju.mall.util.XmlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,10 +28,7 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -67,6 +65,12 @@ public class WechatPayService {
 
         Map<String, Object> generateData = new HashMap<>();
         BeanUtil.copyProperties(data, generateData);
+        Set<String> keys = generateData.keySet();
+        for (String key: keys) {
+            if (Objects.isNull(generateData.get(key)) || StringUtils.isBlank(String.valueOf(generateData.get(key)))) {
+                generateData.remove(key);
+            }
+        }
 
         generateData.put("appid", appId);
         generateData.put("mch_id", mchId);
@@ -87,15 +91,17 @@ public class WechatPayService {
         if (StringUtils.isBlank(sandboxSignUrl)) {
             generateData.put("sign", generateSign(generateData, paySecretKey));
         } else {
-            generateData.put("sign", generateSign(generateData, getSandboxSign()));
+            String sandboxSignKey = getSandboxSign();
+            generateData.put("sign", generateSign(generateData, sandboxSignKey));
         }
 
         log.debug("Generate Data: {}", JSON.toJSONString(generateData));
         String responseBody;
         try {
+            String requestBody = XmlUtils.mapToXml(generateData);
             responseBody = HttpRequest.post(this.unifiedOrderUrl)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
-                    .body(XmlUtils.mapToXml(generateData))
+                    .body(requestBody)
                     .execute().body();
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             UnifiedOrderResponseDTO unifiedOrderResponseDTO = new UnifiedOrderResponseDTO();
@@ -138,7 +144,7 @@ public class WechatPayService {
                     .execute().body();
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             OrderQueryResponseDTO orderQueryResponseDTO = new OrderQueryResponseDTO();
-            BeanUtil.copyProperties(responseBody, orderQueryResponseDTO);
+            BeanUtil.copyProperties(resultMap, orderQueryResponseDTO);
             return orderQueryResponseDTO;
         } catch (TransformerException | IOException | ParserConfigurationException | SAXException e) {
             log.error(e.getMessage(), e);
@@ -192,7 +198,7 @@ public class WechatPayService {
             if (Objects.nonNull(sandboxSignResponseDTO.getReturn_code()) && sandboxSignResponseDTO.getReturn_code().equals("SUCCESS")) {
                 return sandboxSignResponseDTO.getSandbox_signkey();
             } else {
-                return null;
+                throw new NJUException(ExceptionEnum.SERVER_ERROR, "获取沙箱签名失败!");
             }
         } catch (ParserConfigurationException | TransformerException | IOException | SAXException e) {
             log.error(e.getMessage(), e);
@@ -216,7 +222,7 @@ public class WechatPayService {
         Preconditions.checkNotNull(map);
         List<String> keyValues = map.keySet().stream()
                 .sorted()
-                .map(k -> k + "=" + JSON.toJSONString(map.get(k)))
+                .map(k -> k + "=" + map.get(k))
                 .collect(Collectors.toList());
         return StringUtils.join(keyValues, "&");
     }
