@@ -94,12 +94,12 @@ public class OrderController {
      * @param orderDTO
      * @return
      */
-    @InvokeControl
-    @PostMapping(value = "generateOrder")
-    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
-        Order order = orderService.generateOrder(orderDTO);
-        return ResultVO.ok(order.getId());
-    }
+//    @InvokeControl
+//    @PostMapping(value = "generateOrder")
+//    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
+//        Order order = orderService.generateOrder(orderDTO);
+//        return ResultVO.ok(order.getId());
+//    }
 
     /**
      * 支付接口，传order的id
@@ -107,14 +107,14 @@ public class OrderController {
      * @param id
      * @return
      */
-    @InvokeControl
-    @GetMapping(value = "pay/{id}")
-    public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
-        UnifiedOrderResponseDTO result = orderService.pay(id);
-        if (Objects.nonNull(result.getReturn_code()) && result.getReturn_code().equals("SUCCESS")) {
-            return ResultVO.ok(result);
-        }
-        return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
-    }
+//    @InvokeControl
+//    @GetMapping(value = "pay/{id}")
+//    public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+//        UnifiedOrderResponseDTO result = orderService.pay(id);
+//        if (Objects.nonNull(result.getReturn_code()) && result.getReturn_code().equals("SUCCESS")) {
+//            return ResultVO.ok(result);
+//        }
+//        return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
+//    }
 
 }

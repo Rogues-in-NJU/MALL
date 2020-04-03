@@ -235,6 +235,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public UnifiedOrderResponseDTO pay(Long id) {
         Order order = getOrder(id);
+        if (order.getStatus() != OrderStatus.PAYING.getCode()) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单已支付或被废弃！");
+        }
         UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
                 .body(productService.getProduct(order.getProductId()).getName())
                 .out_trade_no(String.valueOf(order.getOrderCode()))
