@@ -32,7 +32,7 @@
 </view>
 
   <van-submit-bar
-    price="{{ price }}"
+    price="{{ totalPrice }}"
     button-text="{{ submitBarText }}"
     bind:submit="onSubmit"
   />

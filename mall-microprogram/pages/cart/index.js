@@ -59,7 +59,8 @@ Page({
           productid: options.id,
           imageAddresses: thisgood.imageAddresses,
           name: thisgood.name,
-          price: thisgood.price,
+          price: (thisgood.price / 100).toFixed(2),
+          totalPrice: thisgood.price,
         });
       })
       .catch(err => {
@@ -74,21 +75,21 @@ Page({
       });
   },
 
-  onChange(event) {
-    const { goods } = this.data;
-    const checkedGoods = event.detail;
-    const totalPrice = goods.reduce(
-      (total, item) =>
-        total + (checkedGoods.indexOf(item.id) !== -1 ? item.price : 0),
-      0,
-    );
-    const submitBarText = checkedGoods.length ? `结算`: '结算';
-    this.setData({
-      checkedGoods,
-      totalPrice,
-      submitBarText,
-    });
-  },
+  // onChange(event) {
+  //   const { goods } = this.data;
+  //   const checkedGoods = event.detail;
+  //   const totalPrice = goods.reduce(
+  //     (total, item) =>
+  //       total + (checkedGoods.indexOf(item.id) !== -1 ? item.price : 0),
+  //     0,
+  //   );
+  //   const submitBarText = checkedGoods.length ? `结算`: '结算';
+  //   this.setData({
+  //     checkedGoods,
+  //     totalPrice,
+  //     submitBarText,
+  //   });
+  // },
 
   onSubmit() {
     //验证手机号码
