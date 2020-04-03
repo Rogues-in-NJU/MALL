@@ -93,7 +93,7 @@ Page({
   onSubmit() {
     //验证手机号码
     var pattern = /^[1][3-9]\d{9}$/
-    if (!pattern.test(this.data.identityCard)) {
+    if (!pattern.test(this.data.phone)) {
       wx.showToast({
         title: "手机号码格式有误",
         icon: 'none',
@@ -103,7 +103,7 @@ Page({
     }
     //验证身份证号码
     var idpattern = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/
-    if (!idpattern.test(this.data.phone)){
+    if (!idpattern.test(this.data.identityCard)){
       wx.showToast({
         title: "身份证号码格式有误",
         icon: 'none',
