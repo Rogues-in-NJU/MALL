@@ -17,7 +17,8 @@ Page({
     createdAt: '',
     payTime: '',
     refundTime: '',
-    productId: 0
+    productId: 0,
+    product: {}
   },
 
   /**
@@ -76,6 +77,35 @@ Page({
           refundTime: res.data.refundTime,
           productId: res.data.productId
         });
+        http.get('/wechat/api/product/get' + this.data.productId)
+          .then(res => {
+            if (res === undefined || res === null) {
+              wx.showToast({
+                icon: 'none',
+                title: '网络连接失败!',
+                duration: 1500
+              });
+              return;
+            }
+            if (res.code !== 10000) {
+              wx.showToast({
+                icon: 'none',
+                title: res.message,
+                duration: 1500
+              });
+              return;
+            }
+            this.setData({
+              product: res.data
+            });
+          })
+          .catch(err => {
+            wx.showToast({
+              icon: 'none',
+              title: '网络连接失败!',
+              duration: 1500
+            });
+          });
       })
       .catch(err => {
         wx.showToast({
@@ -89,10 +119,59 @@ Page({
   pay: function () {
     http.get('/wechat/api/order/pay/' + this.data.id)
       .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          return;
+        }
         console.log(res);
       })
       .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+      });
+  },
 
+  refund: function() {
+    http.get('/wechat/api/order/refund' + this.data.id)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          return;
+        }
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
       });
   },
 
