@@ -59,7 +59,7 @@ Page({
           productid: options.id,
           imageAddresses: thisgood.imageAddresses,
           name: thisgood.name,
-          price: thisgood.price / 100,
+          price: (thisgood.price / 100).toFixed(2),
           totalPrice: thisgood.price,
         });
       })

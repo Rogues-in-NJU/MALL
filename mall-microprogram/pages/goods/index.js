@@ -53,7 +53,7 @@ Page({
           imageAddresses: thisgood.imageAddresses,
           imageInfoAddresses: thisgood.imageInfoAddresses,
           name: thisgood.name,
-          price: thisgood.price / 100,
+          price: (thisgood.price / 100).toFixed(2),
           quantity: thisgood.quantity,
           sellEndTime: thisgood.sellEndTime,
           sellStartTime: thisgood.sellStartTime,
