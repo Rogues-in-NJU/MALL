@@ -9,6 +9,7 @@ Page({
   data: {
     id: null,
     status: 0,
+    statusName: '',
     orderCode: 12,
     consigneePhone: 'xx',
     transactionNumber: null,
@@ -67,6 +68,7 @@ Page({
         }
         this.setData({
           status: res.data.status,
+          statusName: getStatus(res.data.status),
           orderCode: res.data.orderCode,
           consigneePhone: res.data.consigneePhone,
           transactionNumber: res.data.transactionNumber,
@@ -77,7 +79,7 @@ Page({
           refundTime: res.data.refundTime,
           productId: res.data.productId
         });
-        http.get('/wechat/api/product/get' + this.data.productId)
+        http.get('/wechat/api/product/get?id=' + this.data.productId)
           .then(res => {
             if (res === undefined || res === null) {
               wx.showToast({
@@ -165,6 +167,12 @@ Page({
           });
           return;
         }
+        wx.showToast({
+          icon: 'none',
+          title: '退款申请中!',
+          duration: 1500
+        });
+        this.refresh();
       })
       .catch(err => {
         wx.showToast({
@@ -173,6 +181,10 @@ Page({
           duration: 1500
         });
       });
+  },
+
+  cancel: function() {
+
   },
 
   goToProductDetail: function(event) {
@@ -199,3 +211,19 @@ Page({
   }
 
 })
+
+function getStatus(i) {
+  if (i === 0) {
+    return '待付款';
+  } else if (i === 1) {
+    return '待完成';
+  } else if (i === 2) {
+    return '已完成';
+  } else if (i === 3) {
+    return '退款中';
+  } else if (i === 4) {
+    return '退款成功';
+  } else {
+    return '已废弃';
+  }
+}

@@ -1,7 +1,7 @@
 <!--pages/order/index.wxml-->
 <view>
   <view>
-    <van-panel title="订单信息" status="已完成" use-footer-slot>
+    <van-panel title="订单信息" status="{{ statusName }}" use-footer-slot>
       <van-card
         title="{{ product.name }}"
         num="{{ num }}"
