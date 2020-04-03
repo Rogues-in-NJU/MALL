@@ -100,12 +100,12 @@ public class OrderController {
      * @param orderDTO
      * @return
      */
-    @InvokeControl
-    @PostMapping(value = "generateOrder")
-    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
-        Order order = orderService.generateOrder(orderDTO);
-        return ResultVO.ok(order.getId());
-    }
+//    @InvokeControl
+//    @PostMapping(value = "generateOrder")
+//    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
+//        Order order = orderService.generateOrder(orderDTO);
+//        return ResultVO.ok(order.getId());
+//    }
 
     /**
      * 支付接口，传order的id
