@@ -20,6 +20,8 @@ public interface OrderService {
 
     long finishRefund(long orderId);
 
+    long cancelOrder(long orderId);
+
     List<Order> getAllUnPayOrder();
 
     Page<OrderVO> getRefundingOrderList(Pageable pageable);

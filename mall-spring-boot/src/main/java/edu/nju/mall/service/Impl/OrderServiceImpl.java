@@ -79,9 +79,6 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public long refund(long orderId) {
         Order order = orderRepository.getOne(orderId);
-//        if (order == null) {
-//            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "没有找到该订单!");
-//        }
         if (!dealStatus.contains(order.getStatus())) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法申请退款!");
         }
@@ -95,9 +92,29 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus() != OrderStatus.REFUNDING.getCode()) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法退款!");
         }
-        order.setStatus(OrderStatus.REFUNDED.getCode());
-        orderRepository.save(order);
+        updateQuantity(order, OrderStatus.REFUNDED.getCode());
         return orderId;
+    }
+
+    @Override
+    public long cancelOrder(long orderId) {
+        Order order = orderRepository.getOne(orderId);
+        if (order.getStatus() != OrderStatus.PAYING.getCode()) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单已完成支付，无法取消!");
+        }
+        updateQuantity(order, OrderStatus.ABANDON.getCode());
+        return orderId;
+    }
+
+    private void updateQuantity(Order order, int status) {
+        Product product = productService.getProduct(order.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "订单异常!");
+        }
+        product.setQuantity(product.getQuantity() + order.getNum());
+        order.setStatus(status);
+        orderRepository.save(order);
+        productService.updateProduct(product);
     }
 
     @Override

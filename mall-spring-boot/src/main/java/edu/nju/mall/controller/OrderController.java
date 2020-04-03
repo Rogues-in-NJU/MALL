@@ -53,6 +53,12 @@ public class OrderController {
     }
 
     @InvokeControl
+    @GetMapping(value = "cancel/{id}")
+    public ResultVO<Long> cancel(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.cancelOrder(id));
+    }
+
+    @InvokeControl
     @GetMapping(value = "finishRefund/{id}")
     public ResultVO<Long> finishRefund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.finishRefund(id));
