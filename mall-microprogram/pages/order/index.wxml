@@ -1,12 +1,11 @@
 <!--pages/order/index.wxml-->
 <view>
   <view>
-    <van-panel title="订单信息" status="已完成" use-footer-slot>
+    <van-panel title="订单信息" status="{{ statusName }}" use-footer-slot>
       <van-card
-        desc="描述"
-        title="商品标题"
+        title="{{ product.name }}"
         num="{{ num }}"
-        thumb="https://img.yzcdn.cn/vant/ipad.jpeg" 
+        thumb="http://175.24.41.132:8080{{ product.imageAddresses[0]}}" 
         data-product="{{ productId }}"
         bindtap="goToProductDetail">
       </van-card>

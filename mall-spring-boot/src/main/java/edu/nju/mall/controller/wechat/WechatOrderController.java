@@ -74,6 +74,7 @@ public class WechatOrderController {
      * @return
      */
     @InvokeControl
+    @RoleControl({"user", "admin"})
     @PostMapping(value = "/generate")
     public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {
         Order order = orderService.generateOrder(orderDTO);
@@ -87,6 +88,7 @@ public class WechatOrderController {
      * @return
      */
     @InvokeControl
+    @RoleControl({"user", "admin"})
     @GetMapping(value = "/pay/{id}")
     public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         UnifiedOrderResponseDTO result = orderService.pay(id);
@@ -94,6 +96,20 @@ public class WechatOrderController {
             return ResultVO.ok(result);
         }
         return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
+    }
+
+    @InvokeControl
+    @RoleControl({"user", "admin"})
+    @GetMapping(value = "/refund/{id}")
+    public ResultVO<Long> refund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.refund(id));
+    }
+
+    @InvokeControl
+    @RoleControl({"user", "admin"})
+    @GetMapping(value = "/finishRefund/{id}")
+    public ResultVO<Long> finishRefund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.finishRefund(id));
     }
 
 }
