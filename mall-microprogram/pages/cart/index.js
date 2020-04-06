@@ -145,7 +145,18 @@ Page({
         this.setData({
           orderid: res.data,
         });
-        console.log(this.data.orderid);
+        // console.log(this.data.orderid);
+        //跳转至生成的未支付状态的订单
+        wx.navigateTo({
+          url: '/pages/order/index?id=' + this.data.orderid,
+          success: () => { },
+          error: () => {
+            wx.showToast({
+              icon: 'none',
+              title: '生成订单失败!',
+            });
+          },
+        });
       })
       .catch(err => {
         wx.hideLoading();
@@ -155,16 +166,6 @@ Page({
           duration: 1500
         });
       });
-    //跳转至生成的未支付状态的订单
-    wx.navigateTo({
-      url: '/pages/order/index?id=' + this.data.orderid,
-      success: () => { },
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: '生成订单失败!',
-        });
-      },
-    });
+    
   },
 });
