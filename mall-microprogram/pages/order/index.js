@@ -19,7 +19,12 @@ Page({
     payTime: '',
     refundTime: '',
     productId: 0,
-    product: {}
+    product: {},
+
+    nonce_str:'',
+    sign:'',
+    prepay_id:'',
+    appid:'',
   },
 
   /**
@@ -73,6 +78,7 @@ Page({
           consigneePhone: res.data.consigneePhone,
           transactionNumber: res.data.transactionNumber,
           price: (res.data.price / 100.0).toFixed(2),
+          // price: res.data.price,
           num: res.data.num,
           createdAt: res.data.createdAt,
           payTime: res.data.payTime,
@@ -138,6 +144,13 @@ Page({
           return;
         }
         console.log(res);
+        this.setData({
+          nonce_str: res.data.nonce_str,
+          sign: res.data.sign,
+          prepay_id: res.data.prepay_id,
+          appid: res.data.appid,
+        });
+        this.generatePayCode();
       })
       .catch(err => {
         wx.showToast({
@@ -149,7 +162,7 @@ Page({
   },
 
   refund: function() {
-    http.get('/wechat/api/order/refund' + this.data.id)
+    http.get('/wechat/api/order/refund/' + this.data.id)
       .then(res => {
         if (res === undefined || res === null) {
           wx.showToast({
@@ -181,6 +194,34 @@ Page({
           duration: 1500
         });
       });
+  },
+
+  generatePayCode :function(){
+    console.log(this.data.appid);
+    console.log(this.data.nonce_str);
+    console.log(this.data.prepay_id);
+    console.log(this.data.sign);
+        wx.requestPayment(
+      {
+            'appId': this.data.appid,
+            'timeStamp': '1538069468',
+            'nonceStr': this.data.nonce_str,
+            'package': 'prepay_id='+this.data.prepay_id,
+        'signType': 'MD5',
+        'paySign': this.data.sign,
+        'success': function (res) {
+          //TODO 跳转至订单
+          console.log('支付成功');
+        },
+        'fail': function (res) {
+          //TODO 跳转至订单
+          console.log('支付失败');
+          return;
+        },
+        'complete': function (res) {
+          //TODO 完成支付调用接口
+        }
+      })
   },
 
   cancel: function() {
