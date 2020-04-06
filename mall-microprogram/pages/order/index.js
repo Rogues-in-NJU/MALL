@@ -184,7 +184,38 @@ Page({
   },
 
   cancel: function() {
-
+    http.get('/wechat/api/order/cancel' + this.data.id)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          return;
+        }
+        wx.showToast({
+          icon: 'none',
+          title: '订单已取消!',
+          duration: 1500
+        });
+        this.refresh();
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+      });
   },
 
   goToProductDetail: function(event) {

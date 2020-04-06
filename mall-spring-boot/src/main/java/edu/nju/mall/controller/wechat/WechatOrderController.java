@@ -112,4 +112,11 @@ public class WechatOrderController {
         return ResultVO.ok(orderService.finishRefund(id));
     }
 
+    @InvokeControl
+    @RoleControl({"user", "admin"})
+    @GetMapping(value = "/cancel/{id}")
+    public ResultVO<Long> cancel(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.cancelOrder(id));
+    }
+
 }
