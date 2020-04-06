@@ -184,7 +184,7 @@ Page({
   },
 
   cancel: function() {
-    http.get('/wechat/api/order/cancel' + this.data.id)
+    http.get('/wechat/api/order/cancel/' + this.data.id)
       .then(res => {
         if (res === undefined || res === null) {
           wx.showToast({
