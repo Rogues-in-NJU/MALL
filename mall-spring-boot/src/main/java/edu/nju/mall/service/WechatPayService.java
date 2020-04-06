@@ -58,15 +58,14 @@ public class WechatPayService {
 
     /**
      * 统一下单接口
-     *
-     * */
+     */
     public UnifiedOrderResponseDTO unifiedOrder(@Nonnull final UnifiedOrderDTO data) {
         Preconditions.checkNotNull(data);
 
         Map<String, Object> generateData = new HashMap<>();
         BeanUtil.copyProperties(data, generateData);
         Set<String> keys = generateData.keySet();
-        for (String key: keys) {
+        for (String key : keys) {
             if (Objects.isNull(generateData.get(key)) || StringUtils.isBlank(String.valueOf(generateData.get(key)))) {
                 generateData.remove(key);
             }
@@ -77,7 +76,6 @@ public class WechatPayService {
 
         String nonceStr = IdUtil.fastSimpleUUID();
         generateData.put("nonce_str", nonceStr);
-
         try {
             InetAddress ip = InetAddress.getLocalHost();
             generateData.put("spbill_create_ip", ip.getHostAddress());
@@ -105,6 +103,7 @@ public class WechatPayService {
                     .execute().body();
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             UnifiedOrderResponseDTO unifiedOrderResponseDTO = new UnifiedOrderResponseDTO();
+            unifiedOrderResponseDTO.setTimeStamp(String.valueOf(System.currentTimeMillis()));
             BeanUtil.copyProperties(resultMap, unifiedOrderResponseDTO);
             return unifiedOrderResponseDTO;
         } catch (TransformerException | IOException | ParserConfigurationException | SAXException e) {
@@ -117,7 +116,7 @@ public class WechatPayService {
      * 查询订单接口
      *
      * @param outTradeNo 商户订单号
-     * */
+     */
     public OrderQueryResponseDTO orderQuery(@Nonnull final String outTradeNo) {
         Preconditions.checkNotNull(outTradeNo);
 
@@ -208,8 +207,7 @@ public class WechatPayService {
 
     /**
      * 生成签名
-     *
-     * */
+     */
     private String generateSign(@Nonnull Map<String, Object> originData, String key) {
         Preconditions.checkNotNull(originData);
         String originStr = mapJoin(originData);

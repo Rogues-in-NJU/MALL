@@ -71,4 +71,9 @@ public class UnifiedOrderResponseDTO {
      * */
     private String prepay_id;
 
+    /**
+     * 时间戳
+     */
+    private String timeStamp;
+
 }
