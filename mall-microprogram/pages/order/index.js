@@ -72,7 +72,7 @@ Page({
           orderCode: res.data.orderCode,
           consigneePhone: res.data.consigneePhone,
           transactionNumber: res.data.transactionNumber,
-          price: res.data.price,
+          price: (res.data.price / 100.0).toFixed(2),
           num: res.data.num,
           createdAt: res.data.createdAt,
           payTime: res.data.payTime,

@@ -23,9 +23,9 @@
       <van-card
         num="{{ item.num }}"
         tag="{{ item.statusName }}"
-        price="10.00"
+        price="{{ item.price }}"
         title="{{ item.productName }}"
-        thumb="{{ item.productImage }}" 
+        thumb="http://175.24.41.132:8080{{ item.productImage }}" 
         data-id="{{ item.id }}"
         bindtap="goToOrderDetail">
         <!-- <view slot="footer">
