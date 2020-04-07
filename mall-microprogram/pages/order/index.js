@@ -25,6 +25,7 @@ Page({
     sign:'',
     prepay_id:'',
     appid:'',
+    timeStamp:'',
   },
 
   /**
@@ -149,6 +150,7 @@ Page({
           sign: res.data.sign,
           prepay_id: res.data.prepay_id,
           appid: res.data.appid,
+          timeStamp: res.data.timeStamp,
         });
         this.generatePayCode();
       })
@@ -201,26 +203,30 @@ Page({
     console.log(this.data.nonce_str);
     console.log(this.data.prepay_id);
     console.log(this.data.sign);
+    console.log(this.data.timeStamp);
         wx.requestPayment(
       {
             'appId': this.data.appid,
-            'timeStamp': '1538069468',
+            'timeStamp': this.data.timeStamp,
             'nonceStr': this.data.nonce_str,
             'package': 'prepay_id='+this.data.prepay_id,
         'signType': 'MD5',
         'paySign': this.data.sign,
         'success': function (res) {
-          //TODO 跳转至订单
+          //TODO 支付成功调用接口
           console.log('支付成功');
         },
         'fail': function (res) {
-          //TODO 跳转至订单
+          console.log(res);
           console.log('支付失败');
+          wx.showToast({
+            icon: 'none',
+            title: '支付失败!',
+            duration: 1500
+          });
           return;
         },
-        'complete': function (res) {
-          //TODO 完成支付调用接口
-        }
+        'complete': function (res) {}
       })
   },
 
