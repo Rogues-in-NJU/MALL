@@ -66,6 +66,6 @@
   </van-tabbar>
 </view>
 <!-- TODO 这里可能需要完善 -->
-<!-- <view>
+<view>
   <button open-type="getUserInfo">用户授权</button>
-</view> -->
+</view>
