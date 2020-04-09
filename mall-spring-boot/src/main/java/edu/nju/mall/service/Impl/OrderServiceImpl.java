@@ -266,6 +266,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Boolean finishPay(Long id) {
+        Order order = getOrder(id);
+        if (order.getStatus() != OrderStatus.PAYING.getCode()) {
+            return false;
+        }
+        order.setStatus(OrderStatus.TODO.getCode());
+        updateOrder(order);
+        return true;
+    }
+
+    @Override
     public OrderSummaryVO getSummaryInfo() {
         List<Order> totalDeal = getOrder(false, null);
         List<Order> todayDeal = getOrder(false, DateUtils.getToday());

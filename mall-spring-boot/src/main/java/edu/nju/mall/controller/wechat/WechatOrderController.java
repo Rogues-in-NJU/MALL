@@ -101,6 +101,13 @@ public class WechatOrderController {
     @InvokeControl
     @RoleControl({"user", "admin"})
     @GetMapping(value = "/refund/{id}")
+    public ResultVO<Boolean> finishPay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+        return ResultVO.ok(orderService.finishPay(id));
+    }
+
+    @InvokeControl
+    @RoleControl({"user", "admin"})
+    @GetMapping(value = "/refund/{id}")
     public ResultVO<Long> refund(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
         return ResultVO.ok(orderService.refund(id));
     }

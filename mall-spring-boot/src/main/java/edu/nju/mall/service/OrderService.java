@@ -41,4 +41,6 @@ public interface OrderService {
     Order getOrder(long id);
 
     UnifiedOrderResponseDTO pay(Long id);
+
+    Boolean finishPay(Long id);
 }
