@@ -107,20 +107,35 @@ public class OrderController {
 //        return ResultVO.ok(order.getId());
 //    }
 
-    /**
-     * 支付接口，传order的id
-     *
-     * @param id
-     * @return
-     */
-    @InvokeControl
-    @GetMapping(value = "pay/{id}")
-    public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
-        UnifiedOrderResponseDTO result = orderService.pay(id);
-        if (Objects.nonNull(result.getReturn_code()) && result.getReturn_code().equals("SUCCESS")) {
-            return ResultVO.ok(result);
-        }
-        return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
-    }
+//    /**
+//     * 支付接口，传order的id
+//     *
+//     * @param id
+//     * @return
+//     */
+//    @InvokeControl
+//    @GetMapping(value = "pay/{id}")
+//    public ResultVO<UnifiedOrderResponseDTO> pay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+//        UnifiedOrderResponseDTO result = orderService.pay(id);
+//        if (Objects.nonNull(result.getReturn_code()) && result.getReturn_code().equals("SUCCESS")) {
+//            return ResultVO.ok(result);
+//        }
+//        return ResultVO.fail(ExceptionEnum.ILLEGAL_PARAM, "请求支付失败！");
+//    }
+//
+//    @InvokeControl
+//    @GetMapping(value = "/updateOrderStatus")
+//    public ResultVO<Long> updateOrderStatus(@RequestParam(value = "id") Long id,
+//                                            @RequestParam(value = "status") Integer status) {
+//        Order order = orderService.getOrder(id);
+//        order.setStatus(status);
+//        return ResultVO.ok(orderService.updateOrder(order));
+//    }
+//
+//    @InvokeControl
+//    @GetMapping(value = "/finishPay/{id}")
+//    public ResultVO<Boolean> finishPay(@NotNull(message = "id不能为空") @PathVariable("id") Long id) {
+//        return ResultVO.ok(orderService.finishPay(id));
+//    }
 
 }
