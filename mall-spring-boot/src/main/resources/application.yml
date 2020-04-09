@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
     session:
@@ -8,8 +8,8 @@ server:
     key-store: aishangwujiang.com.jks
     key-store-password: oq2727rxa9h
 
-http:
-  port: 8080
+#http:
+#  port: 8080
 
 picture:
   info:
