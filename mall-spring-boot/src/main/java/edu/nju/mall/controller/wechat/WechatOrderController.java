@@ -2,6 +2,7 @@ package edu.nju.mall.controller.wechat;
 
 import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.ListResponse;
+import edu.nju.mall.common.NJUException;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.common.aop.RoleControl;
@@ -104,6 +105,9 @@ public class WechatOrderController {
     public ResultVO<Long> updateOrderStatus(@RequestParam(value = "id") Long id,
                                             @RequestParam(value = "status") Integer status) {
         Order order = orderService.getOrder(id);
+        if (order == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "未找到该订单！");
+        }
         order.setStatus(status);
         return ResultVO.ok(orderService.updateOrder(order));
     }

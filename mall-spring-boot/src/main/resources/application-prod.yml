@@ -6,3 +6,12 @@ logging:
   file: logs/mall.prod.log
   level:
     root: info
+
+wechat:
+  micro-program:
+  pay:
+    url:
+      unified-order: https://api.mch.weixin.qq.com/pay/unifiedorder
+      order-query: https://api.mch.weixin.qq.com/pay/orderquery
+      close-order: https://api.mch.weixin.qq.com/pay/closeorder
+      sandbox-sign: https://api.mch.weixin.qq.com/pay/getsignkey

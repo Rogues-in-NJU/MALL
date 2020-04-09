@@ -27,8 +27,8 @@ public class WechatPayServiceTest {
     public void test() {
         UnifiedOrderDTO unifiedOrderDTO = UnifiedOrderDTO.builder()
                 .body("")
-                .out_trade_no("1234")
-                .total_fee(1000)
+                .out_trade_no("12345")
+                .total_fee(101)
                 .build();
         System.out.println(JSON.toJSONString(wechatPayService.unifiedOrder(unifiedOrderDTO)));
     }

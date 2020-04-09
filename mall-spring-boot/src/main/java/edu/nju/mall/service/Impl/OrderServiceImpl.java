@@ -268,6 +268,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean finishPay(Long id) {
         Order order = getOrder(id);
+        if (order == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "未找到该订单！");
+        }
         if (order.getStatus() != OrderStatus.PAYING.getCode()) {
             return false;
         }
