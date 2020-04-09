@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'http://175.24.41.132:8080';
 const tokenHead = '';
 
 function request(url, method, data, header) {
