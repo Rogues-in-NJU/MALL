@@ -14,8 +14,7 @@ App({
     userInfo: null
   },
   onLaunch: function(query) {
-    console.log(query);
-    this.login(query);
+    this.login(query.query);
   },
   onRouteChange: function(event) {
     wx.navigateTo({
