@@ -132,6 +132,17 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll(sp);
     }
 
+    @Override
+    public List<Order> getAllUnfinishedOrder() {
+        QueryContainer<Order> sp = new QueryContainer<>();
+        try {
+            sp.add(ConditionFactory.equal("status", OrderStatus.TODO.getCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderRepository.findAll(sp);
+    }
+
 
     @Override
     public Page<OrderVO> getRefundingOrderList(Pageable pageable) {
