@@ -4,7 +4,9 @@ const tokenHead = '';
 
 function request(url, method, data, header) {
   data = data || {};
-  header = header || {}
+  header = header || {
+    'Content-Type': 'application/json'
+  };
   let token = wx.getStorageSync("UserToken");
   if (token) {
     header['Authorization'] = tokenHead + token;

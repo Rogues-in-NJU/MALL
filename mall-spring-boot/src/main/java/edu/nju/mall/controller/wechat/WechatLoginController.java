@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class WechatLoginController {
     private WechatLoginService wechatLoginService;
 
     @InvokeControl
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultVO<String> login(@RequestBody final LoginCommand command) {
         String code = command.getCode();
         if (StringUtils.isBlank(code)) {

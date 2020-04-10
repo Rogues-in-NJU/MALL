@@ -12,7 +12,8 @@ Page({
     orders: [],
     canRefresh: true,
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
+    tabDisabled: false
   },
   // [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]
   /**
@@ -107,6 +108,9 @@ Page({
     if (this.data.tabActive !== 0) {
       url += '&status=' + (this.data.tabActive - 1)
     }
+    this.setData({
+      tabDisabled: true
+    });
     http.get(url)
       .then(res => {
         if (res === undefined || res === null) {
@@ -116,7 +120,8 @@ Page({
             duration: 1500
           });
           this.setData({
-            canRefresh: true
+            canRefresh: true,
+            tabDisabled: false
           });
           return;
         }
@@ -127,7 +132,8 @@ Page({
             duration: 1500
           });
           this.setData({
-            canRefresh: true
+            canRefresh: true,
+            tabDisabled: false
           });
           return;
         }
@@ -151,7 +157,8 @@ Page({
             ...this.data.orders,
             ...orderShowList
           ],
-          canRefresh: true
+          canRefresh: true,
+          tabDisabled: false
         });
       })
       .catch(err => {
@@ -161,7 +168,8 @@ Page({
           duration: 1500
         });
         this.setData({
-          canRefresh: true
+          canRefresh: true,
+          tabDisabled: false
         });
       });
   },
@@ -172,6 +180,9 @@ Page({
     if (this.data.tabActive !== 0) {
       url += '&status=' + (this.data.tabActive - 1)
     }
+    this.setData({
+      tabDisabled: true
+    });
     http.get(url)
       .then(res => {
         if (res === undefined || res === null) {
@@ -181,7 +192,8 @@ Page({
             duration: 1500
           });
           this.setData({
-            canRefresh: true
+            canRefresh: true,
+            tabDisabled: false
           });
           return;
         }
@@ -192,7 +204,8 @@ Page({
             duration: 1500
           });
           this.setData({
-            canRefresh: true
+            canRefresh: true,
+            tabDisabled: false
           });
           return;
         }
@@ -216,7 +229,8 @@ Page({
             ...this.data.orders,
             ...orderShowList
           ],
-          canRefresh: true
+          canRefresh: true,
+          tabDisabled: false
         });
       })
       .catch(err => {
@@ -226,7 +240,8 @@ Page({
           duration: 1500
         });
         this.setData({
-          canRefresh: true
+          canRefresh: true,
+          tabDisabled: false
         });
       });
   },

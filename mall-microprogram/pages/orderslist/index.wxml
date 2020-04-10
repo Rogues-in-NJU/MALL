@@ -7,12 +7,12 @@
       bind:search="onSearch"
       bind:cancel="onSearchCancel"/>
     <van-tabs active="{{ tabActive }}" bind:change="onTabChange">
-      <van-tab title="全部"></van-tab>
-      <van-tab title="待付款"></van-tab>
-      <van-tab title="待完成"></van-tab>
-      <van-tab title="已完成"></van-tab>
-      <van-tab title="退款中"></van-tab>
-      <van-tab title="退款成功"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="全部"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="待付款"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="待完成"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="已完成"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="退款中"></van-tab>
+      <van-tab disabled="{{ tabDisabled }}" title="退款成功"></van-tab>
     </van-tabs>
   </view>
   <view class="order-list">

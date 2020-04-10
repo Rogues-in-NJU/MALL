@@ -25,7 +25,7 @@
           <van-button 
             size="small" 
             round 
-            bindtap="refund" disabled="{{ !isRefund }}">申请退款</van-button>
+            bindtap="refund" hidden="{{ !isRefund }}">申请退款</van-button>
           <van-button
             size="small" 
             round 
