@@ -32,12 +32,27 @@ public class ScheduledUtils {
     public void checkOverDue() {
         List<Order> orderList = orderService.getAllUnPayOrder();
         orderList.forEach(o -> {
-            boolean overDue = DateUtils.overDue(o.getCreatedAt());
-            if (overDue) {
+            if (DateUtils.payOverDue(o.getCreatedAt())) {
                 o.setStatus(OrderStatus.ABANDON.getCode());
                 Product product = productService.getProduct(o.getProductId());
                 product.setQuantity(product.getQuantity() + o.getNum());
                 productService.updateProduct(product);
+                orderService.updateOrder(o);
+            }
+        });
+    }
+
+    /**
+     * 每天0点过滤掉未支付的订单
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void checkOrderOverDue() {
+        List<Order> orderList = orderService.getAllUnfinishedOrder();
+        orderList.forEach(o -> {
+            if (DateUtils.orderOverDue(o.getStartTime())) {
+                o.setStatus(OrderStatus.FINISHED.getCode());
+                orderService.updateOrder(o);
             }
         });
     }

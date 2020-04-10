@@ -48,6 +48,12 @@ public class Order extends BaseEntity {
     private String payTime;
 
     /**
+     * 订单生效时间
+     */
+    @Column(name = "start_time")
+    private String startTime;
+
+    /**
      * 退款时间
      */
     @Column(name = "refund_time")

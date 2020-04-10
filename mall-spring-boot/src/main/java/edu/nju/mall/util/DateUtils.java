@@ -31,12 +31,23 @@ public class DateUtils {
         return sdfInDay.format(new Date());
     }
 
-    public static boolean overDue(String time) {
+    public static boolean payOverDue(String time) {
         try {
             Date d = sdf.parse(time);
             Date now = new Date();
             int hours = (int) ((now.getTime() - d.getTime()) / (1000 * 60 * 60));
             return hours >= 2;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean orderOverDue(String time) {
+        try {
+            Date d = sdf.parse(time);
+            Date now = new Date();
+            return now.getTime() > d.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
