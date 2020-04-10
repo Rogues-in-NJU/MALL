@@ -96,7 +96,7 @@ Page({
     })
   },
   bindGetUserInfo: function(event) {
-    if (e.detail.userInfo) {
+    if (event.detail.userInfo) {
       //用户按了允许授权按钮
       app.userInfoReadyCallback = function () {
         that.getUserInfo();
