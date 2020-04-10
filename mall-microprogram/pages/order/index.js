@@ -26,6 +26,10 @@ Page({
     prepay_id:'',
     appid:'',
     timeStamp:'',
+
+    isRefund: false,
+    isCancel: false,
+    isPay: false
   },
 
   /**
@@ -84,7 +88,10 @@ Page({
           createdAt: res.data.createdAt,
           payTime: res.data.payTime,
           refundTime: res.data.refundTime,
-          productId: res.data.productId
+          productId: res.data.productId,
+          isRefund: res.data.status === 1 || res.data.status === 2,
+          isCancel: res.data.status === 0,
+          isPay: res.data.status === 0
         });
         http.get('/wechat/api/product/get?id=' + this.data.productId)
           .then(res => {
@@ -198,36 +205,94 @@ Page({
       });
   },
 
-  generatePayCode :function(){
-    console.log(this.data.appid);
-    console.log(this.data.nonce_str);
-    console.log(this.data.prepay_id);
-    console.log(this.data.sign);
-    console.log(this.data.timeStamp);
-        wx.requestPayment(
-      {
-            'appId': this.data.appid,
-            'timeStamp': this.data.timeStamp,
-            'nonceStr': this.data.nonce_str,
-            'package': 'prepay_id='+this.data.prepay_id,
-        'signType': 'MD5',
-        'paySign': this.data.sign,
-        'success': function (res) {
-          //TODO 支付成功调用接口
-          console.log('支付成功');
-        },
-        'fail': function (res) {
-          console.log(res);
-          console.log('支付失败');
-          wx.showToast({
-            icon: 'none',
-            title: '支付失败!',
-            duration: 1500
+  generatePayCode : function() {
+    wx.requestPayment({
+      'appId': this.data.appid,
+      'timeStamp': this.data.timeStamp,
+      'nonceStr': this.data.nonce_str,
+      'package': 'prepay_id='+this.data.prepay_id,
+      'signType': 'MD5',
+      'paySign': this.data.sign,
+      'success': (res) => {
+        //TODO 支付成功调用接口
+        http.get('/wechat/api/order/finishPay/' + this.data.id)
+          .then(res => {
+            console.log(res);
+            if (res === undefined || res === null) {
+              wx.showToast({
+                icon: 'none',
+                title: '网络连接失败!',
+                duration: 1500
+              });
+              return;
+            }
+            if (res.code !== 10000) {
+              wx.showToast({
+                icon: 'none',
+                title: res.message,
+                duration: 1500
+              });
+              return;
+            }
+            wx.showToast({
+              icon: 'none',
+              title: '支付成功!',
+              duration: 1500
+            });
+            this.refresh();
+          })
+          .catch(err => {
+            wx.showToast({
+              icon: 'none',
+              title: '支付失败!',
+              duration: 1500
+            });
           });
-          return;
-        },
-        'complete': function (res) {}
-      })
+      },
+      'fail': (res) => {
+        console.log('支付失败');
+        wx.showToast({
+          icon: 'none',
+          title: '支付失败!',
+          duration: 1500
+        });
+        // TODO: 删除这段
+        http.get('/wechat/api/order/finishPay/' + this.data.id)
+          .then(res => {
+            console.log(res);
+            if (res === undefined || res === null) {
+              wx.showToast({
+                icon: 'none',
+                title: '网络连接失败!',
+                duration: 1500
+              });
+              return;
+            }
+            if (res.code !== 10000) {
+              wx.showToast({
+                icon: 'none',
+                title: res.message,
+                duration: 1500
+              });
+              return;
+            }
+            wx.showToast({
+              icon: 'none',
+              title: '支付成功!',
+              duration: 1500
+            });
+            this.refresh();
+          })
+          .catch(err => {
+            wx.showToast({
+              icon: 'none',
+              title: '支付失败!',
+              duration: 1500
+            });
+          });
+      },
+      'complete': function (res) {}
+    });
   },
 
   cancel: function() {

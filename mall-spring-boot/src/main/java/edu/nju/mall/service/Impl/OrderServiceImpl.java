@@ -1,5 +1,6 @@
 package edu.nju.mall.service.Impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import com.google.common.base.Preconditions;
@@ -7,13 +8,13 @@ import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.NJUException;
 import edu.nju.mall.conditionSqlQuery.ConditionFactory;
 import edu.nju.mall.conditionSqlQuery.QueryContainer;
-import edu.nju.mall.dto.OrderDTO;
-import edu.nju.mall.dto.UnifiedOrderDTO;
-import edu.nju.mall.dto.UnifiedOrderResponseDTO;
+import edu.nju.mall.dto.*;
 import edu.nju.mall.entity.Order;
+import edu.nju.mall.entity.OrderSecurity;
 import edu.nju.mall.entity.Product;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
+import edu.nju.mall.repository.OrderSecurityRepository;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.service.WechatPayService;
@@ -30,9 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Nonnull;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,12 +46,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
+
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private ProductService productService;
     @Autowired
     private WechatPayService wechatPayService;
+    @Autowired
+    private OrderSecurityRepository orderSecurityRepository;
     @Autowired
     private HttpSecurity httpSecurity;
 
@@ -262,6 +266,22 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         UnifiedOrderResponseDTO unifiedOrderResponseDTO = wechatPayService.unifiedOrder(unifiedOrderDTO);
         log.info("ans:{}", unifiedOrderResponseDTO);
+
+        if ("FAIL".equals(unifiedOrderResponseDTO.getReturn_code())
+                || "FAIL".equals(unifiedOrderResponseDTO.getResult_code())) {
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信下单失败!");
+        }
+
+        OrderSecurity orderSecurity = OrderSecurity.builder()
+                .nonceStr(unifiedOrderResponseDTO.getNonce_str())
+                .sign(unifiedOrderResponseDTO.getSign())
+                .prepayId(unifiedOrderResponseDTO.getPrepay_id())
+                .orderCode(order.getOrderCode())
+                .orderId(order.getId())
+                .build();
+
+        orderSecurityRepository.save(orderSecurity);
+
         return unifiedOrderResponseDTO;
     }
 
@@ -272,11 +292,48 @@ public class OrderServiceImpl implements OrderService {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "未找到该订单！");
         }
         if (order.getStatus() != OrderStatus.PAYING.getCode()) {
-            return false;
+            throw new NJUException(ExceptionEnum.ILLEGAL_PARAM, "该订单支付已关闭!");
         }
+        OrderQueryResponseDTO orderQueryResponseDTO = wechatPayService.orderQuery(String.valueOf(order.getOrderCode()));
+
+        if (orderQueryResponseDTO == null) {
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, "支付失败!");
+        }
+        if ("FAIL".equals(orderQueryResponseDTO.getReturn_code())) {
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, orderQueryResponseDTO.getReturn_msg());
+        }
+        if ("FAIL".equals(orderQueryResponseDTO.getResult_code())) {
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, "支付失败!");
+        }
+
+        order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
         updateOrder(order);
         return true;
+    }
+
+    @Override
+    public Boolean finishPay(@Nonnull Map<String, Object> payResult) {
+        try {
+            if (!wechatPayService.checkSign(payResult, String.valueOf(payResult.get("sign")))) {
+                return false;
+            }
+            PayResultDTO payResultDTO = new PayResultDTO();
+            BeanUtil.copyProperties(payResult, payResultDTO);
+
+            if ("FAIL".equals(payResultDTO.getReturn_code()) || "FAIL".equals(payResultDTO.getResult_code())) {
+                return false;
+            }
+
+            Order order = orderRepository.findByOrderCode(Long.parseLong(payResultDTO.getOut_trade_no())).orElse(null);
+            order.setTransactionNumber(payResultDTO.getTransaction_id());
+            order.setStatus(OrderStatus.TODO.getCode());
+            updateOrder(order);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
     }
 
     @Override

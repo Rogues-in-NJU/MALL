@@ -15,4 +15,5 @@ wechat:
       order-query: https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery
       close-order: https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder
       sandbox-sign: https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey
+    notify-url: https://aishangwujiang.com/api/pay/result
 

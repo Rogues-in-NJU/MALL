@@ -64,7 +64,7 @@ public class WechatPayService {
 
         Map<String, Object> generateData = new HashMap<>();
         BeanUtil.copyProperties(data, generateData);
-        Set<String> keys = generateData.keySet();
+        Set<String> keys = new HashSet<>(generateData.keySet());
         for (String key : keys) {
             if (Objects.isNull(generateData.get(key)) || StringUtils.isBlank(String.valueOf(generateData.get(key)))) {
                 generateData.remove(key);
@@ -141,7 +141,12 @@ public class WechatPayService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(XmlUtils.mapToXml(generateData))
                     .execute().body();
+            System.out.println(responseBody);
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
+            Map<String, Object> checkSignMap = new HashMap<>(resultMap);
+            if (!this.checkSign(checkSignMap, resultMap.get("sign"))) {
+                throw new NJUException(ExceptionEnum.SERVER_ERROR, "支付接口签名失败，存在安全风险!");
+            }
             OrderQueryResponseDTO orderQueryResponseDTO = new OrderQueryResponseDTO();
             BeanUtil.copyProperties(resultMap, orderQueryResponseDTO);
             return orderQueryResponseDTO;
@@ -203,6 +208,30 @@ public class WechatPayService {
             log.error(e.getMessage(), e);
             throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信沙箱签名失败!");
         }
+    }
+
+    public boolean checkSign(@Nonnull Map<String, Object> originData, String sign) {
+        if (sign == null) {
+            return false;
+        }
+        Set<String> keys = new HashSet<>(originData.keySet());
+        for (String key : keys) {
+            if ("sign".equals(key)) {
+                originData.remove(key);
+                continue;
+            }
+            if (Objects.isNull(originData.get(key)) || StringUtils.isBlank(String.valueOf(originData.get(key)))) {
+                originData.remove(key);
+                continue;
+            }
+        }
+        String realSign;
+        if (StringUtils.isBlank(sandboxSignUrl)) {
+            realSign = generateSign(originData, paySecretKey);
+        } else {
+            realSign = generateSign(originData, getSandboxSign());
+        }
+        return realSign.equals(sign);
     }
 
     /**

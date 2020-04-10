@@ -19,8 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('load');
-    if (options && options.i) {
+    if (options && options.i && options.i !== "0") {
       this.setData({
         tabActive: parseInt(options.i)
       });

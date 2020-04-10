@@ -94,12 +94,12 @@ public class OrderController {
         return ResultVO.ok(orderService.getOrder(id));
     }
 
-    /**
-     * 生成订单，对应商品库存不够会失败
-     *
-     * @param orderDTO
-     * @return
-     */
+    // /**
+    //  * 生成订单，对应商品库存不够会失败
+    //  *
+    //  * @param orderDTO
+    //  * @return
+    //  */
 //    @InvokeControl
 //    @PostMapping(value = "generateOrder")
 //    public ResultVO<Long> generateOrder(@RequestBody OrderDTO orderDTO) {

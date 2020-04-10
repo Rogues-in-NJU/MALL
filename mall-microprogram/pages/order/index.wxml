@@ -13,29 +13,28 @@
         <van-cell title="联系人手机号" value="{{ consigneePhone }}" border="{{ false }}"/>
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="订单编号" value="{{ orderCode }}" border="{{ false }}"/>
-        <van-cell title="微信交易号" value="{{ transactionNumber }}" border="{{ false }}"/>
-        <van-cell title="订单总价" value="¥{{ price }}" border="{{ false }}"/>
-        <van-cell title="创建时间" value="{{ createdAt }}" border="{{ false }}"/>
-        <van-cell title="付款时间" value="{{ payTime }}" border="{{ false }}"/>
-        <van-cell title="退款时间" value="" border="{{ false }}"/>
+        <van-cell title="订单编号" title-width="80px" label="{{ orderCode }}" border="{{ false }}"/>
+        <van-cell title="微信交易号" title-width="80px" label="{{ transactionNumber }}" border="{{ false }}"/>
+        <van-cell title="订单总价" title-width="80px" value="¥{{ price }}" border="{{ false }}"/>
+        <van-cell title="创建时间" title-width="80px" value="{{ createdAt }}" border="{{ false }}"/>
+        <van-cell title="付款时间" title-width="80px" value="{{ payTime }}" border="{{ false }}"/>
+        <van-cell title="退款时间" title-width="80px" value="{{ refundTime }}" border="{{ false }}"/>
       </van-cell-group>
       <view slot="footer" class="order-footer">
         <view class="buttons">
           <van-button 
-            wx:if="{{ status === 1 || status === 2 }}" 
-            size="small" round bindtap="refund">申请退款</van-button>
+            size="small" 
+            round 
+            bindtap="refund" disabled="{{ !isRefund }}">申请退款</van-button>
           <van-button
-            wx:if="{{ status === 0 }}"
-            size="small" round bindtap="cancel">取消订单</van-button>
+            size="small" 
+            round 
+            bindtap="cancel" disabled="{{ !isCancel }}">取消订单</van-button>
           <van-button
-            wx:if="{{ status === 0 }}"
             size="small" 
             color="rgb(255, 216, 66)"
             round
-            bindtap="pay"
-            >去支付</van-button>
-          <!-- <van-button size="small" type="danger">退款</van-button> -->
+            bindtap="pay" disabled="{{ !isPay }}">去支付</van-button>
         </view>
       </view>
     </van-panel>
