@@ -14,6 +14,7 @@ App({
     userInfo: null
   },
   onLaunch: function(query) {
+    console.log(query);
     this.login(query);
   },
   onRouteChange: function(event) {
@@ -79,6 +80,15 @@ App({
                     if (that.userInfoReadyCallback) {
                       that.userInfoReadyCallback();
                       that.userInfoReadyCallback = null;
+                    }
+                    if (query && query.sharedUserId) {
+                      http.get('/wechat/api/subordinate/add/' + query.sharedUserId)
+                        .then(res => {
+
+                        })
+                        .catch(err => {
+
+                        });
                     }
                   })
                   .catch(err => {

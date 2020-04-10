@@ -5,20 +5,35 @@ var app = getApp();
 Page({
   data: {
     nickName: '用户加载中...',
+    userId: null,
     avatarUrl: null,
     withdrawal: 0,
     subordinateNum: 0,
     payingNum: null,
     todoNum: null,
-    finishedNum: null
+    finishedNum: null,
+    showGetAuth: false
   },
   onLoad: function(options) {
     var that = this;
+    // 查看是否授权
+    wx.getSetting({
+      success: function (res) {
+        console.log(res);
+        if (res.authSetting['scope.userInfo']) {
+          return;
+        } else {
+          this.setData({
+            showGetAuth: true
+          });
+        }
+      }
+    });
     if (app.userInfo) {
       this.getUserInfo();
     } else {
       // 需要登录
-      app.userInfoReadyCallback = function() {
+      app.userInfoReadyCallback = function () {
         that.getUserInfo();
       }
       app.login();
@@ -35,6 +50,7 @@ Page({
           return;
         }
         that.setData({
+          userId: res.data.userId,
           subordinateNum: res.data.subordinateNum,
           withdrawal: res.data.withdrawal,
           nickName: app.userInfo.nickName,
@@ -50,6 +66,16 @@ Page({
       });
   },
   onChange: app.onRouteChange,
+  onShareAppMessage: function(res) {
+    if (!this.data.userId) {
+      return null;
+    }
+    console.log(this.data.userId);
+    return {
+      imageUrl: '',
+      path: '/pages/user/index?sharedUserId=' + this.data.userId
+    }
+  },
   goToOrders: function (event) {
     var dataset = event.currentTarget.dataset || event.target.dataset;
     var i;
@@ -68,5 +94,16 @@ Page({
         });
       },
     })
+  },
+  bindGetUserInfo: function(event) {
+    if (e.detail.userInfo) {
+      //用户按了允许授权按钮
+      app.userInfoReadyCallback = function () {
+        that.getUserInfo();
+      }
+      app.login();
+    } else {
+      //用户按了拒绝按钮
+    }
   }
 });

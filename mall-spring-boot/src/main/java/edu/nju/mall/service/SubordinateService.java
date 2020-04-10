@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -47,6 +48,26 @@ public class SubordinateService {
 
         UserDTO userDTO = userService.findUser(openId);
         return this.getSubordinates(userDTO.getId());
+    }
+
+    public void addSubordinate(Long sharedUserId, Long userId) {
+        if (Objects.isNull(sharedUserId)) {
+            return;
+        }
+        if (sharedUserId.equals(userId)) {
+            return;
+        }
+        List<Subordinate> subordinates = subordinateRepository.findBySubordinateId(userId);
+        if (subordinates.size() != 0) {
+            return;
+        } else {
+            Subordinate subordinate = Subordinate.builder()
+                    .userId(sharedUserId)
+                    .subordinateId(userId)
+                    .build();
+            subordinateRepository.save(subordinate);
+            return;
+        }
     }
 
 }
