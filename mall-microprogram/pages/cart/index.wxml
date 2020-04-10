@@ -31,6 +31,15 @@
     <input class="input"  type="number" placeholder="请输入收货人身份证号码" placeholder-style="color: gray" bindinput="listeneridentityCardInput" />
 </view>
 
+<view class="tui-picker-content">
+ <!-- <view class="tui-picker-name">日期选择器（选择年月日）</view> -->
+ <picker mode="date" value="{{date}}" start="{{today}}" end="2021-10-08" bindchange="changeDate">
+ <view class="tui-picker-detail">
+  出游时间: {{chooseDate}}
+ </view>
+ </picker>
+</view>
+
   <van-submit-bar
     price="{{ totalPrice }}"
     button-text="{{ submitBarText }}"

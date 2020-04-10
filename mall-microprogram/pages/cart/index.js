@@ -14,6 +14,9 @@ Page({
     price: 0,
     submitBarText: "结算",
     totalPrice: 0,
+
+    chooseDate:'点击此处选择出游时间',
+    today:'',
   },
 
   listenerNameInput: function (e) {
@@ -28,7 +31,28 @@ Page({
     this.data.identityCard = e.detail.value;
   },
 
+  changeDate:function(e){
+    //获取当前选择日期
+    var date = e.detail.value;
+    this.setData({
+      chooseDate:date
+    })
+    console.log(this.data.chooseDate);
+  },
+
   onLoad(options) {
+    const formatNumber = n => {
+      n = n.toString()
+      return n[1] ? n : '0' + n
+    }
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const day = new Date().getDate();
+    this.setData({
+      today:[year, month, day].map(formatNumber).join('-'),
+    });
+    // console.log(this.data.today);
+
     var url = '/wechat/api/product/get?id=' + options.id;
     http.get(url)
       .then(res => {
@@ -112,6 +136,16 @@ Page({
       });
       return;
     }
+    //验证出游时间
+    var datepattern = /^(\d{4})(-|\/)(\d{2})\2(\d{2})$/
+    if (!datepattern.test(this.data.chooseDate)){
+      wx.showToast({
+        title: "请选择正确时间",
+        icon: 'none',
+        duration: 1500
+      });
+      return;
+    }
     //包装post数据
     console.log(this.data.productid);
     var data = {
@@ -120,7 +154,8 @@ Page({
       num: 1,
       consignee: this.data.name,
       consigneePhone: this.data.phone,
-      consigneeAddress: this.data.identityCard
+      consigneeAddress: this.data.identityCard,
+      startTime: this.data.chooseDate,
     };
     //生成订单
     http.post('/wechat/api/order/generate', data)
