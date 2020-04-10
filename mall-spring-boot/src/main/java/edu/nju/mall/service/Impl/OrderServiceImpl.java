@@ -292,7 +292,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "未找到该订单！");
         }
         if (order.getStatus() != OrderStatus.PAYING.getCode()) {
-            throw new NJUException(ExceptionEnum.ILLEGAL_PARAM, "该订单支付已关闭!");
+            return true;
         }
         OrderQueryResponseDTO orderQueryResponseDTO = wechatPayService.orderQuery(String.valueOf(order.getOrderCode()));
 
