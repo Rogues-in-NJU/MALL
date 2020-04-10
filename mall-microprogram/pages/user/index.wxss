@@ -72,3 +72,18 @@
   /* align-items: center; */
   /* justify-content: center; */
 /* } */
+
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 50%;
+  height: 80px;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+}

@@ -25,6 +25,8 @@ public interface OrderService {
 
     List<Order> getAllUnPayOrder();
 
+    List<Order> getAllUnfinishedOrder();
+
     Page<OrderVO> getRefundingOrderList(Pageable pageable);
 
     Page<OrderVO> getOrderList(Pageable pageable, Long userId, Integer status, String startTime, String endTime);

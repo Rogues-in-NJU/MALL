@@ -11,4 +11,6 @@ public interface SubordinateRepository extends JpaRepository<Subordinate, Long> 
 
     List<Subordinate> findByUserId(final Long userId);
 
+    List<Subordinate> findBySubordinateId(final Long subordinateId);
+
 }

@@ -66,6 +66,16 @@
   </van-tabbar>
 </view>
 <!-- TODO 这里可能需要完善 -->
-<view>
-  <button open-type="getUserInfo">用户授权</button>
-</view>
+<van-overlay show="{{ showGetAuth }}" bind:click="onClickHide">
+  <view class="auth-wrapper">
+    <view class="block">
+      <h4>需要获取小程序权限</h4>
+      <button 
+        type="primary"
+        size="mini"
+        style="margin-top: 20px"
+        open-type="getUserInfo"
+        bindgetuserinfo="bindGetUserInfo">用户授权</button>
+    </view>
+  </view>
+</van-overlay>

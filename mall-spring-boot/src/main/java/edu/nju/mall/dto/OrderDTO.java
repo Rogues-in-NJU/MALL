@@ -25,4 +25,6 @@ public class OrderDTO {
     private String consigneePhone;
 
     private String consigneeAddress;
+
+    private String startTime;
 }
