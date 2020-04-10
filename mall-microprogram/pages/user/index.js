@@ -18,7 +18,7 @@ Page({
     var that = this;
     // 查看是否授权
     wx.getSetting({
-      success: function (res) {
+      success: (res) => {
         console.log(res);
         if (res.authSetting['scope.userInfo']) {
           return;
