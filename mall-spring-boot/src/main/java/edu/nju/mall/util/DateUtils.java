@@ -45,7 +45,7 @@ public class DateUtils {
 
     public static boolean orderOverDue(String time) {
         try {
-            Date d = sdf.parse(time);
+            Date d = sdfInDay.parse(time);
             Date now = new Date();
             return now.getTime() > d.getTime();
         } catch (ParseException e) {
