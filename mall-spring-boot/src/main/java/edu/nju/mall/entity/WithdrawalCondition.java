@@ -28,5 +28,5 @@ public class WithdrawalCondition {
 
     private int member;
 
-    private double cash;
+    private Long cash;
 }

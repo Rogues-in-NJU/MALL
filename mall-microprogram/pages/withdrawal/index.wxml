@@ -24,7 +24,8 @@
                 slot="button" 
                 size="small" 
                 type="primary"
-                color="rgb(255, 216, 66)">申请提现</van-button>
+                color="rgb(255, 216, 66)"
+                bindtap="apply">申请提现</van-button>
             </van-field>
           </van-cell-group>
         </view>
@@ -33,11 +34,12 @@
     <van-tab title="申请记录">
       <view>
         <van-cell 
-          title="提现金额: 1000.00" 
-          label="2020-02-02 12:00" 
+          wx:for="{{ records }}"
+          title="提现金额: {{ item.cash }}" 
+          label="{{ item.withdrawalTime }}" 
           size="large"
           value-class="gray"
-          value="待审核">
+          value="{{ item.status }}">
         </van-cell>
       </view>
     </van-tab>

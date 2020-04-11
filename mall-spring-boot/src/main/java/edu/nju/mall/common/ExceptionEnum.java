@@ -18,7 +18,9 @@ public enum ExceptionEnum {
     ILLEGAL_USER(10008, "非法用户"),
     AUTH_FAIL(10009, "没有权限"),
     OTHER_ERROR(20000, "其他异常"),
-    FIELD_EDIT_FORBID(20001, "禁止更改字段");
+    FIELD_EDIT_FORBID(20001, "禁止更改字段"),
+
+    BUSINESS_FAIL(30000, "业务请求失败");
 
     private int code;
     private String message;

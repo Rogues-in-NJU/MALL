@@ -25,9 +25,11 @@ public class WithdrawalRecord {
     private Integer id;
 
     /**
-     * 用户Id（微信号）
+     * 用户Id
      */
-    private String userId;
+    private Long userId;
+
+    private String userNickName;
 
     /**
      * 提现时间
@@ -38,7 +40,7 @@ public class WithdrawalRecord {
     /**
      * 提现金额
      */
-    private double cash;
+    private Long cash;
 
     /**
      * 状态（0：待处理，1：已完成）

@@ -5,6 +5,8 @@ import edu.nju.mall.entity.WithdrawalRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @Description: 作用描述
  * @Author: qianen.yin
@@ -15,9 +17,13 @@ public interface WithDrawlService {
 
     Integer saveRecord(WithdrawalRecord withdrawalRecord);
 
+    Integer applyWithdrawal(Long userId, Long cash);
+
     WithdrawalRecord getRecordById(Integer id);
 
     WithdrawalCondition getWithdrawalCondition();
+
+    List<WithdrawalRecord> getRecordList(Long userId);
 
     Page<WithdrawalRecord> getDoneRecordList(Pageable pageable, Long userId, String startTime, String endTime);
 
