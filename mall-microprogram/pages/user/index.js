@@ -15,7 +15,13 @@ Page({
     showGetAuth: false
   },
   onLoad: function(options) {
+    this.refresh();
+  },
+  refresh: function() {
     var that = this;
+    this.setData({
+      showGetAuth: false
+    });
     // 查看是否授权
     wx.getSetting({
       success: (res) => {
@@ -97,11 +103,7 @@ Page({
   },
   bindGetUserInfo: function(event) {
     if (event.detail.userInfo) {
-      //用户按了允许授权按钮
-      app.userInfoReadyCallback = function () {
-        that.getUserInfo();
-      }
-      app.login();
+      this.refresh();
     } else {
       //用户按了拒绝按钮
     }
