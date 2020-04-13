@@ -257,39 +257,39 @@ Page({
           duration: 1500
         });
         // TODO: 删除这段
-        http.get('/wechat/api/order/finishPay/' + this.data.id)
-          .then(res => {
-            console.log(res);
-            if (res === undefined || res === null) {
-              wx.showToast({
-                icon: 'none',
-                title: '网络连接失败!',
-                duration: 1500
-              });
-              return;
-            }
-            if (res.code !== 10000) {
-              wx.showToast({
-                icon: 'none',
-                title: res.message,
-                duration: 1500
-              });
-              return;
-            }
-            wx.showToast({
-              icon: 'none',
-              title: '支付成功!',
-              duration: 1500
-            });
-            this.refresh();
-          })
-          .catch(err => {
-            wx.showToast({
-              icon: 'none',
-              title: '支付失败!',
-              duration: 1500
-            });
-          });
+        // http.get('/wechat/api/order/finishPay/' + this.data.id)
+        //   .then(res => {
+        //     console.log(res);
+        //     if (res === undefined || res === null) {
+        //       wx.showToast({
+        //         icon: 'none',
+        //         title: '网络连接失败!',
+        //         duration: 1500
+        //       });
+        //       return;
+        //     }
+        //     if (res.code !== 10000) {
+        //       wx.showToast({
+        //         icon: 'none',
+        //         title: res.message,
+        //         duration: 1500
+        //       });
+        //       return;
+        //     }
+        //     wx.showToast({
+        //       icon: 'none',
+        //       title: '支付成功!',
+        //       duration: 1500
+        //     });
+        //     this.refresh();
+        //   })
+        //   .catch(err => {
+        //     wx.showToast({
+        //       icon: 'none',
+        //       title: '支付失败!',
+        //       duration: 1500
+        //     });
+        //   });
       },
       'complete': function (res) {}
     });
