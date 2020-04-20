@@ -3,7 +3,7 @@
     <van-image
       height="414"
       width="100%"
-      src="http://175.24.41.132:8080{{imageAddresses[0]}}"
+      src="https://aishangwujiang.com{{imageAddresses[0]}}"
     />
   </view>
   <van-cell-group border="{{ false }}">
@@ -25,7 +25,7 @@
     <van-image
       height="414"
       width="100%"
-      src="http://175.24.41.132:8080{{item}}"
+      src="https://aishangwujiang.com{{item}}"
     />
   </view>
 

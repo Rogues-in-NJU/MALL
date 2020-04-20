@@ -4,6 +4,7 @@ var app = getApp();
 
 Page({
   data: {
+    br:'\n',
     name: '',
     phone: '',
     identityCard:'',

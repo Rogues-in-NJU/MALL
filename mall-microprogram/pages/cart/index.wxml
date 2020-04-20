@@ -14,7 +14,7 @@
         title="{{ name }}"
         num="1"
         price="{{ price }}"
-        thumb="http://175.24.41.132:8080{{ imageAddresses[0] }}"
+        thumb="https://aishangwujiang.com{{ imageAddresses[0] }}"
       />
     <!-- </van-checkbox> -->
   <!-- </van-checkbox-group> -->
@@ -30,7 +30,7 @@
 <view class="inputView">
     <input class="input"  type="number" placeholder="请输入收货人身份证号码" placeholder-style="color: gray" bindinput="listeneridentityCardInput" />
 </view>
-
+<view><text>{{br}}</text></view>
 <view class="tui-picker-content">
  <!-- <view class="tui-picker-name">日期选择器（选择年月日）</view> -->
  <picker mode="date" value="{{date}}" start="{{today}}" end="2021-10-08" bindchange="changeDate">

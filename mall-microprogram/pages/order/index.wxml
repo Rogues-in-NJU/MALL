@@ -5,7 +5,7 @@
       <van-card
         title="{{ product.name }}"
         num="{{ num }}"
-        thumb="http://175.24.41.132:8080{{ product.imageAddresses[0]}}" 
+        thumb="https://aishangwujiang.com{{ product.imageAddresses[0]}}" 
         data-product="{{ productId }}"
         bindtap="goToProductDetail">
       </van-card>
