@@ -1,5 +1,4 @@
 import http from '../../request';
-
 var app = getApp();
 
 Page({
@@ -12,10 +11,11 @@ Page({
     payingNum: null,
     todoNum: null,
     finishedNum: null,
-    showGetAuth: false
+    showGetAuth: false,
+    isLogin:false
   },
   onLoad: function(options) {
-    this.refresh();
+    // this.refresh();
   },
   refresh: function() {
     var that = this;
@@ -60,7 +60,8 @@ Page({
           subordinateNum: res.data.subordinateNum,
           withdrawal: res.data.withdrawal,
           nickName: app.userInfo.nickName,
-          avatarUrl: app.userInfo.avatarUrl
+          avatarUrl: app.userInfo.avatarUrl,
+          isLogin:true
         });
       })
       .catch(err => {

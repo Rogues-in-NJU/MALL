@@ -1,4 +1,5 @@
 <view>
+  <view wx:if="{{isLogin}}">
   <view class="user-poster">
     <view class="user-name">
       <text>{{ nickName }}</text>
@@ -18,6 +19,12 @@
         height="6rem"
         src="{{ avatarUrl }}"/>
     </view>
+  </view>
+  </view>
+  <view wx:else>
+  <view class="user-poster">
+    <button class="loginButton" bindtap="refresh">登录</button>
+  </view>
   </view>
   <van-row class="user-links">
     <van-col span="6" data-i="1" bindtap="goToOrders">

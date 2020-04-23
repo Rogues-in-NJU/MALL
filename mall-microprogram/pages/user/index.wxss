@@ -87,3 +87,8 @@
   padding: 20px;
   text-align: center;
 }
+
+.loginButton{
+  width:150px;
+  height:45px;
+}
