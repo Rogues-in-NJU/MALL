@@ -32,7 +32,6 @@ public class WechatProductController {
     private HttpSecurity httpSecurity;
 
     @InvokeControl
-    @RoleControl({"user", "admin"})
     @GetMapping("/product/list")
     public ResultVO<ListResponse> getProductList(@RequestParam(value = "pageIndex", defaultValue = "1") final Integer pageIndex,
                                                @RequestParam(value = "pageSize", defaultValue = "10") final Integer pageSize) {
@@ -41,7 +40,6 @@ public class WechatProductController {
     }
 
     @InvokeControl
-    @RoleControl({"user", "admin"})
     @GetMapping("/product/search")
     public ResultVO<List<ProductVO>> searchProduct(@RequestParam(value = "productName") final String productName) {
         List<ProductVO> results = productService.searchByProductName(productName);
@@ -49,7 +47,6 @@ public class WechatProductController {
     }
 
     @InvokeControl
-    @RoleControl({"user", "admin"})
     @GetMapping("/product/get")
     public ResultVO<ProductVO> getProductById(@RequestParam(value = "id") final long id) {
         ProductVO results = productService.getProductById(id);

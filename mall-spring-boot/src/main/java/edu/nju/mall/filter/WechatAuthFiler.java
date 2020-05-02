@@ -29,7 +29,7 @@ public class WechatAuthFiler extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.debug("processing authentication for [{}]", request.getRequestURL());
 
-        if (Objects.equals("/wechat/api/login", request.getRequestURI())) {
+        if (Objects.equals("/wechat/api/login", request.getRequestURI()) || request.getRequestURI().contains("/wechat/api/product")) {
             filterChain.doFilter(request, response);
             return;
         }
