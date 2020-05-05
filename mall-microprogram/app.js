@@ -14,7 +14,10 @@ App({
     userInfo: null
   },
   onLaunch: function(query) {
-    //this.login(query.query);
+    if (query && query.query) {
+      console.log('sharedUserId: ' + query.query.sharedUserId);
+      wx.setStorageSync('sharedUserId', query.query.sharedUserId);
+    }
   },
   onRouteChange: function(event) {
     wx.navigateTo({
@@ -28,7 +31,7 @@ App({
       },
     });
   },
-  login: function(query) {
+  login: function() {
     var that = this;
     wx.showLoading({
       title: '登录中',
@@ -47,12 +50,12 @@ App({
                   signature: res.signature
                 };
                 that.userInfo = null;
-                wx.clearStorageSync('UserToken');
+                wx.removeStorageSync('UserToken');
                 http.post('/wechat/api/login', data)
                   .then(res => {
                     if (res === undefined || res === null) {
                       wx.showToast({
-                        title: '网络连接失败!',
+                        title: '[res]网络连接失败!',
                         icon: 'none',
                         duration: 1500
                       });
@@ -80,8 +83,11 @@ App({
                       that.userInfoReadyCallback();
                       that.userInfoReadyCallback = null;
                     }
-                    if (query && query.sharedUserId) {
-                      http.get('/wechat/api/subordinate/add/' + query.sharedUserId)
+
+                    var sharedUserId = wx.getStorageSync('sharedUserId');
+                    if (sharedUserId) {
+                      console.log('send sharedUserId');
+                      http.get('/wechat/api/subordinate/add/' + sharedUserId)
                         .then(res => {
 
                         })
@@ -93,7 +99,7 @@ App({
                   .catch(err => {
                     wx.hideLoading();
                     wx.showToast({
-                      title: '网络连接失败!',
+                      title: '[net]网络连接失败!',
                       icon: 'none',
                       duration: 1500
                     });
