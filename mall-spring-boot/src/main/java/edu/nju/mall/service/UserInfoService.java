@@ -30,16 +30,24 @@ public class UserInfoService {
     @Nonnull
     public UserInfoDTO findUserInfo(@Nonnull final Long userId) {
         Preconditions.checkNotNull(userId);
-        UserInfo userInfoEntity = userInfoRepository.findByUserId(userId).orElse(null);
-        if (Objects.isNull(userInfoEntity)) {
-            log.error("用户信息不存在 id为[{}]", userId);
-            throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户信息不存在 id为[%d]", userId));
-        }
+        UserInfo userInfoEntity = findUserInfoEntity(userId);
         UserInfoDTO userInfoDTO = UserInfoDTO.builder().build();
         BeanUtils.copyProperties(userInfoEntity, userInfoDTO);
         // TODO: 订单搜索
         return userInfoDTO;
     }
+
+    @Nonnull
+    public UserInfo findUserInfoEntity(@Nonnull final Long userId) {
+        Preconditions.checkNotNull(userId);
+        UserInfo userInfoEntity = userInfoRepository.findByUserId(userId).orElse(null);
+        if (Objects.isNull(userInfoEntity)) {
+            log.error("用户信息不存在 id为[{}]", userId);
+            throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户信息不存在 id为[%d]", userId));
+        }
+        return userInfoEntity;
+    }
+
 
     @Nonnull
     public UserInfoDTO findUserInfo(@Nonnull final String openId) {

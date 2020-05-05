@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class Order extends BaseEntity {
 
     /**
-     * 购买人Id(微信号)
+     * 购买人Id
      */
     @Column(name = "user_id")
     private Long userId;
