@@ -16,6 +16,9 @@ Page({
   },
   onLoad: function(options) {
     // this.refresh();
+    if (app.userInfo) {
+      this.getUserInfo();
+    }
   },
   refresh: function() {
     var that = this;
