@@ -14,7 +14,7 @@ App({
     userInfo: null
   },
   onLaunch: function(query) {
-    if (query && query.query) {
+    if (query && query.query && query.query.sharedUserId) {
       console.log('sharedUserId: ' + query.query.sharedUserId);
       wx.setStorageSync('sharedUserId', query.query.sharedUserId);
     }
