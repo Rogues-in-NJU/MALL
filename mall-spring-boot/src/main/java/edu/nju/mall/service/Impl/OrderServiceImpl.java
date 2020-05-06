@@ -12,12 +12,11 @@ import edu.nju.mall.dto.*;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.entity.OrderSecurity;
 import edu.nju.mall.entity.Product;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.repository.OrderSecurityRepository;
-import edu.nju.mall.service.OrderService;
-import edu.nju.mall.service.ProductService;
-import edu.nju.mall.service.WechatPayService;
+import edu.nju.mall.service.*;
 import edu.nju.mall.util.DateUtils;
 import edu.nju.mall.util.HttpSecurity;
 import edu.nju.mall.vo.OrderSummaryVO;
@@ -55,6 +54,10 @@ public class OrderServiceImpl implements OrderService {
     private WechatPayService wechatPayService;
     @Autowired
     private OrderSecurityRepository orderSecurityRepository;
+    @Autowired
+    private SubordinateService subordinateService;
+    @Autowired
+    private UserInfoService userInfoService;
     @Autowired
     private HttpSecurity httpSecurity;
 
@@ -97,6 +100,16 @@ public class OrderServiceImpl implements OrderService {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法退款!");
         }
         updateQuantity(order, OrderStatus.REFUNDED.getCode());
+        boolean hasLeader = subordinateService.check(order.getUserId());
+        if (hasLeader) {
+            UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
+            Product product = productService.getProduct(order.getProductId());
+            if(product == null){
+                throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"商品信息获取失败！");
+            }
+            userInfo.setWithdrawal((userInfo.getWithdrawal() - (long) product.getPercent() * product.getPrice()));
+            userInfoService.saveUserInfo(userInfo);
+        }
         return orderId;
     }
 
@@ -296,7 +309,9 @@ public class OrderServiceImpl implements OrderService {
         return unifiedOrderResponseDTO;
     }
 
+
     @Override
+    @Transactional
     public Boolean finishPay(Long id) {
         Order order = getOrder(id);
         if (order == null) {
@@ -320,6 +335,16 @@ public class OrderServiceImpl implements OrderService {
         order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
         updateOrder(order);
+        boolean hasLeader = subordinateService.check(order.getUserId());
+        if (hasLeader) {
+            UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
+            Product product = productService.getProduct(order.getProductId());
+            if(product == null){
+                throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"商品信息获取失败！");
+            }
+            userInfo.setWithdrawal((userInfo.getWithdrawal() + (long) product.getPercent() * product.getPrice()));
+            userInfoService.saveUserInfo(userInfo);
+        }
         return true;
     }
 
