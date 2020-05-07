@@ -101,12 +101,14 @@ public class OrderServiceImpl implements OrderService {
         }
         updateQuantity(order, OrderStatus.REFUNDED.getCode());
         boolean hasLeader = subordinateService.check(order.getUserId());
+        Product product = productService.getProduct(order.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品信息获取失败！");
+        }
+        product.setQuantity(product.getQuantity() - order.getNum());
+        product.setSaleVolume(product.getSaleVolume() + order.getNum());
         if (hasLeader) {
             UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
-            Product product = productService.getProduct(order.getProductId());
-            if(product == null){
-                throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"商品信息获取失败！");
-            }
             userInfo.setWithdrawal((userInfo.getWithdrawal() - (long) product.getPercent() * product.getPrice()));
             userInfoService.saveUserInfo(userInfo);
         }
@@ -335,13 +337,20 @@ public class OrderServiceImpl implements OrderService {
         order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
         updateOrder(order);
+        Product product = productService.getProduct(order.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品信息获取失败！");
+        }
+        if (product.getQuantity() < order.getNum()) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品库存不够，支付失败！");
+        }
+        //更新商品数据（库存和销量）
+        product.setQuantity(product.getQuantity() - order.getNum());
+        product.setSaleVolume(product.getSaleVolume() + order.getNum());
+        productService.updateProduct(product);
         boolean hasLeader = subordinateService.check(order.getUserId());
         if (hasLeader) {
             UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
-            Product product = productService.getProduct(order.getProductId());
-            if(product == null){
-                throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST,"商品信息获取失败！");
-            }
             userInfo.setWithdrawal((userInfo.getWithdrawal() + (long) product.getPercent() * product.getPrice()));
             userInfoService.saveUserInfo(userInfo);
         }
