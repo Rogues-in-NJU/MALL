@@ -105,8 +105,8 @@ public class OrderServiceImpl implements OrderService {
         if (product == null) {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品信息获取失败！");
         }
-        product.setQuantity(product.getQuantity() - order.getNum());
-        product.setSaleVolume(product.getSaleVolume() + order.getNum());
+        product.setQuantity(product.getQuantity() + order.getNum());
+        product.setSaleVolume(product.getSaleVolume() - order.getNum());
         if (hasLeader) {
             UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
             userInfo.setWithdrawal((userInfo.getWithdrawal() - (long) product.getPercent() * product.getPrice()));
