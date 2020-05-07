@@ -40,6 +40,11 @@ public class Product extends BaseEntity {
 
     private int quantity;
 
+    /**
+     * 销量
+     */
+    private int saleVolume;
+
     @Column(name = "sell_start_time")
     private String sellStartTime;
 

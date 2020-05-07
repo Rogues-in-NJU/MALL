@@ -32,6 +32,8 @@ public class ProductVO {
 
     private int quantity;
 
+    private int saleVolume;
+
     private String sellStartTime;
 
     private String sellEndTime;
