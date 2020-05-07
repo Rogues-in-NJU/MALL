@@ -111,8 +111,13 @@ Page({
     this.setData({
       tabDisabled: true
     });
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    });
     http.get(url)
       .then(res => {
+        wx.hideLoading();
         if (res === undefined || res === null) {
           wx.showToast({
             icon: 'none',
@@ -162,6 +167,7 @@ Page({
         });
       })
       .catch(err => {
+        wx.hideLoading();
         wx.showToast({
           icon: 'none',
           title: '网络连接失败!',
@@ -183,8 +189,13 @@ Page({
     this.setData({
       tabDisabled: true
     });
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    });
     http.get(url)
       .then(res => {
+        wx.hideLoading();
         if (res === undefined || res === null) {
           wx.showToast({
             icon: 'none',
@@ -234,6 +245,7 @@ Page({
         });
       })
       .catch(err => {
+        wx.hideLoading();
         wx.showToast({
           icon: 'none',
           title: '网络连接失败!',
