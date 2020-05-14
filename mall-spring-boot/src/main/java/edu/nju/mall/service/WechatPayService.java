@@ -196,6 +196,7 @@ public class WechatPayService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(XmlUtils.mapToXml(generateData))
                     .execute().body();
+            log.info("responseBody: {}", responseBody);
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             SandboxSignResponseDTO sandboxSignResponseDTO = new SandboxSignResponseDTO();
             BeanUtil.copyProperties(resultMap, sandboxSignResponseDTO);
