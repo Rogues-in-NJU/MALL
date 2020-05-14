@@ -296,6 +296,7 @@ public class OrderServiceImpl implements OrderService {
 
         if ("FAIL".equals(unifiedOrderResponseDTO.getReturn_code())
                 || "FAIL".equals(unifiedOrderResponseDTO.getResult_code())) {
+            log.error("微信下单失败: return_msg {}, err_code_des: {}", unifiedOrderResponseDTO.getReturn_msg(), unifiedOrderResponseDTO.getErr_code_des());
             throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信下单失败!");
         }
 
