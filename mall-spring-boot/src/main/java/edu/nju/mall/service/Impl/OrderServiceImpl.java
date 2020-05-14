@@ -289,6 +289,7 @@ public class OrderServiceImpl implements OrderService {
                 .body(productService.getProduct(order.getProductId()).getName())
                 .out_trade_no(String.valueOf(order.getOrderCode()))
                 .total_fee(order.getPrice())
+                .openid(httpSecurity.getUserOpenId())
                 .build();
         UnifiedOrderResponseDTO unifiedOrderResponseDTO = wechatPayService.unifiedOrder(unifiedOrderDTO);
         log.info("ans:{}", unifiedOrderResponseDTO);

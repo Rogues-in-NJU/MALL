@@ -74,6 +74,9 @@ public class WechatPayService {
         generateData.put("appid", appId);
         generateData.put("mch_id", mchId);
 
+        //加密方式
+        generateData.put("sign_type", "MD5");
+
         String nonceStr = IdUtil.fastSimpleUUID();
         generateData.put("nonce_str", nonceStr);
         try {
@@ -101,6 +104,7 @@ public class WechatPayService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(requestBody)
                     .execute().body();
+            log.info("responseBody:{}", requestBody);
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             UnifiedOrderResponseDTO unifiedOrderResponseDTO = new UnifiedOrderResponseDTO();
             unifiedOrderResponseDTO.setTimeStamp(String.valueOf(System.currentTimeMillis()));

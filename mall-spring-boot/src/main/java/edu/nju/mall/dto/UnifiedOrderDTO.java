@@ -28,4 +28,9 @@ public class UnifiedOrderDTO {
      * */
     private Integer total_fee;
 
+    /**
+     * openId
+     * */
+    private String openid;
+
 }
