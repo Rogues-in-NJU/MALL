@@ -20,11 +20,11 @@ public class FileServiceImpl implements FileService {
     public Map<String, String> saveImage(MultipartFile file) {
         String path =  "/home/ubuntu/images/"; // 文件保存路径
 //        path = request.getServletContext().getRealPath("templates/images/");
-        try {
-            path = ResourceUtils.getURL("classpath:").getPath() + "static/";
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            path = ResourceUtils.getURL("classpath:").getPath() + "static/";
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println(path);
 //        System.out.println("!!!!!!!!!!!!!!!!!!!!");
         /**
@@ -72,11 +72,11 @@ public class FileServiceImpl implements FileService {
     @Override
     public Map<String, String> saveInfoImage(MultipartFile file) {
         String path =  "/home/ubuntu/images/"; // 文件保存路径
-        try {
-            path = ResourceUtils.getURL("classpath:").getPath() + "static/";
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            path = ResourceUtils.getURL("classpath:").getPath() + "static/";
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println(path);
 //        System.out.println("!!!!!!!!!!!!!!!!!!!!");
         /**
