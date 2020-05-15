@@ -12,12 +12,11 @@ import edu.nju.mall.dto.*;
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.entity.OrderSecurity;
 import edu.nju.mall.entity.Product;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.repository.OrderRepository;
 import edu.nju.mall.repository.OrderSecurityRepository;
-import edu.nju.mall.service.OrderService;
-import edu.nju.mall.service.ProductService;
-import edu.nju.mall.service.WechatPayService;
+import edu.nju.mall.service.*;
 import edu.nju.mall.util.DateUtils;
 import edu.nju.mall.util.HttpSecurity;
 import edu.nju.mall.vo.OrderSummaryVO;
@@ -55,6 +54,10 @@ public class OrderServiceImpl implements OrderService {
     private WechatPayService wechatPayService;
     @Autowired
     private OrderSecurityRepository orderSecurityRepository;
+    @Autowired
+    private SubordinateService subordinateService;
+    @Autowired
+    private UserInfoService userInfoService;
     @Autowired
     private HttpSecurity httpSecurity;
 
@@ -97,6 +100,18 @@ public class OrderServiceImpl implements OrderService {
             throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "该订单目前状态无法退款!");
         }
         updateQuantity(order, OrderStatus.REFUNDED.getCode());
+        boolean hasLeader = subordinateService.check(order.getUserId());
+        Product product = productService.getProduct(order.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品信息获取失败！");
+        }
+        product.setQuantity(product.getQuantity() + order.getNum());
+        product.setSaleVolume(product.getSaleVolume() - order.getNum());
+        if (hasLeader) {
+            UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
+            userInfo.setWithdrawal((userInfo.getWithdrawal() - (long) product.getPercent() * product.getPrice()));
+            userInfoService.saveUserInfo(userInfo);
+        }
         return orderId;
     }
 
@@ -274,12 +289,14 @@ public class OrderServiceImpl implements OrderService {
                 .body(productService.getProduct(order.getProductId()).getName())
                 .out_trade_no(String.valueOf(order.getOrderCode()))
                 .total_fee(order.getPrice())
+                .openid(httpSecurity.getUserOpenId())
                 .build();
         UnifiedOrderResponseDTO unifiedOrderResponseDTO = wechatPayService.unifiedOrder(unifiedOrderDTO);
         log.info("ans:{}", unifiedOrderResponseDTO);
 
         if ("FAIL".equals(unifiedOrderResponseDTO.getReturn_code())
                 || "FAIL".equals(unifiedOrderResponseDTO.getResult_code())) {
+            log.error("微信下单失败: return_msg {}, err_code_des: {}", unifiedOrderResponseDTO.getReturn_msg(), unifiedOrderResponseDTO.getErr_code_des());
             throw new NJUException(ExceptionEnum.SERVER_ERROR, "微信下单失败!");
         }
 
@@ -296,7 +313,9 @@ public class OrderServiceImpl implements OrderService {
         return unifiedOrderResponseDTO;
     }
 
+
     @Override
+    @Transactional
     public Boolean finishPay(Long id) {
         Order order = getOrder(id);
         if (order == null) {
@@ -320,6 +339,23 @@ public class OrderServiceImpl implements OrderService {
         order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
         updateOrder(order);
+        Product product = productService.getProduct(order.getProductId());
+        if (product == null) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品信息获取失败！");
+        }
+        if (product.getQuantity() < order.getNum()) {
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "商品库存不够，支付失败！");
+        }
+        //更新商品数据（库存和销量）
+        product.setQuantity(product.getQuantity() - order.getNum());
+        product.setSaleVolume(product.getSaleVolume() + order.getNum());
+        productService.updateProduct(product);
+        boolean hasLeader = subordinateService.check(order.getUserId());
+        if (hasLeader) {
+            UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
+            userInfo.setWithdrawal((userInfo.getWithdrawal() + (long) product.getPercent() * product.getPrice()));
+            userInfoService.saveUserInfo(userInfo);
+        }
         return true;
     }
 

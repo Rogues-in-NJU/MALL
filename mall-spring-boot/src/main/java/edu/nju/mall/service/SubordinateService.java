@@ -1,6 +1,8 @@
 package edu.nju.mall.service;
 
 import com.google.common.base.Preconditions;
+import edu.nju.mall.common.ExceptionEnum;
+import edu.nju.mall.common.NJUException;
 import edu.nju.mall.dto.InfoSecurityUserDTO;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Subordinate;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
@@ -30,7 +33,7 @@ public class SubordinateService {
 
         List<Subordinate> subordinates = subordinateRepository.findByUserId(userId);
         List<InfoSecurityUserDTO> infoSecurityUserDTOs = new LinkedList<>();
-        for (Subordinate s: subordinates) {
+        for (Subordinate s : subordinates) {
             try {
                 UserDTO userDTO = userService.findUser(s.getSubordinateId());
                 InfoSecurityUserDTO infoSecurityUserDTO = InfoSecurityUserDTO.builder().build();
@@ -41,6 +44,32 @@ public class SubordinateService {
             }
         }
         return infoSecurityUserDTOs;
+    }
+
+    /**
+     * 校验是否存在上级用户
+     *
+     * @param userId
+     * @return
+     */
+    public boolean check(@Nonnull final Long userId) {
+        Preconditions.checkNotNull(userId);
+        List<Subordinate> subordinates = subordinateRepository.findBySubordinateId(userId);
+        return !CollectionUtils.isEmpty(subordinates);
+    }
+
+    /**
+     * 获取上级用户ID
+     * @param userId
+     * @return
+     */
+    public Long getLeaderId(@Nonnull final Long userId) {
+        Preconditions.checkNotNull(userId);
+        List<Subordinate> subordinates = subordinateRepository.findBySubordinateId(userId);
+        if(CollectionUtils.isEmpty(subordinates)){
+            throw new NJUException(ExceptionEnum.ILLEGAL_REQUEST, "获取上级用户ID错误！");
+        }
+        return subordinates.get(0).getUserId();
     }
 
     public List<InfoSecurityUserDTO> getSubordinates(@Nonnull final String openId) {

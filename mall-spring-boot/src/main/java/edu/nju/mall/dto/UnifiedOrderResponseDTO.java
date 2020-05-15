@@ -58,6 +58,18 @@ public class UnifiedOrderResponseDTO {
      * */
     private String result_code;
 
+    /**
+     * 错误码
+     *
+     * */
+    private String err_code;
+
+    /**
+     * 错误原因
+     *
+     * */
+    private String err_code_des;
+
     // 以下字段在return_code 、result_code、trade_state都为SUCCESS时有返回 ，如trade_state不为 SUCCESS，则只返回out_trade_no（必传）和attach（选传）。
     /**
      * 调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP，MICROPAY
