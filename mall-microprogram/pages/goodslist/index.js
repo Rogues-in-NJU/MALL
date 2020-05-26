@@ -100,6 +100,50 @@ Page({
     this.goods = [];
     this.loadGoods();
   },
+  loadClassification:function(){
+    var url = '/wechat/api/classification/list';
+    http.get(url)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        console.log(res.data);
+        this.setData({
+          category:res.data,
+        });
+        console.log(category);
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+        this.setData({
+          canRefresh: true
+        });
+      });
+  },
+
 
   loadGoods: function () {
     var url = '/wechat/api/product/list?pageIndex='

@@ -4,6 +4,8 @@ import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
 import edu.nju.mall.common.aop.RoleControl;
+import edu.nju.mall.entity.Classification;
+import edu.nju.mall.service.ClassificationService;
 import edu.nju.mall.service.ProductService;
 import edu.nju.mall.util.HttpSecurity;
 import edu.nju.mall.util.ListResponseUtils;
@@ -28,6 +30,10 @@ public class WechatProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ClassificationService classificationService;
+
     @Autowired
     private HttpSecurity httpSecurity;
 
@@ -51,6 +57,13 @@ public class WechatProductController {
     public ResultVO<ProductVO> getProductById(@RequestParam(value = "id") final long id) {
         ProductVO results = productService.getProductById(id);
         return ResultVO.ok(results);
+    }
+
+    @InvokeControl
+    @GetMapping(value = "/classification/list")
+    public ResultVO<List<Classification>> getClassificationList() {
+        List<Classification> classificationList = classificationService.getClassificationList();
+        return ResultVO.ok(classificationList);
     }
 
 }
