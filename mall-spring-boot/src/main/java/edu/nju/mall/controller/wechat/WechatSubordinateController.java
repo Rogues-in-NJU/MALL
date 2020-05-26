@@ -40,6 +40,7 @@ public class WechatSubordinateController {
     @GetMapping("/subordinate/add/{sharedUserId}")
     public ResultVO<Boolean> addSubordinate(@PathVariable("sharedUserId") final Long sharedUserId) {
         Long userId = httpSecurity.getUserId();
+        log.info("sharedUserId: {}, userId: {}", sharedUserId, userId);
         subordinateService.addSubordinate(sharedUserId, userId);
         return ResultVO.ok(true);
     }
