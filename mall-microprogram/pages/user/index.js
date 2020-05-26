@@ -16,6 +16,20 @@ Page({
   },
   onLoad: function(options) {
     // this.refresh();
+    console.log(options);
+    if (options && options.sharedUserId) {
+      var sharedUserId = options.sharedUserId;
+      if (sharedUserId) {
+        console.log('user index send sharedUserId');
+        http.get('/wechat/api/subordinate/add/' + sharedUserId)
+          .then(res => {
+
+          })
+          .catch(err => {
+
+          });
+      }
+    }
     if (app.userInfo) {
       this.getUserInfo();
     }
