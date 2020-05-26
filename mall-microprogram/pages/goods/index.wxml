@@ -1,10 +1,19 @@
 <view>
   <view>
-    <van-image
+  <swiper indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" indicator-active-color="#007aff" bindchange="bindchange" circular="{{circular}}"
+            style="height:{{imgheights[current]}}rpx;">
+            <block wx:for="{{imageAddresses}}" wx:for-key="{{index}}" wx:for-item="image">
+               <swiper-item>
+                    <image src="{https://aishangwujiang.com{{image[0]}}" data-id="{{index}}" class="slide-image" mode="widthFix" bindload="imageLoad" />
+               </swiper-item>
+             </block>
+         </swiper>
+
+    <!-- <van-image
       height="414"
       width="100%"
       src="https://aishangwujiang.com{{imageAddresses[0]}}"
-    />
+    /> -->
   </view>
   <van-cell-group border="{{ false }}">
     <van-cell
@@ -15,7 +24,9 @@
     <van-cell custom-class="goods-express" border="{{ false }}">
       <!-- <van-col span="10">运费：{{ goods.express }}</van-col> -->
       <van-col span="14">库存：{{ quantity }}</van-col>
+      <van-col span="14">销量：{{ saleVolume }}</van-col>
     </van-cell>
+
 
     
 
