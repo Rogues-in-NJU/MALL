@@ -12,6 +12,7 @@ Page({
     name:"",
     price:0,
     quantity:0,
+    saleVolume:0,
     sellEndTime:"",
     sellStartTime:"",
     status:0
@@ -55,6 +56,7 @@ Page({
           name: thisgood.name,
           price: (thisgood.price / 100).toFixed(2),
           quantity: thisgood.quantity,
+          saleVolume:thisgood.saleVolume,
           sellEndTime: thisgood.sellEndTime,
           sellStartTime: thisgood.sellStartTime,
           status: thisgood.status,

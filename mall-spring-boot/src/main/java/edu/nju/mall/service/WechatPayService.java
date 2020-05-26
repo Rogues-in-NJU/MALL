@@ -100,15 +100,21 @@ public class WechatPayService {
         String responseBody;
         try {
             String requestBody = XmlUtils.mapToXml(generateData);
+            log.info("requestBody:{}", requestBody);
             responseBody = HttpRequest.post(this.unifiedOrderUrl)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(requestBody)
                     .execute().body();
-            log.info("responseBody:{}", requestBody);
+            log.info("responseBody:{}", responseBody);
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
             UnifiedOrderResponseDTO unifiedOrderResponseDTO = new UnifiedOrderResponseDTO();
             unifiedOrderResponseDTO.setTimeStamp(String.valueOf(System.currentTimeMillis()));
             BeanUtil.copyProperties(resultMap, unifiedOrderResponseDTO);
+            //生成paySign问题
+            Map<String, Object> paySignMap = generatePaySignMap(unifiedOrderResponseDTO);
+            String paySign = generateSign(paySignMap, paySecretKey);
+            unifiedOrderResponseDTO.setSign(paySign);
+            log.info("paySign:{}", paySign);
             return unifiedOrderResponseDTO;
         } catch (TransformerException | IOException | ParserConfigurationException | SAXException e) {
             log.error(e.getMessage(), e);
@@ -200,8 +206,8 @@ public class WechatPayService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML_VALUE)
                     .body(XmlUtils.mapToXml(generateData))
                     .execute().body();
-            log.info("responseBody: {}", responseBody);
             Map<String, String> resultMap = XmlUtils.xmlToMap(responseBody);
+            log.info("resultMap: {}", resultMap);
             SandboxSignResponseDTO sandboxSignResponseDTO = new SandboxSignResponseDTO();
             BeanUtil.copyProperties(resultMap, sandboxSignResponseDTO);
             if (Objects.nonNull(sandboxSignResponseDTO.getReturn_code()) && sandboxSignResponseDTO.getReturn_code().equals("SUCCESS")) {
@@ -246,6 +252,7 @@ public class WechatPayService {
         Preconditions.checkNotNull(originData);
         String originStr = mapJoin(originData);
         String stringSignTemp = originStr + "&key=" + key;
+        log.info("signStr:{}", stringSignTemp);
         String sign = SecureUtil.md5(stringSignTemp).toUpperCase();
         return sign;
     }
@@ -257,6 +264,16 @@ public class WechatPayService {
                 .map(k -> k + "=" + map.get(k))
                 .collect(Collectors.toList());
         return StringUtils.join(keyValues, "&");
+    }
+
+    private Map<String, Object> generatePaySignMap(UnifiedOrderResponseDTO unifiedOrderResponseDTO) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("appId", unifiedOrderResponseDTO.getAppid());
+        map.put("nonceStr", unifiedOrderResponseDTO.getNonce_str());
+        map.put("package", "prepay_id=" + unifiedOrderResponseDTO.getPrepay_id());
+        map.put("signType", "MD5");
+        map.put("timeStamp", unifiedOrderResponseDTO.getTimeStamp());
+        return map;
     }
 
 }
