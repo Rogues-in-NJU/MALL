@@ -4,7 +4,7 @@
             style="height:{{imgheights[current]}}rpx;">
             <block wx:for="{{imageAddresses}}" wx:for-key="{{index}}" wx:for-item="image">
                <swiper-item>
-                    <image src="{https://aishangwujiang.com{{image[0]}}" data-id="{{index}}" class="slide-image" mode="widthFix" bindload="imageLoad" />
+                    <image src="https://aishangwujiang.com/{{imageAddresses[0]}}" data-id="{{index}}" class="slide-image" mode="widthFix" bindload="imageLoad" />
                </swiper-item>
              </block>
          </swiper>
