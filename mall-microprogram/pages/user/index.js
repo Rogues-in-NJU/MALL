@@ -26,14 +26,7 @@ Page({
         duration: 1500
       });
       if (sharedUserId) {
-        console.log('user index send sharedUserId');
-        http.get('/wechat/api/subordinate/add/' + sharedUserId)
-          .then(res => {
-
-          })
-          .catch(err => {
-
-          });
+        wx.setStorageSync('sharedUserId', sharedUserId);
       }
     }
     if (app.userInfo) {
@@ -63,6 +56,17 @@ Page({
     } else {
       // 需要登录
       app.userInfoReadyCallback = function () {
+        var sharedUserId = wx.getStorageSync('sharedUserId');
+        if (sharedUserId) {
+          console.log('user index send sharedUserId');
+          http.get('/wechat/api/subordinate/add/' + sharedUserId)
+            .then(res => {
+
+            })
+            .catch(err => {
+
+            });
+        }
         that.getUserInfo();
       }
       app.login();
