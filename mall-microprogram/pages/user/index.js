@@ -19,6 +19,12 @@ Page({
     console.log(options);
     if (options && options.sharedUserId) {
       var sharedUserId = options.sharedUserId;
+      var tx = sharedUserId !== undefined && sharedUserId !== null ? sharedUserId : '';
+      wx.showToast({
+        title: '添加上级客户[' + tx + ']!',
+        icon: 'none',
+        duration: 1500
+      });
       if (sharedUserId) {
         console.log('user index send sharedUserId');
         http.get('/wechat/api/subordinate/add/' + sharedUserId)
