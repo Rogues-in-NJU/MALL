@@ -20,11 +20,11 @@ Page({
     if (options && options.sharedUserId) {
       var sharedUserId = options.sharedUserId;
       var tx = sharedUserId !== undefined && sharedUserId !== null ? sharedUserId : '';
-      wx.showToast({
-        title: '添加上级客户[' + tx + ']!',
-        icon: 'none',
-        duration: 1500
-      });
+      // wx.showToast({
+      //   title: '添加上级客户[' + tx + ']!',
+      //   icon: 'none',
+      //   duration: 1500
+      // });
       if (sharedUserId) {
         wx.setStorageSync('sharedUserId', sharedUserId);
       }
