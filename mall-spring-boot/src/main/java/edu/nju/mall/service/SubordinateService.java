@@ -6,11 +6,14 @@ import edu.nju.mall.common.NJUException;
 import edu.nju.mall.dto.InfoSecurityUserDTO;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Subordinate;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.repository.SubordinateRepository;
+import edu.nju.mall.repository.UserInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nonnull;
@@ -24,6 +27,9 @@ public class SubordinateService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private SubordinateRepository subordinateRepository;
@@ -79,6 +85,7 @@ public class SubordinateService {
         return this.getSubordinates(userDTO.getId());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void addSubordinate(Long sharedUserId, Long userId) {
         if (Objects.isNull(sharedUserId)) {
             return;
@@ -95,6 +102,13 @@ public class SubordinateService {
                     .subordinateId(userId)
                     .build();
             subordinateRepository.save(subordinate);
+            UserInfo userInfo = userInfoRepository.findByUserId(sharedUserId).orElse(null);
+            if (Objects.isNull(userInfo)) {
+                log.error("用户信息不存在 id为[{}]", sharedUserId);
+                throw new NJUException(ExceptionEnum.SERVER_ERROR, String.format("用户信息不存在 id为[%d]", sharedUserId));
+            }
+            userInfo.setSubordinateNum(userInfo.getSubordinateNum() + 1);
+            userInfoRepository.save(userInfo);
             return;
         }
     }
