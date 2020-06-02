@@ -27,7 +27,7 @@
       <van-col span="14">销量：{{ saleVolume }}</van-col>
     </van-cell>
 
-
+<button open-type="share">分享</button>
     
 
 <van-col span="14">商品详情</van-col>
