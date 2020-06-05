@@ -338,6 +338,8 @@ public class OrderServiceImpl implements OrderService {
 
         order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
+        order.setPayTime(DateUtils.getTime());
+        order.setUpdatedAt(DateUtils.getTime());
         updateOrder(order);
         Product product = productService.getProduct(order.getProductId());
         if (product == null) {
