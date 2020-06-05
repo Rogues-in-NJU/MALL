@@ -26,8 +26,10 @@ public class WechatUserInfoController {
     @RoleControl({"user", "admin"})
     @GetMapping("/userInfo")
     public ResultVO<UserInfoDTO> getUserInfo() {
+        System.out.println("UserInfoController : /userInfo");
         String openId = security.getUserOpenId();
         UserInfoDTO userInfo = userInfoService.findUserInfo(openId);
+        System.out.println("UserInfoController : /userinfo -> " + userInfo.toString());
         return ResultVO.ok(userInfo);
     }
 

@@ -24,7 +24,10 @@ public class WechatLoginController {
     @InvokeControl
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultVO<String> login(@RequestBody final LoginCommand command) {
+        System.out.println("LoginController: /login --- ");
         String code = command.getCode();
+        System.out.println(code);
+
         if (StringUtils.isBlank(code)) {
             throw ExceptionEnum.ILLEGAL_PARAM.exception("code is empty");
         }
@@ -39,6 +42,7 @@ public class WechatLoginController {
             throw ExceptionEnum.ILLEGAL_PARAM.exception("signature is empty");
         }
         String token = wechatLoginService.login(code, rawData, signature);
+        System.out.println("LoginController: /login -> " + token);
         return ResultVO.ok(token);
     }
 
