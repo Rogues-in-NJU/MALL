@@ -55,7 +55,7 @@ export class WithdrawalConditionComponent implements RefreshableTab, OnInit {
         this.conditionEditForm = this.fb.group({
           id: [this.withdrawalCondition.id],
           member: [this.withdrawalCondition.member, Validators.required],
-          cash: [this.withdrawalCondition.cash, Validators.required]
+          cash: [this.withdrawalCondition.cash / 100, Validators.required]
         });
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');

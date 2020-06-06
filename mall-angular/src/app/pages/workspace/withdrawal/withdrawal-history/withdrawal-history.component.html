@@ -15,7 +15,7 @@
       <thead>
       <tr>
         <th nzLeft="0px" nzWidth="150px">ID</th>
-        <th>用户微信号</th>
+        <th>用户ID</th>
         <th>申请提现时间</th>
         <th>提现金额</th>
       </tr>
@@ -25,7 +25,7 @@
         <td>{{ data.id }}</td>
         <td>{{ data.userId }}</td>
         <td>{{ data.withdrawalTime }}</td>
-        <td>{{ data.cash }}</td>
+        <td>{{ data.cash / 100 }}</td>
       </tr>
       </tbody>
     </nz-table>
