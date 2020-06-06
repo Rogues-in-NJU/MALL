@@ -72,6 +72,20 @@
 					"pathName": "pages/user/index",
 					"query": "sharedUserId=1",
 					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "pages/goods/index",
+					"pathName": "pages/goods/index",
+					"query": "id=27",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/cart/index",
+					"pathName": "pages/cart/index",
+					"query": "id=27",
+					"scene": null
 				}
 			]
 		}

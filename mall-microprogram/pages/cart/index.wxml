@@ -11,7 +11,7 @@
       name="{{ item.id }}"
     > -->
       <van-card
-        title="{{ name }}"
+        title="{{ productName }}"
         num="1"
         price="{{ price }}"
         thumb="https://aishangwujiang.com{{ imageAddresses[0] }}"
@@ -19,30 +19,55 @@
     <!-- </van-checkbox> -->
   <!-- </van-checkbox-group> -->
 
-<view class="inputView">
-    <input class="input"  type="text" placeholder="请输入收货人姓名" placeholder-style="color: gray" bindinput="listenerNameInput" />
-</view>
-
-<view class="inputView">
-    <input class="input"  type="number" placeholder="请输入收货人手机号码" placeholder-style="color: gray" bindinput="listenerPhoneInput" />
-</view>
-
-<view class="inputView">
-    <input class="input"  type="text" placeholder="请输入收货人身份证号码" placeholder-style="color: gray" bindinput="listeneridentityCardInput" />
-</view>
-<view><text>{{br}}</text></view>
-<view class="tui-picker-content">
- <!-- <view class="tui-picker-name">日期选择器（选择年月日）</view> -->
- <picker mode="date" value="{{date}}" start="{{today}}" end="2021-10-08" bindchange="changeDate">
- <view class="tui-picker-detail">
-  出游时间: {{chooseDate}}
- </view>
- </picker>
-</view>
-
-  <van-submit-bar
-    price="{{ totalPrice }}"
-    button-text="{{ submitBarText }}"
-    bind:submit="onSubmit"
+<van-cell-group>
+  <van-field
+    size="large"
+    value="{{ name }}"
+    label="姓名"
+    placeholder="请输入收货人姓名"
+    bindinput="listenerNameInput"
   />
+  <van-field
+    size="large"
+    type="digit"
+    value="{{ phone }}"
+    label="手机号"
+    placeholder="请输入收货人手机号码"
+    bindinput="listenerPhoneInput"
+  />
+  <van-field
+    size="large"
+    type="digit"
+    value="{{ identityCard }}"
+    label="身份证"
+    placeholder="请输入收货人身份证号码"
+    bindinput="listeneridentityCardInput"
+  />
+  <van-field
+    size="large"
+    type="text"
+    value="{{ chooseDate }}"
+    label="出游时间"
+    placeholder="请输入选择出游时间"
+    disabled
+    bindtap="listenerDateInput"
+  />
+</van-cell-group>
+
+<view wx:if="{{ showDatePicker }}">
+  <van-datetime-picker
+    title="选择出游时间"
+    type="date"
+    value="{{ chooseDateToken }}"
+    bind:confirm="changeDate"
+    bind:cancel="cancelChangeDate"
+    min-date="{{ minDate }}"
+    formatter="{{ formatter }}"
+  />
+</view>
+<van-submit-bar
+  price="{{ totalPrice }}"
+  button-text="{{ submitBarText }}"
+  bind:submit="onSubmit"
+/>
 </view>

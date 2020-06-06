@@ -18,7 +18,6 @@ Page({
     status:0
   },
   onLoad(options) {
-    console.log(options.id);
     //TODO 根据options.id获取对应的商品
     var url = '/wechat/api/product/get?id=' + options.id;
     http.get(url)
@@ -103,24 +102,35 @@ Page({
   },
 
   onClickButton:function(event) {
-    wx.showToast({
-      title: '点击结算',
-      icon: 'none'
-    });
-    //TODO 跳转到结算页面，
-    wx.navigateTo({
-      url: '/pages/cart/index?id=' + this.data.productid,
-      success: () => { },
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: '结算页面加载失败',
-        });
-      },
-    });
-
-
-    
+    let token = wx.getStorageSync("UserToken");
+    if (token) {
+      wx.navigateTo({
+        url: '/pages/cart/index?id=' + this.data.productid,
+        success: () => { },
+        error: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '结算页面加载失败',
+          });
+        },
+      });
+    } else {
+      wx.navigateTo({
+        url: '/pages/user/index',
+        success: () => { 
+          wx.showToast({
+            icon: 'none',
+            title: '请登录后进行购买操作!'
+          });
+        },
+        error: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '用户页面加载失败',
+          });
+        },
+      });
+    }
   }
 
 });

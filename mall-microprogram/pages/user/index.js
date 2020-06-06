@@ -1,4 +1,5 @@
 import http from '../../request';
+import common from '../../common';
 var app = getApp();
 
 Page({
@@ -20,11 +21,6 @@ Page({
     if (options && options.sharedUserId) {
       var sharedUserId = options.sharedUserId;
       var tx = sharedUserId !== undefined && sharedUserId !== null ? sharedUserId : '';
-      // wx.showToast({
-      //   title: '添加上级客户[' + tx + ']!',
-      //   icon: 'none',
-      //   duration: 1500
-      // });
       if (sharedUserId) {
         wx.setStorageSync('sharedUserId', sharedUserId);
       }
@@ -85,15 +81,16 @@ Page({
         that.setData({
           userId: res.data.userId,
           subordinateNum: res.data.subordinateNum,
-          withdrawal: res.data.withdrawal,
+          withdrawal: common.number_format(res.data.withdrawal / 100.0, 2),
           nickName: app.userInfo.nickName,
           avatarUrl: app.userInfo.avatarUrl,
           isLogin:true
         });
       })
       .catch(err => {
+        console.log(err);
         wx.showToast({
-          title: '网络连接失败!',
+          title: 'USER网络连接失败!',
           icon: 'none',
           duration: 1500
         });

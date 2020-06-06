@@ -42,3 +42,19 @@
 .goods-action {
   position: relative!important;
 }
+
+.goods-detail-title {
+  margin-top: 5px;
+}
+
+.slide-image {
+  width: 100%;
+}
+
+.swiper-item-wrapper {
+  background-color: black;
+  width: 100vw;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+}

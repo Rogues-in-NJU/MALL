@@ -4,41 +4,65 @@ var app = getApp();
 
 Page({
   data: {
-    br:'\n',
+    productName: '',
     name: '',
     phone: '',
     identityCard:'',
     orderid:0,
     productid:0,
     imageAddresses: [],
-    name: "",
     price: 0,
     submitBarText: "结算",
     totalPrice: 0,
 
-    chooseDate:'点击此处选择出游时间',
-    today:'',
+    chooseDate: '',
+    chooseDateToken: new Date().getTime(),
+
+    showDatePicker: false,
+    minDate: new Date().getTime(),
+    formatter: (type, value) => {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      }
+      return value;
+    }
   },
 
-  listenerNameInput: function (e) {
-    this.data.name = e.detail.value;
-  },
+  // listenerNameInput: function (e) {
+  //   this.data.name = e.detail.value;
+  // },
 
-  listenerPhoneInput: function (e) {
-    this.data.phone = e.detail.value;
-  },
+  // listenerPhoneInput: function (e) {
+  //   this.data.phone = e.detail.value;
+  // },
 
-  listeneridentityCardInput: function (e) {
-    this.data.identityCard = e.detail.value;
-  },
-
-  changeDate:function(e){
-    //获取当前选择日期
-    var date = e.detail.value;
+  // listeneridentityCardInput: function (e) {
+  //   this.data.identityCard = e.detail.value;
+  // },
+  listenerDateInput: function() {
     this.setData({
-      chooseDate:date
-    })
-    console.log(this.data.chooseDate);
+      showDatePicker: true
+    });
+  },
+
+  changeDate: function(e){
+    //获取当前选择日期
+    console.log(e);
+    var date = new Date(e.detail);
+    this.setData({
+      chooseDate: formatDate(date),
+      showDatePicker: false
+    });
+  },
+
+  cancelChangeDate: function(e) {
+    this.setData({
+      showDatePicker: false
+    });
   },
 
   onLoad(options) {
@@ -83,7 +107,7 @@ Page({
         this.setData({
           productid: options.id,
           imageAddresses: thisgood.imageAddresses,
-          name: thisgood.name,
+          productName: thisgood.name,
           price: (thisgood.price / 100).toFixed(2),
           totalPrice: thisgood.price,
         });
@@ -99,22 +123,6 @@ Page({
         });
       });
   },
-
-  // onChange(event) {
-  //   const { goods } = this.data;
-  //   const checkedGoods = event.detail;
-  //   const totalPrice = goods.reduce(
-  //     (total, item) =>
-  //       total + (checkedGoods.indexOf(item.id) !== -1 ? item.price : 0),
-  //     0,
-  //   );
-  //   const submitBarText = checkedGoods.length ? `结算`: '结算';
-  //   this.setData({
-  //     checkedGoods,
-  //     totalPrice,
-  //     submitBarText,
-  //   });
-  // },
 
   onSubmit() {
     //验证手机号码
@@ -148,7 +156,6 @@ Page({
       return;
     }
     //包装post数据
-    console.log(this.data.productid);
     var data = {
       // userId: 111,
       productId: this.data.productid,
@@ -205,3 +212,27 @@ Page({
     
   },
 });
+
+function formatDate(date, fmt) {
+  if (!fmt) {
+    fmt = 'yyyy-MM-dd';
+  }
+  let o = {
+    "M+": date.getMonth() + 1,                 //月份
+    "d+": date.getDate(),                    //日
+    "H+": date.getHours(),                   //小时
+    "m+": date.getMinutes(),                 //分
+    "s+": date.getSeconds(),                 //秒
+    "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+    "S": date.getMilliseconds()             //毫秒
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+  for (const k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    }
+  }
+  return fmt;
+}
