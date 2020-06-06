@@ -65,12 +65,14 @@ export class CoverInfoComponent implements RefreshableTab, OnInit {
           return;
         }
         this.coverVO = res.data;
+        var tempFileList = [];
         for(let link of this.coverVO.imageAddresses){
-          this.fileList.push({'url': AppConfig.BASE_URL + link,
+          tempFileList.push({'url': AppConfig.BASE_URL + link,
             "response" : {
               "url" : link
             }});
         }
+        this.fileList = tempFileList;
         console.log(this.fileList);
       }, (error: HttpErrorResponse) => {
         this.message.error('网络异常，请检查网络或者尝试重新登录!');
