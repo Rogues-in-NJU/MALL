@@ -9,6 +9,7 @@ export interface ProductVO extends BaseInfo {
   buyingPrice?: number;
   price?: number;
   percent?: number;
+  saleVolume?: number;
   quantity?: number;
   sellStartTime?: string;
   sellEndTime?: string;
