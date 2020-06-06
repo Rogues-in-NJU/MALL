@@ -23,14 +23,19 @@ Page({
         wx.setStorageSync('sharedUserId', sharedUserId);
       }
     }
-    if (app.userInfo) {
-      this.getUserInfo();
-    }
+    // if (app.userInfo) {
+    //   this.getUserInfo();
+    // }
   },
   onShow: function(options) {
     console.log('onShow');
-    if (app.userInfo) {
-      this.getUserInfo();
+    let token = wx.getStorageSync("UserToken");
+    if (token) {
+      if (app.userInfo) {
+        this.getUserInfo();
+      } else {
+        this.refresh();
+      }
     }
   },
   refresh: function() {
@@ -76,6 +81,7 @@ Page({
     var that = this;
     http.get('/wechat/api/userInfo')
       .then(res => {
+        console.log(res);
         if (!res) {
           return;
         }
@@ -94,10 +100,11 @@ Page({
       .catch(err => {
         console.log(err);
         wx.showToast({
-          title: 'USER网络连接失败!',
+          title: '网络连接失败!',
           icon: 'none',
           duration: 1500
         });
+        wx.removeStorageSync('UserToken');
       });
   },
   onChange: app.onRouteChange,
