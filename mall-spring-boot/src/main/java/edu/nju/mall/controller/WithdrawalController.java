@@ -1,11 +1,16 @@
 package edu.nju.mall.controller;
 
+import edu.nju.mall.common.ExceptionEnum;
 import edu.nju.mall.common.ListResponse;
+import edu.nju.mall.common.NJUException;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
+import edu.nju.mall.dto.UserDTO;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.entity.WithdrawalCondition;
 import edu.nju.mall.entity.WithdrawalRecord;
 import edu.nju.mall.enums.WithDrawlRecordStatus;
+import edu.nju.mall.service.UserService;
 import edu.nju.mall.service.WithDrawlService;
 import edu.nju.mall.util.ListResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,8 @@ import javax.validation.constraints.NotNull;
 public class WithdrawalController {
     @Autowired
     private WithDrawlService withDrawlService;
+    @Autowired
+    private UserService userService;
 
     @InvokeControl
     @PostMapping(value = "saveRecord")
@@ -44,12 +51,19 @@ public class WithdrawalController {
     }
 
     @InvokeControl
+    @Transactional
     @GetMapping(value = "withdrawal/{id}")
     public ResultVO<Integer> withdrawal(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
         WithdrawalRecord withdrawalRecord = withDrawlService.getRecordById(id);
         withdrawalRecord.setStatus(WithDrawlRecordStatus.DONE.getCode());
         withDrawlService.saveRecord(withdrawalRecord);
-        //todo 修改对应用户余额
+        UserInfo userInfo = userService.findUserInfo(withdrawalRecord.getUserId());
+        long remain = userInfo.getWithdrawal() - withdrawalRecord.getCash();
+        if(remain < 0){
+            throw new NJUException(ExceptionEnum.BUSINESS_FAIL,"账户余额不足！");
+        }
+        userInfo.setWithdrawal(remain);
+        userService.saveUserInfo(userInfo);
         return ResultVO.ok(id);
     }
 

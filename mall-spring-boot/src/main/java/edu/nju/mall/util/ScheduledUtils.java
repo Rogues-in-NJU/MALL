@@ -2,9 +2,12 @@ package edu.nju.mall.util;
 
 import edu.nju.mall.entity.Order;
 import edu.nju.mall.entity.Product;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.enums.OrderStatus;
 import edu.nju.mall.service.OrderService;
 import edu.nju.mall.service.ProductService;
+import edu.nju.mall.service.SubordinateService;
+import edu.nju.mall.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +32,10 @@ public class ScheduledUtils {
     OrderService orderService;
     @Autowired
     ProductService productService;
+    @Autowired
+    private SubordinateService subordinateService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     /**
      * 每小时过滤掉未支付的订单
@@ -50,7 +57,7 @@ public class ScheduledUtils {
     }
 
     /**
-     * 每天0点过滤掉未支付的订单
+     * 每天0点过滤掉未完成的订单,更新用户提成
      */
     @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
@@ -58,6 +65,13 @@ public class ScheduledUtils {
         List<Order> orderList = orderService.getAllUnfinishedOrder();
         orderList.forEach(o -> {
             if (DateUtils.orderOverDue(o.getStartTime())) {
+                boolean hasLeader = subordinateService.check(o.getUserId());
+                Product product = productService.getProduct(o.getProductId());
+                if (hasLeader) {
+                    UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(o.getUserId()));
+                    userInfo.setWithdrawal((userInfo.getWithdrawal() + (long) product.getPercent() * product.getPrice()));
+                    userInfoService.saveUserInfo(userInfo);
+                }
                 o.setStatus(OrderStatus.FINISHED.getCode());
                 orderService.updateOrder(o);
             }
