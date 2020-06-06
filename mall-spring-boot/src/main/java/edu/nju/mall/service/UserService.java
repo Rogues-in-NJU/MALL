@@ -7,8 +7,10 @@ import edu.nju.mall.common.RoleEnum;
 import edu.nju.mall.dto.UserDTO;
 import edu.nju.mall.entity.Role;
 import edu.nju.mall.entity.User;
+import edu.nju.mall.entity.UserInfo;
 import edu.nju.mall.entity.UserRole;
 import edu.nju.mall.repository.RoleRepository;
+import edu.nju.mall.repository.UserInfoRepository;
 import edu.nju.mall.repository.UserRepository;
 import edu.nju.mall.repository.UserRoleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,8 @@ public class UserService {
     private RoleRepository roleRepository;
     @Autowired
     private UserRoleRepository userRoleRepository;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     @Nonnull
     public UserDTO findUser(@Nonnull final Long id) {
@@ -124,4 +128,13 @@ public class UserService {
         userRoleRepository.save(userRole);
     }
 
+    public UserInfo findUserInfo(@Nonnull Long userId) {
+        return userInfoRepository.findByUserId(userId).orElse(null);
+    }
+
+    @Nonnull
+    public void saveUserInfo(@Nonnull UserInfo userInfo) {
+        Preconditions.checkNotNull(userInfo.getUserId(), "用户ID为空!");
+        userInfoRepository.save(userInfo);
+    }
 }

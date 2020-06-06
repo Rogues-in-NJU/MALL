@@ -38,6 +38,7 @@ public class ProductController {
     @GetMapping("list")
     public ResultVO<ListResponse> getProductList(@RequestParam(value = "pageIndex") int pageIndex,
                                                  @RequestParam(value = "pageSize") int pageSize){
+        System.out.println("ProductController : /list");
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize, Sort.by(Sort.Direction.ASC, "createdAt"));
         return ResultVO.ok(ListResponseUtils.generateResponse(productService.getProductList(pageable), pageIndex, pageSize));
 
@@ -46,6 +47,7 @@ public class ProductController {
     @InvokeControl
     @GetMapping("info/{productId}")
     public ResultVO<ProductVO> getProduct(@PathVariable("productId") long productId){
+        System.out.println("ProductController : /info/"+ productId);
         return ResultVO.ok(productService.getProductById(productId));
     }
 

@@ -29,6 +29,7 @@
       <van-col span="14">库存：{{ quantity }} 件</van-col>
       <van-col span="14">销量：{{ saleVolume }} 件</van-col>
     </van-cell>
+
     <view class="goods-detail-title">
       <van-divider
         contentPosition="center"
@@ -45,7 +46,7 @@
         />
     </view>
   </van-cell-group>
-  
+  <button open-type="share">分享</button>
   <van-goods-action>
     <van-goods-action-button
       text="立即购买"

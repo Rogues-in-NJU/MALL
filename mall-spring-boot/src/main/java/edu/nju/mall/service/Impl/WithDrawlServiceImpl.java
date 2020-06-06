@@ -47,6 +47,7 @@ public class WithDrawlServiceImpl implements WithDrawlService {
 
     @Override
     public Integer saveCondition(WithdrawalCondition withdrawalCondition) {
+        withdrawalCondition.setCash(withdrawalCondition.getCash() * 100);
         return withdrawalConditionRepository.save(withdrawalCondition).getId();
     }
 
@@ -65,7 +66,10 @@ public class WithDrawlServiceImpl implements WithDrawlService {
     public Integer applyWithdrawal(@Nonnull Long userId, @Nonnull Long cash) {
         UserDTO userDTO = userService.findUser(userId);
         UserInfoDTO userInfoDTO = userInfoService.findUserInfo(userId);
-
+        WithdrawalCondition withdrawalCondition = getWithdrawalCondition();
+        if (userInfoDTO.getSubordinateNum() < withdrawalCondition.getMember() || cash < withdrawalCondition.getCash()) {
+            throw new NJUException(ExceptionEnum.BUSINESS_FAIL, "未达到提现标准!");
+        }
         List<WithdrawalRecord> todoRecords = withdrawalRecordRepository.findByUserIdAndStatus(userId, 0);
         AtomicReference<Long> todoCash = new AtomicReference<>(cash);
         todoRecords.forEach(t -> todoCash.updateAndGet(v -> v + t.getCash()));

@@ -131,6 +131,18 @@ Page({
         },
       });
     }
-  }
+  },
 
+  onShareAppMessage: function (res) {
+    var that = this;
+    var goods_id=that.data.productid;//获取产品id
+    var goods_title=that.data.name;//获取产品标题
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      return {
+        title: goods_title,
+        path: '/pages/goods/index?id=' +goods_id,
+      }
+    }
+  }
 });

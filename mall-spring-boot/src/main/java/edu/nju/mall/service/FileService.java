@@ -10,6 +10,8 @@ public interface FileService {
 
     Map<String, String> saveInfoImage(MultipartFile file);
 
+    Map<String, String> saveCoverImage(MultipartFile file);
+
     void deleteImage(String address);
 
     void deleteInfoImage(String address);

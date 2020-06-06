@@ -16,8 +16,6 @@ Page({
     isLogin:false
   },
   onLoad: function(options) {
-    // this.refresh();
-    console.log(options);
     if (options && options.sharedUserId) {
       var sharedUserId = options.sharedUserId;
       var tx = sharedUserId !== undefined && sharedUserId !== null ? sharedUserId : '';
@@ -25,6 +23,12 @@ Page({
         wx.setStorageSync('sharedUserId', sharedUserId);
       }
     }
+    if (app.userInfo) {
+      this.getUserInfo();
+    }
+  },
+  onShow: function(options) {
+    console.log('onShow');
     if (app.userInfo) {
       this.getUserInfo();
     }

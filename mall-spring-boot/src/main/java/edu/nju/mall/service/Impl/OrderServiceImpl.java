@@ -316,6 +316,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    /**
+     * 支付完成只更新订单和商品信息，上级用户的提成在订单完成后更新
+     */
     public Boolean finishPay(Long id) {
         Order order = getOrder(id);
         if (order == null) {
@@ -338,6 +341,8 @@ public class OrderServiceImpl implements OrderService {
 
         order.setTransactionNumber(orderQueryResponseDTO.getTransaction_id());
         order.setStatus(OrderStatus.TODO.getCode());
+        order.setPayTime(DateUtils.getTime());
+        order.setUpdatedAt(DateUtils.getTime());
         updateOrder(order);
         Product product = productService.getProduct(order.getProductId());
         if (product == null) {
@@ -350,12 +355,6 @@ public class OrderServiceImpl implements OrderService {
         product.setQuantity(product.getQuantity() - order.getNum());
         product.setSaleVolume(product.getSaleVolume() + order.getNum());
         productService.updateProduct(product);
-        boolean hasLeader = subordinateService.check(order.getUserId());
-        if (hasLeader) {
-            UserInfo userInfo = userInfoService.findUserInfoEntity(subordinateService.getLeaderId(order.getUserId()));
-            userInfo.setWithdrawal((userInfo.getWithdrawal() + (long) product.getPercent() * product.getPrice()));
-            userInfoService.saveUserInfo(userInfo);
-        }
         return true;
     }
 
