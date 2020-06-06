@@ -48,7 +48,7 @@
     type="text"
     value="{{ chooseDate }}"
     label="出游时间"
-    placeholder="请输入选择出游时间"
+    placeholder="请选择出游时间"
     disabled
     bindtap="listenerDateInput"
   />
