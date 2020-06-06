@@ -32,17 +32,17 @@ Page({
     }
   },
 
-  // listenerNameInput: function (e) {
-  //   this.data.name = e.detail.value;
-  // },
+  listenerNameInput: function (e) {
+    this.data.name = e.detail;
+  },
 
-  // listenerPhoneInput: function (e) {
-  //   this.data.phone = e.detail.value;
-  // },
+  listenerPhoneInput: function (e) {
+    this.data.phone = e.detail;
+  },
 
-  // listeneridentityCardInput: function (e) {
-  //   this.data.identityCard = e.detail.value;
-  // },
+  listeneridentityCardInput: function (e) {
+    this.data.identityCard = e.detail;
+  },
   listenerDateInput: function() {
     this.setData({
       showDatePicker: true
@@ -125,6 +125,14 @@ Page({
   },
 
   onSubmit() {
+    if (this.data.name === undefined || this.data.name === null || this.data.name === '') {
+      wx.showToast({
+        title: "姓名不能为空",
+        icon: 'none',
+        duration: 1500
+      });
+      return;
+    }
     //验证手机号码
     var pattern = /^[1][3-9]\d{9}$/
     if (!pattern.test(this.data.phone)) {

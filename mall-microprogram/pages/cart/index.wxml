@@ -29,7 +29,7 @@
   />
   <van-field
     size="large"
-    type="digit"
+    type="number"
     value="{{ phone }}"
     label="手机号"
     placeholder="请输入收货人手机号码"
@@ -37,7 +37,7 @@
   />
   <van-field
     size="large"
-    type="digit"
+    type="number"
     value="{{ identityCard }}"
     label="身份证"
     placeholder="请输入收货人身份证号码"
