@@ -3,8 +3,10 @@ package edu.nju.mall.controller;
 import edu.nju.mall.common.ListResponse;
 import edu.nju.mall.common.ResultVO;
 import edu.nju.mall.common.aop.InvokeControl;
+import edu.nju.mall.entity.CoverImage;
 import edu.nju.mall.entity.ProductImage;
 import edu.nju.mall.entity.ProductInfoImage;
+import edu.nju.mall.service.CoverService;
 import edu.nju.mall.service.FileService;
 import edu.nju.mall.service.ProductImageService;
 import edu.nju.mall.service.ProductInfoImageService;
@@ -30,6 +32,9 @@ public class FileUploadController {
 
     @Autowired
     ProductInfoImageService productInfoImageService;
+
+    @Autowired
+    CoverService coverService;
 
     @InvokeControl
     @RequestMapping("/upload-product-image")
@@ -63,6 +68,20 @@ public class FileUploadController {
         return result;
     }
 
+    @InvokeControl
+    @RequestMapping("/upload-cover-image")
+    public Map<String, String> uploadCoverImage(@RequestParam("upload_file")MultipartFile file) {
+
+        Map<String, String> result = fileService.saveCoverImage(file);
+
+        CoverImage coverImage = CoverImage.builder().imageLink(result.get("url")).build();
+
+        Long id = coverService.saveCoverImage(coverImage);
+        result.put("uid", id.toString());
+        return result;
+    }
+
+
     @GetMapping("deleteImage/{productImageId}")
     public ResultVO<Integer> deleteProductImage(@PathVariable("productImageId") Long productImageId){
         return ResultVO.ok(productImageService.deleteProductImage(productImageId).intValue());
@@ -84,6 +103,18 @@ public class FileUploadController {
     @GetMapping("deleteInfoImageByImageLink/{imageLink}")
     public ResultVO<Integer> deleteProductInfoImageByImageLink(@PathVariable("imageLink") String imageLink){
         productInfoImageService.deleteProductImageByImageLink(imageLink);
+        return ResultVO.ok(0);
+    }
+
+    @GetMapping("deleteCoverImage/{coverImageId}")
+    public ResultVO<Integer> deleteCoverImage(@PathVariable("coverImageId") Long coverImageId){
+        return ResultVO.ok(coverService.deleteCoverImage(coverImageId).intValue());
+
+    }
+
+    @GetMapping("deleteCoverImageByImageLink/{imageLink}")
+    public ResultVO<Integer> deleteCoverImageByImageLink(@PathVariable("imageLink") String imageLink){
+        coverService.deleteCoverImageByImageLink(imageLink);
         return ResultVO.ok(0);
     }
 
