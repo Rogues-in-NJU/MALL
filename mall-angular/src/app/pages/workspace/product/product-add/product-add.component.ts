@@ -33,6 +33,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
     buyingPrice: null,
     price: null,
     percent: null,
+    saleVolume: null,
     quantity: null,
     sellStartTime: null,
     sellEndTime: null,
@@ -46,6 +47,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
   buyingPrice: number = 0;
   price: number = 0;
   percent: number = 0;
+  saleVolume: number = 0;
   quantity: number = 0;
   timeRange: Date[];
   status: number = 0;
@@ -129,6 +131,7 @@ export class ProductAddComponent implements RefreshableTab, OnInit, ClosableTab 
     this.productVO.buyingPrice = NumberUtils.toInteger(this.buyingPrice * 100);
     this.productVO.price = NumberUtils.toInteger(this.price * 100);
     this.productVO.percent = this.percent;
+    this.productVO.saleVolume = this.saleVolume;
     this.productVO.quantity = this.quantity;
     if (Objects.valid(this.timeRange) && this.timeRange.length === 2) {
       this.productVO.sellStartTime = DateUtils.format(this.timeRange[0]);

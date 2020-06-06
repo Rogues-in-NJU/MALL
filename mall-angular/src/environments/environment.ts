@@ -6,6 +6,7 @@ export const AppConfig = {
   production: false,
   environment: 'LOCAL',
   BASE_URL: 'https://aishangwujiang.com'
+  // BASE_URL: 'https://localhost:8080'
 };
 
 /*
