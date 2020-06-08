@@ -1,11 +1,30 @@
 <view>
   <view>
+    <swiper indicator-dots="true" 
+      autoplay="false"   
+      indicator-active-color="#007aff"
+      bindchange="bindchange"
+      style="height: 40vh; background-color: black;">
+      <block wx:for="{{mainImage}}" wx:for-key="{{index}}" wx:for-item="image">
+        <swiper-item>
+          <view class="swiper-item-wrapper">
+            <image src="https://aishangwujiang.com/{{mainImage[index]}}" 
+                data-id="{{index}}" 
+                class="slide-image" 
+                mode="widthFix" 
+                bindload="imageLoad" />
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- <view>
     <van-image
       height="180"
       width="100%"
       src="https://aishangwujiang.com{{ mainImage[0] }}"
     />
-  </view>
+  </view> -->
   <view>
     <van-grid>
       <van-grid-item icon="/icons/cart.png" text="{{ category[0].name }}" />
