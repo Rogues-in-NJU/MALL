@@ -8,7 +8,7 @@
       <block wx:for="{{imageAddresses}}" wx:for-key="{{index}}" wx:for-item="image">
         <swiper-item>
           <view class="swiper-item-wrapper">
-            <image src="https://aishangwujiang.com/{{imageAddresses[0]}}" 
+            <image src="https://aishangwujiang.com/{{imageAddresses[index]}}" 
                 data-id="{{index}}" 
                 class="slide-image" 
                 mode="widthFix" 

@@ -27,3 +27,16 @@
 .card-goods__item .van-card__price {
   color: #f44;
 }
+
+.slide-image {
+  width: 100%;
+}
+
+.swiper-item-wrapper {
+  background-color: black;
+  width: 100vw;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
