@@ -18,6 +18,15 @@ Page({
     status:0
   },
   onLoad(options) {
+
+    if (options && options.sharedUserId) {
+      var sharedUserId = options.sharedUserId;
+      var tx = sharedUserId !== undefined && sharedUserId !== null ? sharedUserId : '';
+      if (sharedUserId) {
+        wx.setStorageSync('sharedUserId', sharedUserId);
+      }
+    }
+    
     //TODO 根据options.id获取对应的商品
     var url = '/wechat/api/product/get?id=' + options.id;
     http.get(url)
@@ -134,14 +143,21 @@ Page({
   },
 
   onShareAppMessage: function (res) {
+    if (!this.data.userId) {
+      return null;
+    }
+    console.log(this.data.userId);
+
     var that = this;
     var goods_id=that.data.productid;//获取产品id
     var goods_title=that.data.name;//获取产品标题
+
+    var sharedUserId = app.globalData.userId;
     if (res.from === 'button') {
       // 来自页面内转发按钮
       return {
         title: goods_title,
-        path: '/pages/goods/index?id=' +goods_id,
+        path: '/pages/goods/index?id=' +goods_id+'&sharedUserId='+sharedUserId,
       }
     }
   }

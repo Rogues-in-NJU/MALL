@@ -96,6 +96,9 @@ Page({
           avatarUrl: app.userInfo.avatarUrl,
           isLogin:true
         });
+
+        app.globalData.userId = res.data.userId;
+        
       })
       .catch(err => {
         console.log(err);

@@ -11,7 +11,10 @@ App({
         name: '用户中心'
       }
     ],
-    userInfo: null
+    userInfo: null,
+    globalData: {
+      userId: null
+    }
   },
   onLaunch: function(query) {
     if (query && query.query && query.query.sharedUserId) {
@@ -37,7 +40,7 @@ App({
       title: '登录中',
       mask: true
     });
-    wx.login({
+    wx.login({ 
       success: function(res) {
         if (res.code) {
           var code = res.code;
