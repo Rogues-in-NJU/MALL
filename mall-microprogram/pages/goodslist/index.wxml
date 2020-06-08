@@ -3,7 +3,6 @@
     <swiper indicator-dots="true" 
       autoplay="false"   
       indicator-active-color="#007aff"
-      bindchange="bindchange"
       style="height: 40vh; background-color: black;">
       <block wx:for="{{mainImage}}" wx:for-key="{{index}}" wx:for-item="image">
         <swiper-item>
