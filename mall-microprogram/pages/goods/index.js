@@ -18,7 +18,7 @@ Page({
     status:0
   },
   onLoad(options) {
-    //TODO 根据options.id获取对应的商品
+    // 根据options.id获取对应的商品
     var url = '/wechat/api/product/get?id=' + options.id;
     http.get(url)
       .then(res => {

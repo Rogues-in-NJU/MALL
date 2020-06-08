@@ -4,6 +4,7 @@ var app = getApp();
 
 Page({
   data: {
+    mainImage:'',
     searchValue: '',
     tabActive: 0,
     orders: [],
@@ -30,6 +31,48 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var url = '/api/cover/info';
+    http.get(url)
+      .then(res => {
+        if (res === undefined || res === null) {
+          wx.showToast({
+            icon: 'none',
+            title: '网络连接失败!',
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        if (res.code !== 10000) {
+          wx.showToast({
+            icon: 'none',
+            title: res.message,
+            duration: 1500
+          });
+          this.setData({
+            canRefresh: true
+          });
+          return;
+        }
+        let data = 
+        this.setData({
+          mainImage: res.data.imageAddresses,
+          canRefresh: true
+        });
+        console.log(res.data);
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: 'none',
+          title: '网络连接失败!',
+          duration: 1500
+        });
+        this.setData({
+          canRefresh: true
+        });
+      });
     if (options && options.i) {
       this.setData({
         tabActive: parseInt(options.i)
